@@ -31,3 +31,27 @@ _Avoid_: Sub-orchestrator, Orchestrator Agent, Divisi (tanpa kualifikasi)
 **Agen Spesialis**:
 Agen yang mengerjakan satu jenis pekerjaan di bawah satu Orchestrator Divisi.
 _Avoid_: Worker, Sub-agent, Persona
+
+### Satuan kerja
+
+**Tugas**:
+Satuan kerja yang dibentuk dari satu Perintah dan dilacak statusnya sampai tuntas.
+_Avoid_: Tiket, Job, Task
+
+**Sub-tugas**:
+Bagian dari satu Tugas yang diserahkan ke satu Orchestrator Divisi atau satu Agen Spesialis.
+_Avoid_: Subtask, Langkah
+
+### Pesan antara Delegator dan Orchestrator Utama
+
+**Perintah**:
+Instruksi Pemilik yang diteruskan Delegator ke Orchestrator Utama.
+_Avoid_: Request, Prompt, Order
+
+**Laporan**:
+Pesan dari Orchestrator Utama ke Delegator berisi progres atau hasil sebuah Tugas, atau kabar perubahan susunan agen.
+_Avoid_: Notifikasi, Update
+
+**Permintaan Persetujuan**:
+Pesan dari Orchestrator Utama ke Delegator yang meminta Pemilik memilih setuju atau tolak atas satu tindakan berisiko.
+_Avoid_: Konfirmasi, Approval

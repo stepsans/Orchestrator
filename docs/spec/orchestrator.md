@@ -7,7 +7,7 @@ Status sesi: berjalan (sesi kukatanya, dimulai 2026-11-13).
 | Catatan | Tempat |
 |---|---|
 | Istilah | `GLOSSARY.md` (satu konteks: Orchestrator) |
-| Keputusan besar | `docs/adr/` (dibuat saat ADR pertama disetujui) |
+| Keputusan besar | `docs/adr/` |
 | Aturan domain dan spesifikasi | dokumen ini |
 | Daftar keputusan | dokumen ini |
 
@@ -33,14 +33,25 @@ Orchestrator Divisi yang direncanakan:
 
 ### Peran orchestrator
 
-- Orchestrator Utama dan Orchestrator Divisi hanya mengoordinasi: memecah pekerjaan, memilih lapisan di bawahnya, dan tidak mengerjakan tugas teknis sendiri.
-- Orchestrator juga menjadi teman diskusi Pemilik saat sebuah lapisan terasa berat atau bloated dan perlu dipecah:
+- Orchestrator Utama dan Orchestrator Divisi hanya mengoordinasi: memecah pekerjaan, memilih lapisan di bawahnya, dan tidak mengerjakan tugas teknis sendiri. Lihat ADR 0001.
+- Orchestrator juga menjadi teman diskusi saat sebuah lapisan terasa berat atau bloated dan perlu dipecah:
   - Orchestrator Utama dapat memecah Orchestrator Divisi yang bloated.
   - Orchestrator Divisi dapat memecah Agen Spesialis yang bloated.
 
+### Pemecahan lapisan yang bloated
+
+- Gejala bloated (pemicu diskusi, bukan pemicu otomatis; angka bisa disetel nanti):
+  1. Instruksi/jobdesk agen melebihi ±2.000 kata.
+  2. Satu agen menangani lebih dari ±5 jenis tugas berbeda.
+  3. Tingkat gagal atau revisi agen terus naik.
+- Hasil yang error atau tidak sesuai keinginan harus dievaluasi lagi.
+- Pemecahan diputuskan lewat diskusi antara Orchestrator Utama dan Orchestrator Divisi; **tidak** butuh persetujuan Pemilik.
+- Setelah agen baru bertugas, Orchestrator Utama mengirim Laporan ke Pemilik: agen apa, bertugas apa.
+- `terbuka`: pemecahan menghasilkan perubahan definisi agen; ini bertabrakan dengan aturan "merge ke branch utama butuh persetujuan" (lihat R4).
+
 ### Persetujuan Pemilik
 
-Tindakan berikut wajib menunggu persetujuan Pemilik lewat Delegator sebelum dijalankan:
+Tindakan berikut wajib menunggu Permintaan Persetujuan ke Pemilik lewat Delegator sebelum dijalankan:
 
 1. Deploy ke production (Agen 11 Release/DevOps).
 2. Perubahan skema database production (Agen 05 Database).
@@ -49,10 +60,34 @@ Tindakan berikut wajib menunggu persetujuan Pemilik lewat Delegator sebelum dija
 
 Tindakan lain boleh berjalan otomatis.
 
-### Runtime
+### Tugas dan status
+
+Satu Perintah menjadi satu Tugas; Tugas dipecah menjadi Sub-tugas.
+
+Status Tugas:
+
+```
+diterima → diurai → dikerjakan → menunggu persetujuan → selesai / gagal / dibatalkan
+```
+
+### Kontrak Delegator ↔ Orchestrator Utama
+
+Hanya tiga jenis pesan:
+
+| Pesan | Arah |
+|---|---|
+| Perintah | Delegator → Orchestrator Utama |
+| Laporan | Orchestrator Utama → Delegator |
+| Permintaan Persetujuan | Orchestrator Utama → Delegator (jawaban: setuju / tolak) |
+
+Kanal WhatsApp/Telegram adalah urusan Delegator.
+
+### Runtime dan penyimpanan
 
 - Agen dijalankan dengan Claude Agent SDK di Node.js.
-- Hosting: belum ditentukan; kandidat VPS, Vercel, atau lokal. Bukan Replit.
+- v1: satu proses — Orchestrator Utama memanggil Orchestrator Divisi dan Agen Spesialis sebagai subagent.
+- Penyimpanan status Tugas: PostgreSQL (pilihan agen atas penyerahan Pemilik; lihat R3-Q4).
+- Hosting: ditunda; kandidat VPS, Vercel, atau lokal. Bukan Replit.
 
 ## Daftar keputusan
 
@@ -64,16 +99,25 @@ Tindakan lain boleh berjalan otomatis.
 | R2-Q1 | Lingkup: Orchestrator Utama + Orchestrator Divisi Software Factory; agen spesialis dan Digital Growth ditunda | "A" | disepakati |
 | R2-Q2 | Nama lapisan: Delegator → Orchestrator Utama → Orchestrator Divisi → Agen Spesialis; satu Orchestrator Utama per Perusahaan; mulai dari satu Perusahaan | "Betul. Delegator >> Orchestrator Utama >> Orchestratro Divisi >> Agen Spesialis. Maxipro nama perusahaan. Setiap perusahaan mempunyai orchestrator utama. Tapi saya mau membangun untuk 1 perusahaan dulu" | disepakati |
 | R2-Q3 | Orchestrator hanya memecah/mengoordinasi, plus teman diskusi untuk memecah lapisan yang bloated | "Iya betul, hanya memecah. dan menjadi teman diskusi apabila terasa berat dan bloated harus bikin agent dan pecah agent. Orchestrator utama bisa memecah orchestrator divisi yang bloated. Orchestrator divisi bisa pecah agent yang bloated." | disepakati |
-| R2-Q4 | Empat titik persetujuan Pemilik (lihat Aturan domain) | "ok pakai daftar di atas saya ngikut." | disepakati |
+| R2-Q4 | Empat titik persetujuan Pemilik | "ok pakai daftar di atas saya ngikut." | disepakati |
 | R2-Q5 | Runtime: Claude Agent SDK di Node.js | "A, tidak di replit tetapi bisa di VPS/Vercel/Lokal. Saya masih belum tahu" | disepakati |
-| R2-Q5 | Hosting (VPS / Vercel / lokal) | "A, tidak di replit tetapi bisa di VPS/Vercel/Lokal. Saya masih belum tahu" | terbuka |
 | R2-Q6 | Struktur catatan: GLOSSARY.md, docs/adr/, docs/spec/orchestrator.md, di branch baru | "Iya saya setuju" | disepakati |
+| R3-Q1 | Pemecahan agen diputuskan antar-orchestrator tanpa persetujuan Pemilik; Pemilik cukup diberi info agen baru dan tugasnya | "ya, saya selalu setuju ke orchestrator. Biarkan mereka berdiskusi sendiri antara orchestrator utama dan orchestrator divisi. Jadi tidak perlu menanyakan persetujuan saya, yang penting kasih info aja kalo ada agent baru bertugas apa dll." | disepakati |
+| R3-Q2 | Tiga gejala bloated sebagai pemicu diskusi; hasil error/tidak sesuai dievaluasi lagi | "pakai ketiga gejala itu sebagai pemicu diskusi, bukan pemicu otomatis. Angkanya bisa disetel nanti. Kalau error dan hasil tidak sesuai diinginkan harus dievaluasi lagi." | disepakati |
+| R3-Q3 | Istilah Tugas/Sub-tugas dan alur status | "Setuju" | disepakati |
+| R3-Q4 | Pilihan penyimpanan diserahkan ke agen | "Saya tidak tau, coba tanya ke Bos Arga. Mungkin dia lebih mengerti. Saya ikut aja. Kasih saya rekomendasinya" | disepakati |
+| R3-Q5 | v1 satu proses, subagent Claude Agent SDK | "A Satu proses: Orchestrator Utama memanggil Orchestrator Divisi dan agen sebagai subagent di Claude Agent SDK." | disepakati |
+| R3-Q6 | Kontrak tiga jenis pesan | "Ya pakai tiga jenis pesan ini" | disepakati |
+| R3-Q7 | Tulis ADR 0001 orchestrator hanya koordinasi | "Ya" | disepakati |
+| R3-Q8 | Hosting | "ya ditunda" | ditunda |
 
 ## Alternatif yang ditolak
 
 - R2-Q1: pola generik tanpa divisi (b) dan semua lapisan plus 21 agen sekaligus (c). Pemilik tidak memberi alasan.
 - R2-Q5: n8n (b), LangGraph/CrewAI (c), menunda (d). Pemilik tidak memberi alasan. Hosting di Replit juga ditolak, tanpa alasan.
+- R3-Q1: usulan agen agar pemecahan agen menjadi titik persetujuan ke-5. Alasan Pemilik: "saya selalu setuju ke orchestrator".
 
 ## Catatan inferensi
 
 - Lingkup R1-Q2 (siap implementasi) kemungkinan butuh lebih dari 5 round (inferensi agen).
+- R3-Q4: pilihan agen adalah PostgreSQL — sesuai stack Pemilik dan aman untuk penulisan bersamaan oleh beberapa agen (inferensi agen). Pemilik menyebut pilihan ini bisa ditanyakan ke Bos Arga; belum ditinjau.
