@@ -136,6 +136,12 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Satu Delegator untuk semua Perusahaan. Delegator meneruskan Perintah ke Orchestrator Utama milik Perusahaan yang dimaksud; bila Perusahaan tidak jelas, Delegator bertanya ke Pemilik.
 - Cara membuat Orchestrator Utama untuk Perusahaan baru (contoh: VJ Labs, Telson Indonesia): ditunda.
 
+### Branch, PR, dan pembatalan
+
+- Setiap Tugas dikerjakan di branch sendiri di repo Proyek (`tugas/<id>-<ringkas>`); hasilnya Pull Request. Merge butuh persetujuan Pemilik.
+- Deploy ke staging boleh otomatis; deploy ke production butuh persetujuan.
+- Pemilik bisa membatalkan Tugas kapan saja lewat Delegator: status `dibatalkan`, pekerjaan berjalan dihentikan, branch dibiarkan (tidak dihapus, tidak di-merge), Pemilik menerima Laporan.
+
 ### Antrean
 
 - Tugas untuk Orchestrator Divisi yang sama dikerjakan satu per satu (antre).
@@ -175,10 +181,20 @@ Hanya tiga jenis pesan:
 
 Kanal WhatsApp/Telegram adalah urusan Delegator.
 
+Isi pesan:
+
+- **Perintah**: perusahaan, teks perintah, lampiran (opsional), id percakapan Delegator.
+- **Laporan**: tugas_id, jenis (progres / hasil / gagal / agen baru), ringkasan, tautan ke hasil (PR, URL staging).
+- **Permintaan Persetujuan**: id, tugas_id, tindakan, alasan, dampak, cara membatalkan. Jawaban: setuju / tolak, plus catatan opsional.
+
+Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak tiga jenis pesan (tanpa brainstorming). Ke depan kanal juga dihubungkan ke WhatsApp.
+
 ### Runtime dan penyimpanan
 
 - Agen dijalankan dengan Claude Agent SDK di Node.js.
-- v1: satu proses — Orchestrator Utama memanggil Orchestrator Divisi dan Agen Spesialis sebagai subagent.
+- v1: satu proses — Orchestrator Utama memanggil Orchestrator Divisi dan Agen Spesialis sebagai subagent. Lihat ADR 0002.
+- Kode orchestrator disimpan di repo ini, folder `src/`, berdampingan dengan `agents/`, `proyek/`, dan `docs/`.
+- Model AI ditulis di Definisi Agen: orchestrator memakai model Claude yang lebih kuat; Agen Spesialis memakai model yang lebih hemat, kecuali 03 Architecture. Model persis dipilih saat implementasi.
 - Penyimpanan status Tugas: PostgreSQL (pilihan agen atas penyerahan Pemilik; lihat R3-Q4).
 - Hosting: ditunda; kandidat VPS, Vercel, atau lokal. Bukan Replit.
 
@@ -224,7 +240,13 @@ Kanal WhatsApp/Telegram adalah urusan Delegator.
 | R7-Q3 | Rahasia sebagai environment variable di server; agen tidak menulis rahasia | "Ya" | disepakati |
 | R7-Q4 | Batas biaya lunak/keras per Tugas; batas keras jadi titik persetujuan ke-5 | "Ya" | disepakati |
 | R7-Q5 | v1 Software Factory: 6 agen inti (01, 03, 04, 06, 09, 11) | "Ya" | disepakati |
-| R7-Q6 | Isi tiga jenis pesan | (jawaban ganda tertulis "Q5 : Ya"; belum pasti untuk Q6) | terbuka |
+| R8-Q1 | Isi tiga jenis pesan (tanya ulang R7-Q6) | "Setuju" | disepakati |
+| R8-Q2 | Kode orchestrator di repo ini, folder `src/` | "Ya" | disepakati |
+| R8-Q3 | Pengganti Delegator v1: bot Telegram sederhana; ke depan juga WhatsApp | "Ya, ke depan mau dihubungkan dengan whatsapp juga" | disepakati |
+| R8-Q4 | Branch per Tugas, PR, staging otomatis, production butuh persetujuan | "Ya" | disepakati |
+| R8-Q5 | Pembatalan Tugas: branch dibiarkan, Laporan dikirim | "Ya" | disepakati |
+| R8-Q6 | Model lebih kuat untuk orchestrator, lebih hemat untuk Agen Spesialis kecuali 03 | "Ya" | disepakati |
+| R8-Q7 | Tulis ADR 0002 v1 satu proses dengan subagent | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
