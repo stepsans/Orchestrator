@@ -45,9 +45,34 @@ Orchestrator Divisi yang direncanakan:
   2. Satu agen menangani lebih dari ±5 jenis tugas berbeda.
   3. Tingkat gagal atau revisi agen terus naik.
 - Hasil yang error atau tidak sesuai keinginan harus dievaluasi lagi.
-- Pemecahan diputuskan lewat diskusi antara Orchestrator Utama dan Orchestrator Divisi; **tidak** butuh persetujuan Pemilik.
-- Setelah agen baru bertugas, Orchestrator Utama mengirim Laporan ke Pemilik: agen apa, bertugas apa.
-- `terbuka`: pemecahan menghasilkan perubahan definisi agen; ini bertabrakan dengan aturan "merge ke branch utama butuh persetujuan" (lihat R4).
+- Pemecahan diputuskan lewat diskusi antara Orchestrator Utama dan Orchestrator Divisi; **tidak** butuh persetujuan Pemilik. Ini berlaku untuk memecah Agen Spesialis maupun memecah Orchestrator Divisi.
+- Setelah diskusi matang, Orchestrator Utama mengirim Laporan ke Pemilik berisi hasil diskusi dan alasan pemecahan: agen apa, bertugas apa.
+- Definisi Agen disimpan di repo, di folder `agents/`. Perubahan yang **hanya** menyentuh `agents/` di-merge otomatis lalu dilaporkan; merge yang menyentuh berkas lain tetap butuh persetujuan Pemilik.
+
+### Evaluasi hasil
+
+1. Saat Tugas diurai, 01 Triage menulis Kriteria Penerimaan.
+2. Orchestrator Divisi mencocokkan hasil tiap Sub-tugas dengan Kriteria Penerimaan.
+3. Jika tidak cocok, Sub-tugas dikembalikan ke agen dengan umpan balik, maksimal 2 kali ulang (angka usulan, bisa disetel).
+4. Jika masih gagal, Tugas berstatus `gagal` dan Pemilik menerima Laporan berisi penyebabnya.
+5. Setiap kegagalan dihitung ke gejala bloated ke-3.
+
+### Alur di Software Factory
+
+- Setiap Tugas selalu dimulai dari 01 Triage.
+- Sesudahnya Orchestrator Divisi memilih Agen Spesialis yang dibutuhkan secara dinamis (bukan pipeline tetap).
+- 09 QA selalu dijalankan sebelum merge.
+- 10 Security wajib untuk perubahan yang menyentuh autentikasi, data pelanggan, atau kredensial.
+
+### Perintah di luar divisi yang ada
+
+- Perintah untuk bidang yang belum punya Orchestrator Divisi disimpan sebagai Tugas berstatus `diterima`, tidak dipaksakan ke divisi lain.
+- `terbuka`: siapa yang membuat Orchestrator Divisi baru atas perintah Pemilik (lihat R5).
+
+### Antrean
+
+- Tugas untuk Orchestrator Divisi yang sama dikerjakan satu per satu (antre).
+- Tugas untuk Orchestrator Divisi yang berbeda berjalan paralel.
 
 ### Persetujuan Pemilik
 
@@ -110,14 +135,23 @@ Kanal WhatsApp/Telegram adalah urusan Delegator.
 | R3-Q6 | Kontrak tiga jenis pesan | "Ya pakai tiga jenis pesan ini" | disepakati |
 | R3-Q7 | Tulis ADR 0001 orchestrator hanya koordinasi | "Ya" | disepakati |
 | R3-Q8 | Hosting | "ya ditunda" | ditunda |
+| R4-Q1 | Cara mengatasi bentrokan agen baru vs aturan merge diserahkan ke agen | "Saya kurang mengerti, saya ikut rekomendasimu" | disepakati |
+| R4-Q2 | Orchestrator Utama dan Orchestrator Divisi memutuskan pemecahan sendiri; Laporan berisi hasil diskusi matang dan alasan | "Iya Orchestrator Utama dan Orchestrator Divisi berdiskusi sendiri, hasil diskusi yang sudah matang beserta alasan pemecahan report ke saya." | disepakati |
+| R4-Q3 | Alur evaluasi hasil dengan Kriteria Penerimaan dan maksimal 2 kali ulang | "Ya pakai alur itu" | disepakati |
+| R4-Q4 | Software Factory: selalu mulai dari 01 Triage, pemilihan agen dinamis, 09 QA wajib, 10 Security untuk perubahan sensitif | "ya" | disepakati |
+| R4-Q5 | Perintah tanpa divisi disimpan sebagai Tugas `diterima`; divisi dibuat atas perintah Pemilik | "ya disimpan sementara sebagai tugas berstatus diterima, dan saya tinggal perintah ke Orchestrator divisi, dia yang bagian buatin" | disepakati |
+| R4-Q6 | Antre per Orchestrator Divisi; paralel antar-divisi | "satu per satu antri. Kecuali beda divisi langsung paralel" | disepakati |
+| R4-Q2 | Cara membangun sistem yang sama untuk Perusahaan lain (VJ Labs, Telson Indonesia) | "Seandainya saya mau membuat sistem yang sama untuk perusahaan saya yang lain gimana? COntoh VJLabs, Telson Indonesia, saya harus diskusi dengan siapa? delegator?" | terbuka |
 
 ## Alternatif yang ditolak
 
 - R2-Q1: pola generik tanpa divisi (b) dan semua lapisan plus 21 agen sekaligus (c). Pemilik tidak memberi alasan.
 - R2-Q5: n8n (b), LangGraph/CrewAI (c), menunda (d). Pemilik tidak memberi alasan. Hosting di Replit juga ditolak, tanpa alasan.
 - R3-Q1: usulan agen agar pemecahan agen menjadi titik persetujuan ke-5. Alasan Pemilik: "saya selalu setuju ke orchestrator".
+- R4-Q5: usulan agen agar Perintah di luar divisi ditolak dengan Laporan. Pemilik memilih menyimpannya sebagai Tugas `diterima`; tidak ada alasan tambahan.
 
 ## Catatan inferensi
 
 - Lingkup R1-Q2 (siap implementasi) kemungkinan butuh lebih dari 5 round (inferensi agen).
 - R3-Q4: pilihan agen adalah PostgreSQL — sesuai stack Pemilik dan aman untuk penulisan bersamaan oleh beberapa agen (inferensi agen). Pemilik menyebut pilihan ini bisa ditanyakan ke Bos Arga; belum ditinjau.
+- R4-Q1: pilihan agen adalah pengecualian merge otomatis untuk perubahan yang hanya menyentuh `agents/` (inferensi agen).

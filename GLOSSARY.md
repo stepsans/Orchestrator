@@ -32,6 +32,10 @@ _Avoid_: Sub-orchestrator, Orchestrator Agent, Divisi (tanpa kualifikasi)
 Agen yang mengerjakan satu jenis pekerjaan di bawah satu Orchestrator Divisi.
 _Avoid_: Worker, Sub-agent, Persona
 
+**Definisi Agen**:
+Berkas yang memuat jobdesk dan instruksi satu agen.
+_Avoid_: Prompt, Persona, Config agen
+
 ### Satuan kerja
 
 **Tugas**:
@@ -41,6 +45,10 @@ _Avoid_: Tiket, Job, Task
 **Sub-tugas**:
 Bagian dari satu Tugas yang diserahkan ke satu Orchestrator Divisi atau satu Agen Spesialis.
 _Avoid_: Subtask, Langkah
+
+**Kriteria Penerimaan**:
+Ukuran tertulis yang menentukan apakah hasil sebuah Sub-tugas sudah sesuai keinginan Pemilik.
+_Avoid_: Acceptance criteria, DoD, Target
 
 ### Pesan antara Delegator dan Orchestrator Utama
 
