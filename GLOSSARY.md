@@ -36,7 +36,15 @@ _Avoid_: Worker, Sub-agent, Persona
 Berkas yang memuat jobdesk dan instruksi satu agen.
 _Avoid_: Prompt, Persona, Config agen
 
+**Catatan Divisi**:
+Berkas berisi pelajaran jangka panjang satu Orchestrator Divisi yang terus diperbarui antar-Tugas.
+_Avoid_: Memory, Log, Jurnal
+
 ### Satuan kerja
+
+**Proyek**:
+Satu aplikasi atau sistem yang menjadi sasaran kerja sebuah Orchestrator Divisi.
+_Avoid_: Repo, App, Aplikasi (tanpa kualifikasi)
 
 **Tugas**:
 Satuan kerja yang dibentuk dari satu Perintah dan dilacak statusnya sampai tuntas.

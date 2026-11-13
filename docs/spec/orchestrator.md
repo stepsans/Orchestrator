@@ -73,6 +73,45 @@ Orchestrator Divisi yang direncanakan:
   3. Orchestrator Utama mengirim Laporan ke Pemilik.
   4. Tugas berstatus `diterima` yang menunggu divisi itu otomatis dilanjutkan.
 
+### Proyek
+
+- Daftar Proyek disimpan di repo ini, dikelompokkan per Orchestrator Divisi, satu folder per Proyek. Contoh: `proyek/software-factory/maxichat/`, `proyek/software-factory/maxione/`. Setiap Proyek aplikasi baru mendapat folder sendiri.
+- Isi folder Proyek (URL repo, branch utama, lingkungan): `menunggu fakta` — link repo belum dibuat Pemilik.
+- 01 Triage menentukan Proyek yang dimaksud sebuah Perintah; bila tidak jelas, Delegator bertanya ke Pemilik.
+
+### Data di PostgreSQL
+
+| Tabel | Kolom utama |
+|---|---|
+| `tugas` | id, perusahaan, divisi, proyek, perintah asli, Kriteria Penerimaan, status, waktu dibuat/diubah |
+| `sub_tugas` | id, tugas_id, agen, input, hasil, status, jumlah ulang, umpan balik |
+| `permintaan_persetujuan` | id, tugas_id, tindakan, alasan, dampak, jawaban (setuju / tolak / belum), waktu diminta/dijawab |
+| `laporan` | id, tugas_id, jenis, isi, waktu kirim |
+
+Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gagal`. Detail kolom disempurnakan saat implementasi.
+
+### Permintaan Persetujuan yang belum dijawab
+
+- Tugas tetap `menunggu persetujuan`; sistem tidak pernah menyetujui otomatis.
+- Delegator mengingatkan Pemilik setelah 24 jam, lalu 72 jam (angka usulan).
+- Selama menunggu, antrean divisi itu dilepas; Tugas berikutnya boleh mulai. Pekerjaan yang menunggu tersimpan di branch-nya sendiri.
+
+### Definisi Agen
+
+- Satu berkas markdown per agen: `agents/<divisi>/<nomor-nama>.md`, contoh `agents/software-factory/01-triage.md`.
+- Bagian atas: nama, divisi, jobdesk singkat, tool yang boleh dipakai, model. Bagian bawah: instruksi lengkap.
+- Orchestrator Divisi: `agents/<divisi>/_orchestrator.md`.
+- Kecocokan dengan format subagent Claude Agent SDK: `belum terverifikasi`.
+
+### Ingatan antar-Tugas
+
+- Setiap Tugas mulai dengan konteks bersih; orchestrator boleh membaca ringkasan beberapa Tugas terakhir dari PostgreSQL bila relevan.
+- Tiap Orchestrator Divisi punya Catatan Divisi di repo yang terus diperbarui.
+
+### Laporan
+
+- Laporan dikirim hanya saat status Tugas berubah, saat ada agen baru, atau saat Tugas gagal. Perubahan per Sub-tugas tidak dilaporkan; detailnya bisa ditanyakan ke Delegator.
+
 ### Delegator dan banyak Perusahaan
 
 - Pemilik bisa brainstorming dengan Delegator; Delegator yang mengubahnya menjadi Perintah ke Orchestrator Utama.
@@ -154,6 +193,13 @@ Kanal WhatsApp/Telegram adalah urusan Delegator.
 | R5-Q1 | Divisi baru dibuat lewat Perintah ke Delegator → Orchestrator Utama merancang di `agents/` → Laporan → Tugas `diterima` dilanjutkan. Pemilik brainstorming dengan Delegator, Delegator yang menginstruksikan Orchestrator Utama | "Ok saya salah jawaban di sebelumnya. Maksudnya bicara ke delegator untuk brainstorming, delegator yang menginstruksikan ke Orchestrator Utama. Iya saya setuju [...]" | disepakati |
 | R5-Q2 | Satu Delegator untuk semua Perusahaan, merutekan per Perusahaan; cara membuat Perusahaan baru ditunda | "Iya Delegator" | disepakati |
 | R5-Q2 | Cara membuat Orchestrator Utama untuk Perusahaan baru | "Iya Delegator" | ditunda |
+| R6-Q1 | Daftar Proyek per divisi, satu folder per Proyek (`proyek/software-factory/<proyek>/`) | "Nanti saya buat link nya, saat ini belum ada. Tapi bayangan saya proyek/softwarefactory nanti maxichat dan maxione masuk ke dalam folder tersebut. Jadi nanti setiap proyek apps yang baru masuk ke dalam folder masing2. Harus rapi." | disepakati |
+| R6-Q1 | Link repo tiap Proyek | "Nanti saya buat link nya, saat ini belum ada." | menunggu fakta |
+| R6-Q2 | 4 tabel PostgreSQL dan status Sub-tugas | "Ya" | disepakati |
+| R6-Q3 | Persetujuan tidak dijawab: tidak ada auto-setuju, pengingat 24/72 jam, antrean dilepas | "Ya" | disepakati |
+| R6-Q4 | Format Definisi Agen | "Ya" | disepakati |
+| R6-Q5 | Konteks bersih per Tugas + Catatan Divisi | "Keduanya [...]" | disepakati |
+| R6-Q6 | Laporan hanya saat status Tugas berubah, agen baru, atau gagal | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
