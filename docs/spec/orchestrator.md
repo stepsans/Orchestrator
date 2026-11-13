@@ -67,7 +67,17 @@ Orchestrator Divisi yang direncanakan:
 ### Perintah di luar divisi yang ada
 
 - Perintah untuk bidang yang belum punya Orchestrator Divisi disimpan sebagai Tugas berstatus `diterima`, tidak dipaksakan ke divisi lain.
-- `terbuka`: siapa yang membuat Orchestrator Divisi baru atas perintah Pemilik (lihat R5).
+- Membuat Orchestrator Divisi baru:
+  1. Pemilik mengirim Perintah lewat Delegator (misalnya "buat divisi Digital Growth").
+  2. Orchestrator Utama merancang Orchestrator Divisi baru beserta Agen Spesialisnya, sebagai perubahan di `agents/` (langsung berlaku).
+  3. Orchestrator Utama mengirim Laporan ke Pemilik.
+  4. Tugas berstatus `diterima` yang menunggu divisi itu otomatis dilanjutkan.
+
+### Delegator dan banyak Perusahaan
+
+- Pemilik bisa brainstorming dengan Delegator; Delegator yang mengubahnya menjadi Perintah ke Orchestrator Utama.
+- Satu Delegator untuk semua Perusahaan. Delegator meneruskan Perintah ke Orchestrator Utama milik Perusahaan yang dimaksud; bila Perusahaan tidak jelas, Delegator bertanya ke Pemilik.
+- Cara membuat Orchestrator Utama untuk Perusahaan baru (contoh: VJ Labs, Telson Indonesia): ditunda.
 
 ### Antrean
 
@@ -141,13 +151,17 @@ Kanal WhatsApp/Telegram adalah urusan Delegator.
 | R4-Q4 | Software Factory: selalu mulai dari 01 Triage, pemilihan agen dinamis, 09 QA wajib, 10 Security untuk perubahan sensitif | "ya" | disepakati |
 | R4-Q5 | Perintah tanpa divisi disimpan sebagai Tugas `diterima`; divisi dibuat atas perintah Pemilik | "ya disimpan sementara sebagai tugas berstatus diterima, dan saya tinggal perintah ke Orchestrator divisi, dia yang bagian buatin" | disepakati |
 | R4-Q6 | Antre per Orchestrator Divisi; paralel antar-divisi | "satu per satu antri. Kecuali beda divisi langsung paralel" | disepakati |
-| R4-Q2 | Cara membangun sistem yang sama untuk Perusahaan lain (VJ Labs, Telson Indonesia) | "Seandainya saya mau membuat sistem yang sama untuk perusahaan saya yang lain gimana? COntoh VJLabs, Telson Indonesia, saya harus diskusi dengan siapa? delegator?" | terbuka |
+| R5-Q1 | Divisi baru dibuat lewat Perintah ke Delegator → Orchestrator Utama merancang di `agents/` → Laporan → Tugas `diterima` dilanjutkan. Pemilik brainstorming dengan Delegator, Delegator yang menginstruksikan Orchestrator Utama | "Ok saya salah jawaban di sebelumnya. Maksudnya bicara ke delegator untuk brainstorming, delegator yang menginstruksikan ke Orchestrator Utama. Iya saya setuju [...]" | disepakati |
+| R5-Q2 | Satu Delegator untuk semua Perusahaan, merutekan per Perusahaan; cara membuat Perusahaan baru ditunda | "Iya Delegator" | disepakati |
+| R5-Q2 | Cara membuat Orchestrator Utama untuk Perusahaan baru | "Iya Delegator" | ditunda |
+| R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
 
 - R2-Q1: pola generik tanpa divisi (b) dan semua lapisan plus 21 agen sekaligus (c). Pemilik tidak memberi alasan.
 - R2-Q5: n8n (b), LangGraph/CrewAI (c), menunda (d). Pemilik tidak memberi alasan. Hosting di Replit juga ditolak, tanpa alasan.
 - R3-Q1: usulan agen agar pemecahan agen menjadi titik persetujuan ke-5. Alasan Pemilik: "saya selalu setuju ke orchestrator".
+- R5-Q1: Pemilik bicara langsung ke Orchestrator Divisi. Pemilik meralat jawaban R4-Q5: "saya salah jawaban di sebelumnya".
 - R4-Q5: usulan agen agar Perintah di luar divisi ditolak dengan Laporan. Pemilik memilih menyimpannya sebagai Tugas `diterima`; tidak ada alasan tambahan.
 
 ## Catatan inferensi
