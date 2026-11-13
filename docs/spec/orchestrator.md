@@ -75,8 +75,9 @@ Orchestrator Divisi yang direncanakan:
 
 ### Proyek
 
-- Daftar Proyek disimpan di repo ini, dikelompokkan per Orchestrator Divisi, satu folder per Proyek. Contoh: `proyek/software-factory/maxichat/`, `proyek/software-factory/maxione/`. Setiap Proyek aplikasi baru mendapat folder sendiri.
-- Isi folder Proyek (URL repo, branch utama, lingkungan): `menunggu fakta` — link repo belum dibuat Pemilik.
+- Daftar Proyek disimpan di repo ini, dikelompokkan per Orchestrator Divisi, satu folder per Proyek. Contoh: `proyek/software-factory/maxichat/`, `proyek/software-factory/maxione/`. Setiap Proyek aplikasi baru mendapat folder sendiri. Nama folder divisi sama dengan di `agents/`.
+- Tiap folder Proyek berisi `PROYEK.md`: URL repo dan branch utama, lingkungan (staging/production) dan URL-nya, stack, perintah menjalankan test, cara deploy.
+- Nilai-nilai `PROYEK.md` untuk Maxichat dan Maxione: `menunggu fakta` — link repo belum dibuat Pemilik.
 - 01 Triage menentukan Proyek yang dimaksud sebuah Perintah; bila tidak jelas, Delegator bertanya ke Pemilik.
 
 ### Data di PostgreSQL
@@ -106,7 +107,24 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 ### Ingatan antar-Tugas
 
 - Setiap Tugas mulai dengan konteks bersih; orchestrator boleh membaca ringkasan beberapa Tugas terakhir dari PostgreSQL bila relevan.
-- Tiap Orchestrator Divisi punya Catatan Divisi di repo yang terus diperbarui.
+- Tiap Orchestrator Divisi punya Catatan Divisi di `agents/<divisi>/_catatan.md` (ikut merge otomatis `agents/`). Pelajaran khusus satu Proyek ditulis di berkas yang sama di bawah judul nama Proyek.
+
+### Rahasia dan kredensial
+
+- Token GitHub, akses Odoo, kunci deploy, dan API key Claude disimpan sebagai environment variable di server, tidak pernah di repo.
+- Agen tidak pernah menulis rahasia ke repo, Laporan, atau Catatan Divisi.
+
+### Batas biaya per Tugas
+
+- Batas lunak ±US$2 per Tugas: lewat batas, Pemilik menerima Laporan.
+- Batas keras ±US$10 per Tugas: Tugas berhenti dan Permintaan Persetujuan dikirim untuk melanjutkan.
+- Angka usulan, disetel setelah ada data pemakaian.
+
+### Isi v1 Software Factory
+
+- Dibangun dulu: 01 Triage, 03 Architecture, 04 Backend/API, 06 Web/UI, 09 QA, 11 Release/DevOps.
+- Menyusul: 02, 05, 07, 08, 10, 12, 13. Tugas yang butuh agen yang belum ada disimpan sebagai Tugas `diterima`.
+- Selama 10 Security belum ada, perubahan sensitif (autentikasi, data pelanggan, kredensial) menunggu.
 
 ### Laporan
 
@@ -130,7 +148,8 @@ Tindakan berikut wajib menunggu Permintaan Persetujuan ke Pemilik lewat Delegato
 1. Deploy ke production (Agen 11 Release/DevOps).
 2. Perubahan skema database production (Agen 05 Database).
 3. Menulis ke Odoo production (Agen 08 Odoo Integration).
-4. Merge ke branch utama.
+4. Merge ke branch utama (kecuali perubahan yang hanya menyentuh `agents/`).
+5. Melanjutkan Tugas yang melewati batas keras biaya.
 
 Tindakan lain boleh berjalan otomatis.
 
@@ -200,6 +219,12 @@ Kanal WhatsApp/Telegram adalah urusan Delegator.
 | R6-Q4 | Format Definisi Agen | "Ya" | disepakati |
 | R6-Q5 | Konteks bersih per Tugas + Catatan Divisi | "Keduanya [...]" | disepakati |
 | R6-Q6 | Laporan hanya saat status Tugas berubah, agen baru, atau gagal | "Ya" | disepakati |
+| R7-Q1 | Folder `proyek/software-factory/` dan `PROYEK.md` dengan isi yang diusulkan | "iya saya setuju menggunakan pakai nama `software-factory` dan berkas `PROYEK.md` dengan isi di atas." | disepakati |
+| R7-Q2 | Catatan Divisi di `agents/<divisi>/_catatan.md` | "Ya" | disepakati |
+| R7-Q3 | Rahasia sebagai environment variable di server; agen tidak menulis rahasia | "Ya" | disepakati |
+| R7-Q4 | Batas biaya lunak/keras per Tugas; batas keras jadi titik persetujuan ke-5 | "Ya" | disepakati |
+| R7-Q5 | v1 Software Factory: 6 agen inti (01, 03, 04, 06, 09, 11) | "Ya" | disepakati |
+| R7-Q6 | Isi tiga jenis pesan | (jawaban ganda tertulis "Q5 : Ya"; belum pasti untuk Q6) | terbuka |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
