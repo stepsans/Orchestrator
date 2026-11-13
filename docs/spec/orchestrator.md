@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: menunggu konfirmasi akhir Pemilik (sesi kukatanya 2026-11-13, round 1–10).
+Status sesi: selesai (sesi kukatanya 2026-11-13, round 1–10).
 
 ## Tempat catatan
 
@@ -77,7 +77,7 @@ Orchestrator Divisi yang direncanakan:
 
 - Daftar Proyek disimpan di repo ini, dikelompokkan per Orchestrator Divisi, satu folder per Proyek. Contoh: `proyek/software-factory/maxichat/`, `proyek/software-factory/maxione/`. Setiap Proyek aplikasi baru mendapat folder sendiri. Nama folder divisi sama dengan di `agents/`.
 - Tiap folder Proyek berisi `PROYEK.md`: URL repo dan branch utama, lingkungan (staging/production) dan URL-nya, stack, perintah menjalankan test, cara deploy.
-- Nilai-nilai `PROYEK.md` untuk Maxichat dan Maxione: `menunggu fakta` — link repo belum dibuat Pemilik.
+- Nilai-nilai `PROYEK.md` untuk Maxichat dan Maxione: ditunda sampai implementasi — link repo belum dibuat Pemilik.
 - 01 Triage menentukan Proyek yang dimaksud sebuah Perintah; bila tidak jelas, Orchestrator Utama mengirim Pertanyaan Klarifikasi lewat Delegator.
 
 ### Data di PostgreSQL
@@ -246,7 +246,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak
 | R5-Q2 | Satu Delegator untuk semua Perusahaan, merutekan per Perusahaan; cara membuat Perusahaan baru ditunda | "Iya Delegator" | disepakati |
 | R5-Q2 | Cara membuat Orchestrator Utama untuk Perusahaan baru | "Iya Delegator" | ditunda |
 | R6-Q1 | Daftar Proyek per divisi, satu folder per Proyek (`proyek/software-factory/<proyek>/`) | "Nanti saya buat link nya, saat ini belum ada. Tapi bayangan saya proyek/softwarefactory nanti maxichat dan maxione masuk ke dalam folder tersebut. Jadi nanti setiap proyek apps yang baru masuk ke dalam folder masing2. Harus rapi." | disepakati |
-| R6-Q1 | Link repo tiap Proyek | "Nanti saya buat link nya, saat ini belum ada." | menunggu fakta |
+| R6-Q1 | Link repo tiap Proyek (lihat R10-Q2) | "Nanti saya buat link nya, saat ini belum ada." | ditunda |
 | R6-Q2 | 4 tabel PostgreSQL dan status Sub-tugas | "Ya" | disepakati |
 | R6-Q3 | Persetujuan tidak dijawab: tidak ada auto-setuju, pengingat 24/72 jam, antrean dilepas | "Ya" | disepakati |
 | R6-Q4 | Format Definisi Agen | "Ya" | disepakati |
@@ -268,6 +268,10 @@ Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak
 | R9-Q2 | Kriteria Penerimaan dikirim dalam Laporan setelah diurai, sebagai informasi | "Ya" | disepakati |
 | R9-Q3 | Perutean Orchestrator Utama v1 | "Ya" | disepakati |
 | R9-Q4 | Laporan berbahasa Indonesia, hanya Pemilik memberi Perintah, agen bekerja 24 jam | "Ya" | disepakati |
+| R10-Q1 | Rangkuman akhir benar | "Ya" | disepakati |
+| R10-Q2 | Link repo Proyek | "Ya" | ditunda |
+| R10-Q2 | Tempat menyimpan Pertanyaan Klarifikasi di PostgreSQL | "Ya" | ditunda |
+| R10-Q2 | Apakah 09 QA juga berlaku untuk perubahan `agents/` yang di-merge otomatis | "Ya" | ditunda |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
