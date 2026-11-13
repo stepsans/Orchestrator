@@ -68,6 +68,10 @@ _Avoid_: Request, Prompt, Order
 Pesan dari Orchestrator Utama ke Delegator berisi progres atau hasil sebuah Tugas, atau kabar perubahan susunan agen.
 _Avoid_: Notifikasi, Update
 
+**Pertanyaan Klarifikasi**:
+Pesan dari Orchestrator Utama ke Delegator yang meminta jawaban bebas dari Pemilik agar sebuah Tugas bisa dilanjutkan.
+_Avoid_: Konfirmasi, Pertanyaan (tanpa kualifikasi)
+
 **Permintaan Persetujuan**:
 Pesan dari Orchestrator Utama ke Delegator yang meminta Pemilik memilih setuju atau tolak atas satu tindakan berisiko.
 _Avoid_: Konfirmasi, Approval

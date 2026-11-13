@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: berjalan (sesi kukatanya, dimulai 2026-11-13).
+Status sesi: menunggu konfirmasi akhir Pemilik (sesi kukatanya 2026-11-13, round 1–10).
 
 ## Tempat catatan
 
@@ -78,7 +78,7 @@ Orchestrator Divisi yang direncanakan:
 - Daftar Proyek disimpan di repo ini, dikelompokkan per Orchestrator Divisi, satu folder per Proyek. Contoh: `proyek/software-factory/maxichat/`, `proyek/software-factory/maxione/`. Setiap Proyek aplikasi baru mendapat folder sendiri. Nama folder divisi sama dengan di `agents/`.
 - Tiap folder Proyek berisi `PROYEK.md`: URL repo dan branch utama, lingkungan (staging/production) dan URL-nya, stack, perintah menjalankan test, cara deploy.
 - Nilai-nilai `PROYEK.md` untuk Maxichat dan Maxione: `menunggu fakta` — link repo belum dibuat Pemilik.
-- 01 Triage menentukan Proyek yang dimaksud sebuah Perintah; bila tidak jelas, Delegator bertanya ke Pemilik.
+- 01 Triage menentukan Proyek yang dimaksud sebuah Perintah; bila tidak jelas, Orchestrator Utama mengirim Pertanyaan Klarifikasi lewat Delegator.
 
 ### Data di PostgreSQL
 
@@ -142,6 +142,18 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Deploy ke staging boleh otomatis; deploy ke production butuh persetujuan.
 - Pemilik bisa membatalkan Tugas kapan saja lewat Delegator: status `dibatalkan`, pekerjaan berjalan dihentikan, branch dibiarkan (tidak dihapus, tidak di-merge), Pemilik menerima Laporan.
 
+### Perutean Orchestrator Utama (v1)
+
+- Perintah yang jelas soal software, aplikasi, atau Odoo → Software Factory.
+- Perintah yang jelas soal bidang lain → Tugas `diterima`.
+- Perintah yang meragukan → Pertanyaan Klarifikasi.
+
+### Ketentuan umum v1
+
+- Laporan memakai Bahasa Indonesia.
+- Hanya Pemilik yang boleh memberi Perintah.
+- Agen bekerja 24 jam.
+
 ### Antrean
 
 - Tugas untuk Orchestrator Divisi yang sama dikerjakan satu per satu (antre).
@@ -166,18 +178,22 @@ Satu Perintah menjadi satu Tugas; Tugas dipecah menjadi Sub-tugas.
 Status Tugas:
 
 ```
-diterima → diurai → dikerjakan → menunggu persetujuan → selesai / gagal / dibatalkan
+diterima → diurai → (menunggu klarifikasi) → dikerjakan → menunggu persetujuan → selesai / gagal / dibatalkan
 ```
+
+- `menunggu klarifikasi` hanya dipakai bila ada Pertanyaan Klarifikasi; selama status ini antrean divisi dilepas.
+- Kriteria Penerimaan ikut dikirim dalam Laporan saat Tugas selesai diurai, sebagai informasi (bukan persetujuan); Pemilik bisa mengoreksi kapan saja lewat Delegator.
 
 ### Kontrak Delegator ↔ Orchestrator Utama
 
-Hanya tiga jenis pesan:
+Empat jenis pesan (tiga disepakati di R3-Q6, Pertanyaan Klarifikasi ditambahkan di R9-Q1):
 
 | Pesan | Arah |
 |---|---|
 | Perintah | Delegator → Orchestrator Utama |
 | Laporan | Orchestrator Utama → Delegator |
 | Permintaan Persetujuan | Orchestrator Utama → Delegator (jawaban: setuju / tolak) |
+| Pertanyaan Klarifikasi | Orchestrator Utama → Delegator (jawaban: teks bebas) |
 
 Kanal WhatsApp/Telegram adalah urusan Delegator.
 
@@ -186,8 +202,9 @@ Isi pesan:
 - **Perintah**: perusahaan, teks perintah, lampiran (opsional), id percakapan Delegator.
 - **Laporan**: tugas_id, jenis (progres / hasil / gagal / agen baru), ringkasan, tautan ke hasil (PR, URL staging).
 - **Permintaan Persetujuan**: id, tugas_id, tindakan, alasan, dampak, cara membatalkan. Jawaban: setuju / tolak, plus catatan opsional.
+- **Pertanyaan Klarifikasi**: id, tugas_id, pertanyaan. Jawaban: teks bebas. (Isi rinci disempurnakan saat implementasi.)
 
-Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak tiga jenis pesan (tanpa brainstorming). Ke depan kanal juga dihubungkan ke WhatsApp.
+Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak empat jenis pesan (tanpa brainstorming). Ke depan kanal juga dihubungkan ke WhatsApp.
 
 ### Runtime dan penyimpanan
 
@@ -247,6 +264,10 @@ Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak
 | R8-Q5 | Pembatalan Tugas: branch dibiarkan, Laporan dikirim | "Ya" | disepakati |
 | R8-Q6 | Model lebih kuat untuk orchestrator, lebih hemat untuk Agen Spesialis kecuali 03 | "Ya" | disepakati |
 | R8-Q7 | Tulis ADR 0002 v1 satu proses dengan subagent | "Ya" | disepakati |
+| R9-Q1 | Tambah Pertanyaan Klarifikasi (pesan ke-4) dan status `menunggu klarifikasi`; antrean dilepas | "Ya" | disepakati |
+| R9-Q2 | Kriteria Penerimaan dikirim dalam Laporan setelah diurai, sebagai informasi | "Ya" | disepakati |
+| R9-Q3 | Perutean Orchestrator Utama v1 | "Ya" | disepakati |
+| R9-Q4 | Laporan berbahasa Indonesia, hanya Pemilik memberi Perintah, agen bekerja 24 jam | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
@@ -262,3 +283,5 @@ Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak
 - Lingkup R1-Q2 (siap implementasi) kemungkinan butuh lebih dari 5 round (inferensi agen).
 - R3-Q4: pilihan agen adalah PostgreSQL — sesuai stack Pemilik dan aman untuk penulisan bersamaan oleh beberapa agen (inferensi agen). Pemilik menyebut pilihan ini bisa ditanyakan ke Bos Arga; belum ditinjau.
 - R4-Q1: pilihan agen adalah pengecualian merge otomatis untuk perubahan yang hanya menyentuh `agents/` (inferensi agen).
+- Tempat menyimpan Pertanyaan Klarifikasi di PostgreSQL belum dirancang; kemungkinan tabel kelima atau digabung dengan `permintaan_persetujuan` (inferensi agen).
+- Belum jelas apakah aturan "09 QA selalu sebelum merge" juga berlaku untuk perubahan `agents/` yang di-merge otomatis (inferensi agen).
