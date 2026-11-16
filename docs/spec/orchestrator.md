@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-) berjalan: semua 13 agen Software Factory masuk v1.
+Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): semua 13 agen Software Factory masuk v1; menunggu konfirmasi akhir.
 
 ## Tempat catatan
 
@@ -184,6 +184,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 
 - Setiap Tugas dikerjakan di branch sendiri di repo Proyek (`tugas/<id>-<ringkas>`); hasilnya Pull Request. Merge butuh persetujuan Pemilik.
 - Staging = staging lokal: aplikasi Proyek dijalankan di Docker pada mesin yang sama dengan orchestrator, memakai database test. Deploy ke staging lokal otomatis; deploy ke production butuh persetujuan.
+- Staging lokal tidak pernah memakai kredensial production pihak ketiga (WhatsApp, Telegram, Xendit dimatikan atau mode test/sandbox); Odoo hanya dibaca; database staging selalu database test, tidak pernah salinan data pelanggan asli.
 - Pemilik bisa membatalkan Tugas kapan saja lewat Delegator: status `dibatalkan`, pekerjaan berjalan dihentikan, branch dibiarkan (tidak dihapus, tidak di-merge), Pemilik menerima Laporan.
 
 ### Brief Agen Spesialis v1 (Software Factory Maxipro)
@@ -213,6 +214,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 
 - Tugas untuk Orchestrator Divisi yang sama dikerjakan satu per satu (antre).
 - Tugas untuk Orchestrator Divisi yang berbeda berjalan paralel.
+- Tugas P0 menjeda Tugas yang sedang berjalan di divisi itu; P0 dikerjakan dulu, lalu Tugas yang dijeda dilanjutkan (pekerjaannya aman di branch-nya). P1 tidak menjeda, tetapi menjadi antrean pertama. P0/P1 langsung dilaporkan ke Pemilik.
 
 ### Persetujuan Pemilik
 
@@ -392,6 +394,8 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S3-R6-Q10 | Code review v1 = QA + Security + persetujuan merge Pemilik | "Ya (a) untuk v1" | disepakati |
 | S3-R6-Q11 | Konfigurasi server production = deploy production; backup sebelum migrasi | "Ya" | disepakati |
 | S3-R6-Q12 | Istilah di kartu: the Company, Task, Pemilik, lewat Orchestrator | "Ya" | disepakati |
+| S3-R7-Q1 | Staging lokal tanpa kredensial production pihak ketiga, Odoo hanya dibaca, DB test | "Ya" | disepakati |
+| S3-R7-Q2 | P0 menjeda Tugas berjalan; P1 antrean pertama | "B" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
