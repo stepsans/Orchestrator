@@ -405,6 +405,10 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S3-R7-Q2 | P0 menjeda Tugas berjalan; P1 antrean pertama | "B" | disepakati |
 | S3-R9-Q1 | Maxichat bagian dari ekosistem Maxione, tetap aplikasi sendiri multi-tenant | "A" | disepakati |
 | S3-R9-Q2 | Rangkuman sesi 3 benar; sesi ditutup | "Ya" | disepakati |
+| S4-R0 | K1: orkestrasi diatur kode, tiap agen dipanggil `query()` sendiri (temuan 1) | "1. OK" | disepakati |
+| S4-R0 | Output agen memakai structured outputs / skema JSON (temuan 3) | "3. Ok" | disepakati |
+| S4-R0 | Fokus sekarang membangun Orchestrator; pekerjaan Maxichat dan Maxione bukan pekerjaan sekarang, hanya konteks | "Pekerjaan Maxichat dan Maxione bukan pekerjaan yang akan dikerjakan sekarang. Baca aja hanya tau konsepnya" | disepakati |
+| S4-R0 | Arti "biaya" pada temuan 2 | "Biaya apa maksudnya? Biaya yang timbul di tenant maxichat?" | terbuka |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
