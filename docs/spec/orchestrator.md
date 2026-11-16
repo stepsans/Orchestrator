@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Berikutnya: brief agen 02, 05, 07, 08, 10, 12, 13 dan divisi Digital Growth.
+Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-) berjalan: semua 13 agen Software Factory masuk v1.
 
 ## Tempat catatan
 
@@ -125,9 +125,15 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 
 ### Isi v1 Software Factory
 
-- Dibangun dulu: 01 Triage, 03 Architecture, 04 Backend/API, 06 Web/UI, 09 QA, 11 Release/DevOps.
-- Menyusul: 02, 05, 07, 08, 10, 12, 13. Tugas yang butuh agen yang belum ada disimpan sebagai Tugas `diterima`.
-- Selama 10 Security belum ada, perubahan sensitif (autentikasi, data pelanggan, kredensial) menunggu.
+- Semua 13 Agen Spesialis Software Factory dibangun bersama di v1 (S3-R1-Q1; menggantikan R7-Q5).
+- Brief agen 02, 05, 07, 08, 10, 12, 13: `terbuka` (sesi 3).
+
+### Fakta Proyek Maxichat (dicek 2026-11-16 dari repo `stepsans/MaxiChat.App`, branch `main`)
+
+- Monorepo pnpm. Bagian di `artifacts/`: `admin`, `api-server` (Express + drizzle-orm + PostgreSQL), `desktop`, `maxichat-video`, `mobile`, `mockup-sandbox`, `whatsapp-ai`.
+- Mobile: Expo `~54.0.27`, React Native `0.81.5` (`artifacts/mobile/package.json`).
+- Repo punya `AGENTS.md` dan `CLAUDE.md` sendiri; `AGENTS.md` merujuk pekerjaan berjalan integrasi Odoo di `docs/odoo-integration-brief.md`.
+- Odoo: Odoo 18 Community milik Maxipro, di-host di AWS (menurut `docs/odoo-integration-brief.md`). Dokumen itu tidak menyebut Odoo staging.
 
 ### Laporan
 
@@ -279,7 +285,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | R7-Q2 | Catatan Divisi di `agents/<perusahaan>/<divisi>/_catatan.md` | "Ya" | disepakati |
 | R7-Q3 | Rahasia sebagai environment variable di server; agen tidak menulis rahasia | "Ya" | disepakati |
 | R7-Q4 | Batas biaya lunak/keras per Tugas; batas keras jadi titik persetujuan ke-5 | "Ya" | disepakati |
-| R7-Q5 | v1 Software Factory: 6 agen inti (01, 03, 04, 06, 09, 11) | "Ya" | disepakati |
+| R7-Q5 | v1 Software Factory: 6 agen inti (digantikan S3-R1-Q1) | "Ya" | disepakati |
 | R8-Q1 | Isi tiga jenis pesan (tanya ulang R7-Q6) | "Setuju" | disepakati |
 | R8-Q2 | Kode orchestrator di repo ini, folder `src/` | "Ya" | disepakati |
 | R8-Q3 | Pengganti Delegator v1: bot Telegram sederhana; ke depan juga WhatsApp | "Ya, ke depan mau dihubungkan dengan whatsapp juga" | disepakati |
@@ -314,6 +320,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S2-R4-Q4 | Brief 01, 03, 04, 06, 09 | "ya untuk semuanya" | disepakati |
 | S2-R5-Q1 | Selama lokal: agen bekerja selama komputer menyala, Tugas dilanjutkan otomatis | "Ya taruh di lokal sini" | disepakati |
 | S2-R5-Q2 | Rangkuman sesi 2 benar; 7 agen menyusul dan Digital Growth di sesi berikutnya | "Ya" | disepakati |
+| S3-R1-Q1 | Semua 13 agen Software Factory dibangun bersama di v1 | "Saya mau Orchestrator Divisi: Software Factory dibangun bersama di V1. Kenapa harus menyusul?" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
