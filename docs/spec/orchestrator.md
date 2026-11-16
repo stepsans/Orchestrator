@@ -104,7 +104,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Bagian atas: nama, divisi, jobdesk singkat, tool yang boleh dipakai, model. Bagian bawah: instruksi lengkap.
 - Orchestrator Divisi: `agents/<perusahaan>/<divisi>/_orchestrator.md`.
 - Fakta (dicek 2026-11-16, dokumentasi Claude Agent SDK): subagent bisa didefinisikan secara programatis lewat parameter `agents` di opsi `query()`, atau sebagai berkas markdown ber-YAML frontmatter di `.claude/agents/`.
-- `terbuka`: memakai folder `agents/` sendiri yang dibaca program, atau `.claude/agents/` (lihat S2-R2).
+- Definisi Agen disimpan di folder `agents/` sendiri; program membacanya lalu meneruskannya ke parameter `agents` SDK. Nama kolom frontmatter mengikuti SDK (`name`, `description`, `tools`, `model`) ditambah `perusahaan` dan `divisi`.
 - Perubahan yang hanya menyentuh `agents/` tidak lewat 09 QA; diperiksa dengan pengecekan format otomatis (frontmatter valid, kolom wajib lengkap) dan dibaca ulang Orchestrator Utama. Laporan menyertakan ringkasan perubahan.
 
 ### Ingatan antar-Tugas
@@ -137,7 +137,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 
 - Folder `agents/` dan `proyek/` punya level Perusahaan: `agents/<perusahaan>/<divisi>/`, `proyek/<perusahaan>/<divisi>/<proyek>/`. Mulai dari `maxipro`.
 - Setiap Perusahaan punya Orchestrator Divisi sendiri (misalnya Software Factory sendiri), terpisah dari Perusahaan lain.
-- `terbuka`: cara membuat Perusahaan baru (lihat S2-R2).
+- Membuat Perusahaan baru: Pemilik memberi Perintah lewat Delegator → Software Factory Maxipro mengerjakannya sebagai Tugas biasa, menyalin template ke `agents/<perusahaan>/` dan `proyek/<perusahaan>/` → perubahan `agents/` langsung berlaku, perubahan `proyek/` lewat persetujuan merge → Laporan ke Pemilik.
 
 ### Delegator dan banyak Perusahaan
 
@@ -150,6 +150,17 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Setiap Tugas dikerjakan di branch sendiri di repo Proyek (`tugas/<id>-<ringkas>`); hasilnya Pull Request. Merge butuh persetujuan Pemilik.
 - Deploy ke staging boleh otomatis; deploy ke production butuh persetujuan.
 - Pemilik bisa membatalkan Tugas kapan saja lewat Delegator: status `dibatalkan`, pekerjaan berjalan dihentikan, branch dibiarkan (tidak dihapus, tidak di-merge), Pemilik menerima Laporan.
+
+### Brief Agen Spesialis v1 (Software Factory Maxipro)
+
+| Agen | Dipanggil | Jobdesk | Tool | Batasan | Status |
+|---|---|---|---|---|---|
+| 01 Triage | Selalu, langkah pertama | Pahami Perintah, tentukan Proyek, tulis Kriteria Penerimaan, tandai sensitif, usulkan Sub-tugas; bila tidak jelas → Pertanyaan Klarifikasi | Baca repo (read-only) | Tidak menulis kode atau mengubah repo | terbuka |
+| 03 Architecture | Fitur baru, lintas bagian, perubahan DB, integrasi baru | Rencana teknis: berkas yang diubah, pendekatan, risiko | Baca repo (read-only) | Tidak menulis kode aplikasi | terbuka |
+| 04 Backend/API | Pekerjaan backend | Kode Node.js/Express + unit test di branch Tugas; v1 boleh menulis berkas migrasi | Baca/tulis repo di branch Tugas, jalankan install/test | Tidak push ke branch utama, tidak menyentuh DB production, tanpa rahasia di kode; migrasi ke production = titik persetujuan 2 | terbuka |
+| 06 Web/UI | Pekerjaan frontend | Kode React + test komponen di branch Tugas; mobile tetap 07 | Sama dengan 04 | Sama dengan 04 | terbuka |
+| 09 QA | Selalu sebelum merge | Jalankan test, cocokkan dengan Kriteria Penerimaan, tambah test yang kurang | Baca repo, jalankan test, tulis berkas test | Tidak memperbaiki kode aplikasi; temuan kembali ke 04/06 | terbuka |
+| 11 Release/DevOps | Setelah 09 lolos | Deploy staging, siapkan Permintaan Persetujuan merge/production, deploy production setelah disetujui | Akses deploy sesuai `PROYEK.md` | Tidak deploy production tanpa persetujuan; selalu siapkan rollback; catat versi di Laporan | disepakati |
 
 ### Perutean Orchestrator Utama (v1)
 
@@ -213,7 +224,7 @@ Isi pesan:
 - **Permintaan Persetujuan**: id, tugas_id, tindakan, alasan, dampak, cara membatalkan. Jawaban: setuju / tolak, plus catatan opsional.
 - **Pertanyaan Klarifikasi**: id, tugas_id, pertanyaan. Jawaban: teks bebas. (Isi rinci disempurnakan saat implementasi.)
 
-Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak empat jenis pesan (tanpa brainstorming). Ke depan kanal juga dihubungkan ke WhatsApp.
+Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long polling), yang hanya menjalankan kontrak empat jenis pesan (tanpa brainstorming). Ke depan kanal juga dihubungkan ke WhatsApp.
 
 ### Runtime dan penyimpanan
 
@@ -292,9 +303,15 @@ Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak
 | S2-R1-Q8 | Lokasi Definisi Agen (`agents/` sendiri vs `.claude/agents/`) | "Saya kurang mengerti coba jelaskan dengan bahasa bayi newbie beserta kelebihan dan kekurangannya" | terbuka |
 | S2-R1-Q9 | Sesi ini juga merinci brief 6 agen v1 | "Ya boleh supaya contextnya tepat. Apakah benar seperti itu?" | disepakati |
 | S2-R2-Q1 | Hosting hybrid: Vercel untuk bagian ringan, orchestrator di VPS | "Ya saya pilih B. Coba cek apa plus minus bila dashboard di vercel, tetapi orchestrator di VPS?" | disepakati |
-| S2-R2-Q2 | Lokasi Definisi Agen (penjelasan sederhana) | (belum dijawab) | terbuka |
-| S2-R2-Q3 | Cara membuat Perusahaan baru | (belum dijawab) | terbuka |
-| S2-R2-Q4–Q8 | Brief 01, 03, 04, 06, 09 | (belum dijawab) | terbuka |
+| S2-R2-Q2 | Lokasi Definisi Agen (ditanya ulang di S2-R3-Q3) | (belum dijawab) | terbuka |
+| S2-R2-Q3 | Cara membuat Perusahaan baru (ditanya ulang di S2-R3-Q4) | (belum dijawab) | terbuka |
+| S2-R3-Q1 | Dashboard masuk v1 atau menyusul | "Langsung saja" | terbuka |
+| S2-R3-Q2 | Bot Telegram di VPS | "Bot di VPS" | disepakati |
+| S2-R3-Q3 | Definisi Agen di folder `agents/` sendiri | "A" | disepakati |
+| S2-R3-Q4 | Cara membuat Perusahaan baru | "Ya" | disepakati |
+| S2-R3-Q5 | Brief 01, 03, 04, 06, 09 | "Ya" (satu jawaban untuk lima agen, perlu dipecah) | terbuka |
+| S2-R3-Q6 | Brief 11 Release/DevOps | "Ya" | disepakati |
+| S2-R3 (catatan) | Bila hybrid menambah rumit, semua di VPS | "Bila lebih stabil dashboard di VPS juga tidak masalah. Saya hanya iseng mencoba di vercel, tetapi bila itu membuat tambah rumit, saya putuskan semuanya ada di VPS." | terbuka |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
