@@ -126,14 +126,23 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 ### Isi v1 Software Factory
 
 - Semua 13 Agen Spesialis Software Factory dibangun bersama di v1 (S3-R1-Q1; menggantikan R7-Q5).
-- Brief agen 02, 05, 07, 08, 10, 12, 13: disetujui Pemilik beserta draf Definisi Agen lengkap yang ia lampirkan (berbahasa Inggris); koreksi terhadap aturan yang sudah disepakati masih `terbuka` (S3-R3).
+- Brief agen 02, 05, 07, 08, 10, 12, 13: disetujui Pemilik beserta draf Definisi Agen lengkap yang ia lampirkan (berbahasa Inggris); koreksi disepakati di S3-R3 (lihat Aturan tambahan sesi 3).
 
 ### Aturan tambahan sesi 3
 
 - Sebelum bekerja di sebuah Proyek, setiap agen wajib membaca dan mematuhi `CLAUDE.md` dan `AGENTS.md` Proyek itu. Untuk urusan teknis kode, aturan Proyek menang; aturan persetujuan sistem ini tetap berlaku.
 - `docker-compose.yml` menyertakan satu database test sekali-pakai yang dikosongkan setiap kali test dijalankan (untuk `*.dbtest.ts` dan uji migrasi).
 - Rollback darurat: bila 12 Observability mendeteksi error parah setelah deploy, 11 Release/DevOps boleh langsung rollback ke versi sebelumnya tanpa menunggu persetujuan, lalu segera mengirim Laporan. Pengecualian dari titik persetujuan ke-1.
-- Agen 08 hanya membaca dari Odoo production; semua penulisan ke Odoo lewat Permintaan Persetujuan (titik ke-3).
+- Agen 08 hanya membaca dari Odoo production; semua penulisan ke Odoo lewat Permintaan Persetujuan (titik ke-3). Odoo staging belum ada; Pemilik akan menyiapkannya bila diperlukan.
+- Hanya Pemilik yang memberi Perintah; "authorized employees" dihapus dari brief 02 untuk v1. "Product Owner" di brief berarti Pemilik.
+- Agen tidak pernah menghubungi Pemilik langsung; semua lewat Orchestrator Divisi → Orchestrator Utama → Delegator, sebagai Pertanyaan Klarifikasi, Permintaan Persetujuan, atau Laporan.
+- Agen 12 tidak membuat Tugas sendiri: ia mengirim Laporan insiden; insiden parah boleh di-rollback darurat oleh 11; perbaikan kode menunggu Perintah Pemilik.
+- Agen 12 di v1 memantau ±30 menit setelah deploy; pemantauan terus-menerus aktif setelah sistem pindah ke perangkat 24/7 atau VPS.
+- Kartu agen berbahasa Inggris dengan aturan tambahan: semua yang sampai ke Pemilik ditulis dalam Bahasa Indonesia.
+- KPI di kartu agen adalah arah kerja; pengukurannya menunggu dashboard (setelah v1).
+- Agen 07 mengirim build uji lewat Laporan; uji di perangkat sungguhan dilakukan Pemilik atau tim.
+- Draf brief Pemilik untuk agen 02, 05, 07, 08, 10, 12, 13 disimpan sebagai draf Definisi Agen di `agents/maxipro/software-factory/` dengan koreksi di atas, setelah sesi selesai.
+- Nama "Maxione" / "Maxipro Super Apps" khusus Maxipro; tidak dipakai saat sistem diduplikasi ke Perusahaan lain.
 
 ### Fakta Proyek Maxichat (dicek 2026-11-16 dari repo `stepsans/MaxiChat.App`, branch `main`)
 
@@ -329,7 +338,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S2-R5-Q2 | Rangkuman sesi 2 benar; 7 agen menyusul dan Digital Growth di sesi berikutnya | "Ya" | disepakati |
 | S3-R1-Q1 | Semua 13 agen Software Factory dibangun bersama di v1 | "Saya mau Orchestrator Divisi: Software Factory dibangun bersama di V1. Kenapa harus menyusul?" | disepakati |
 | S3-R2-Q1 | Agen 08 hanya membaca Odoo production; penulisan lewat persetujuan | "Apa itu odoo staging jelaskan. saya setuju agen 08 hanya boleh membaca dari Odoo production, dan semua penulisan tetap lewat persetujuan." | disepakati |
-| S3-R2-Q1 | Apakah Odoo staging ada | "Apa itu odoo staging jelaskan." | menunggu fakta |
+| S3-R2-Q1 | Apakah Odoo staging ada (dijawab di S3-R3-Q1) | "Apa itu odoo staging jelaskan." | disepakati |
 | S3-R2-Q2 | Agen wajib membaca CLAUDE.md/AGENTS.md Proyek | "Ya" | disepakati |
 | S3-R2-Q3 | Database test sekali-pakai di docker-compose | "Ya" | disepakati |
 | S3-R2-Q4 | Rollback darurat tanpa persetujuan | "Ya" | disepakati |
@@ -340,6 +349,16 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S3-R2-Q9 | Brief 10 Security (draf terlampir) | "Ya" | disepakati |
 | S3-R2-Q10 | Brief 12 Observability/SRE (draf terlampir) | "Ya" | disepakati |
 | S3-R2-Q11 | Brief 13 Documentation (draf terlampir) | "Ya" | disepakati |
+| S3-R3-Q1 | Odoo staging belum ada; 08 hanya membaca; Pemilik menyiapkan staging bila diperlukan | "Belum ada. Hanya membaca. Bila diperlukan saya siapin odoo staging nya" | disepakati |
+| S3-R3-Q2 | Hanya Pemilik memberi Perintah; "authorized employees" dihapus dari brief 02 | "Ya ikut rekomendasimu" | disepakati |
+| S3-R3-Q3 | Agen tidak menghubungi Pemilik langsung | "Ya" | disepakati |
+| S3-R3-Q4 | Agen 12 tidak membuat Tugas sendiri | "Ya" | disepakati |
+| S3-R3-Q5 | Agen 12 v1 pantau ±30 menit setelah deploy | "Ya" | disepakati |
+| S3-R3-Q6 | Istilah Maxione = Super Apps Maxipro; tidak dipakai untuk Perusahaan lain | "Ya tambahkan. Nanti super Apps ini bernama Maxione. Di dalamnya ada beberapa software maxipro yang saling terhubung. Hanya khusus untuk perusahaan Maxipro. Bila nanti duplikasi ke perusahaan lain, jangan menggunakan Maxipro Super Apps" | disepakati |
+| S3-R3-Q7 | Kartu agen bahasa Inggris, output ke Pemilik bahasa Indonesia | "Ya" | disepakati |
+| S3-R3-Q8 | KPI sebagai arah kerja, pengukuran menunggu dashboard | "Ya" | disepakati |
+| S3-R3-Q9 | Uji perangkat oleh Pemilik/tim | "Ya" | disepakati |
+| S3-R3-Q10 | Simpan draf brief sebagai draf Definisi Agen setelah sesi | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
