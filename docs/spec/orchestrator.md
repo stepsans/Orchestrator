@@ -155,11 +155,11 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 
 | Agen | Dipanggil | Jobdesk | Tool | Batasan | Status |
 |---|---|---|---|---|---|
-| 01 Triage | Selalu, langkah pertama | Pahami Perintah, tentukan Proyek, tulis Kriteria Penerimaan, tandai sensitif, usulkan Sub-tugas; bila tidak jelas → Pertanyaan Klarifikasi | Baca repo (read-only) | Tidak menulis kode atau mengubah repo | terbuka |
-| 03 Architecture | Fitur baru, lintas bagian, perubahan DB, integrasi baru | Rencana teknis: berkas yang diubah, pendekatan, risiko | Baca repo (read-only) | Tidak menulis kode aplikasi | terbuka |
-| 04 Backend/API | Pekerjaan backend | Kode Node.js/Express + unit test di branch Tugas; v1 boleh menulis berkas migrasi | Baca/tulis repo di branch Tugas, jalankan install/test | Tidak push ke branch utama, tidak menyentuh DB production, tanpa rahasia di kode; migrasi ke production = titik persetujuan 2 | terbuka |
-| 06 Web/UI | Pekerjaan frontend | Kode React + test komponen di branch Tugas; mobile tetap 07 | Sama dengan 04 | Sama dengan 04 | terbuka |
-| 09 QA | Selalu sebelum merge | Jalankan test, cocokkan dengan Kriteria Penerimaan, tambah test yang kurang | Baca repo, jalankan test, tulis berkas test | Tidak memperbaiki kode aplikasi; temuan kembali ke 04/06 | terbuka |
+| 01 Triage | Selalu, langkah pertama | Pahami Perintah, tentukan Proyek, tulis Kriteria Penerimaan, tandai sensitif, usulkan Sub-tugas; bila tidak jelas → Pertanyaan Klarifikasi | Baca repo (read-only) | Tidak menulis kode atau mengubah repo | disepakati |
+| 03 Architecture | Fitur baru, lintas bagian, perubahan DB, integrasi baru | Rencana teknis: berkas yang diubah, pendekatan, risiko | Baca repo (read-only) | Tidak menulis kode aplikasi | disepakati |
+| 04 Backend/API | Pekerjaan backend | Kode Node.js/Express + unit test di branch Tugas; v1 boleh menulis berkas migrasi | Baca/tulis repo di branch Tugas, jalankan install/test | Tidak push ke branch utama, tidak menyentuh DB production, tanpa rahasia di kode; migrasi ke production = titik persetujuan 2 | disepakati |
+| 06 Web/UI | Pekerjaan frontend | Kode React + test komponen di branch Tugas; mobile tetap 07 | Sama dengan 04 | Sama dengan 04 | disepakati |
+| 09 QA | Selalu sebelum merge | Jalankan test, cocokkan dengan Kriteria Penerimaan, tambah test yang kurang | Baca repo, jalankan test, tulis berkas test | Tidak memperbaiki kode aplikasi; temuan kembali ke 04/06 | disepakati |
 | 11 Release/DevOps | Setelah 09 lolos | Deploy staging, siapkan Permintaan Persetujuan merge/production, deploy production setelah disetujui | Akses deploy sesuai `PROYEK.md` | Tidak deploy production tanpa persetujuan; selalu siapkan rollback; catat versi di Laporan | disepakati |
 
 ### Perutean Orchestrator Utama (v1)
@@ -233,7 +233,10 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 - Kode orchestrator disimpan di repo ini, folder `src/`, berdampingan dengan `agents/`, `proyek/`, dan `docs/`.
 - Model AI ditulis di Definisi Agen: orchestrator memakai model Claude yang lebih kuat; Agen Spesialis memakai model yang lebih hemat, kecuali 03 Architecture. Model persis dipilih saat implementasi.
 - Penyimpanan status Tugas: PostgreSQL (pilihan agen atas penyerahan Pemilik; lihat R3-Q4).
-- Hosting: hybrid — proses orchestrator di VPS; bagian ringan di Vercel (pembagian persisnya `terbuka`, lihat S2-R3). Bukan Replit.
+- Hosting v1: lokal, di komputer Pemilik saat ini. Harus bisa dipindah ke perangkat lokal lain (misalnya Mac yang menyala 24/7) atau ke VPS. Vercel dan Replit tidak dipakai.
+- Pengemasan: satu berkas `docker-compose.yml` menjalankan orchestrator, PostgreSQL, dan bot Telegram bersama-sama.
+- Cara pindah tempat: clone repo → salin `.env` → restore database (`pg_dump` / `pg_restore`) → `docker compose up`.
+- Dashboard: tidak masuk v1; menyusul, dijalankan di tempat yang sama dengan orchestrator.
 
 ## Daftar keputusan
 
@@ -296,22 +299,19 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S2-R1-Q2 | Repo Maxione: `stepsans/maxione` | "Ya pakai itu" | disepakati |
 | S2-R1-Q3 | Level Perusahaan di `agents/` dan `proyek/` | "Iya betul" | disepakati |
 | S2-R1-Q4 | Setiap Perusahaan punya Orchestrator Divisi sendiri | "A Setiap perusahaan mempunyai softaware factory sendiri jadi terpisah" | disepakati |
-| S2-R1-Q4 | Cara membuat Perusahaan baru (Software Factory Maxipro menyalin template) | (tidak dijawab) | terbuka |
-| S2-R1-Q5 | Hosting (diputuskan di S2-R2-Q1) | "Saya sudah pernah menggunakan VPS, tapi saya ingin mencoba menggunakan vercel. Bila mentok nanti saya pindah ke VPS lagi. Gimana kalau begitu?" | terbuka |
 | S2-R1-Q6 | Tabel `pertanyaan_klarifikasi` | "Ya" | disepakati |
 | S2-R1-Q7 | Perubahan `agents/`: tanpa 09 QA, cek format + dibaca Orchestrator Utama | "Ya" | disepakati |
-| S2-R1-Q8 | Lokasi Definisi Agen (`agents/` sendiri vs `.claude/agents/`) | "Saya kurang mengerti coba jelaskan dengan bahasa bayi newbie beserta kelebihan dan kekurangannya" | terbuka |
 | S2-R1-Q9 | Sesi ini juga merinci brief 6 agen v1 | "Ya boleh supaya contextnya tepat. Apakah benar seperti itu?" | disepakati |
-| S2-R2-Q1 | Hosting hybrid: Vercel untuk bagian ringan, orchestrator di VPS | "Ya saya pilih B. Coba cek apa plus minus bila dashboard di vercel, tetapi orchestrator di VPS?" | disepakati |
-| S2-R2-Q2 | Lokasi Definisi Agen (ditanya ulang di S2-R3-Q3) | (belum dijawab) | terbuka |
-| S2-R2-Q3 | Cara membuat Perusahaan baru (ditanya ulang di S2-R3-Q4) | (belum dijawab) | terbuka |
-| S2-R3-Q1 | Dashboard masuk v1 atau menyusul | "Langsung saja" | terbuka |
+| S2-R2-Q1 | Hosting hybrid: Vercel untuk bagian ringan, orchestrator di VPS (digantikan S2-R4-Q2) | "Ya saya pilih B. Coba cek apa plus minus bila dashboard di vercel, tetapi orchestrator di VPS?" | disepakati |
 | S2-R3-Q2 | Bot Telegram di VPS | "Bot di VPS" | disepakati |
 | S2-R3-Q3 | Definisi Agen di folder `agents/` sendiri | "A" | disepakati |
 | S2-R3-Q4 | Cara membuat Perusahaan baru | "Ya" | disepakati |
-| S2-R3-Q5 | Brief 01, 03, 04, 06, 09 | "Ya" (satu jawaban untuk lima agen, perlu dipecah) | terbuka |
 | S2-R3-Q6 | Brief 11 Release/DevOps | "Ya" | disepakati |
-| S2-R3 (catatan) | Bila hybrid menambah rumit, semua di VPS | "Bila lebih stabil dashboard di VPS juga tidak masalah. Saya hanya iseng mencoba di vercel, tetapi bila itu membuat tambah rumit, saya putuskan semuanya ada di VPS." | terbuka |
+| S2-R3 (catatan) | Bila hybrid menambah rumit, semua di VPS (digantikan S2-R4-Q2) | "Bila lebih stabil dashboard di VPS juga tidak masalah. Saya hanya iseng mencoba di vercel, tetapi bila itu membuat tambah rumit, saya putuskan semuanya ada di VPS." | disepakati |
+| S2-R4-Q1 | v1 tanpa dashboard; dashboard menyusul | "B" | disepakati |
+| S2-R4-Q2 | Hosting v1 lokal di komputer ini; bisa dipindah ke perangkat lokal lain atau VPS | "Bagaimana untuk sementara di lokal saja. Komputer ini. [...] Saat ini saya putuskan dibangun di lokal. Dan akan ada opsi memindahkan ke Device lokal lain atau VPS" | disepakati |
+| S2-R4-Q3 | Satu berkas `docker-compose.yml` | "Ya satu berkas docker-compose.yml. [...]" | disepakati |
+| S2-R4-Q4 | Brief 01, 03, 04, 06, 09 | "ya untuk semuanya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
@@ -320,9 +320,13 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 - R2-Q5: n8n (b), LangGraph/CrewAI (c), menunda (d). Pemilik tidak memberi alasan. Hosting di Replit juga ditolak, tanpa alasan.
 - R3-Q1: usulan agen agar pemecahan agen menjadi titik persetujuan ke-5. Alasan Pemilik: "saya selalu setuju ke orchestrator".
 - R5-Q1: Pemilik bicara langsung ke Orchestrator Divisi. Pemilik meralat jawaban R4-Q5: "saya salah jawaban di sebelumnya".
+- S2-R2-Q1: hosting full Vercel dengan Vercel Workflows (c) dan VPS penuh sejak awal (a). Pemilik memilih hybrid, lalu menggantinya dengan lokal di S2-R4-Q2.
 - R4-Q5: usulan agen agar Perintah di luar divisi ditolak dengan Laporan. Pemilik memilih menyimpannya sebagai Tugas `diterima`; tidak ada alasan tambahan.
 
 ## Catatan inferensi
+
+- S2-R4-Q2: hosting lokal bertentangan dengan R9-Q4 "agen bekerja 24 jam" bila komputer lokal tidak menyala terus (inferensi agen). Status: `terbuka`, ditanyakan di S2-R5-Q1.
+- Pindah dari Mac (Apple Silicon/ARM) ke VPS (umumnya x86) kemungkinan lancar karena image Docker umumnya multi-arsitektur, tetapi perlu dicek saat pindah (inferensi agen; `belum terverifikasi`).
 
 - Lingkup R1-Q2 (siap implementasi) kemungkinan butuh lebih dari 5 round (inferensi agen).
 - R3-Q4: pilihan agen adalah PostgreSQL — sesuai stack Pemilik dan aman untuk penulisan bersamaan oleh beberapa agen (inferensi agen). Pemilik menyebut pilihan ini bisa ditanyakan ke Bos Arga; belum ditinjau.
