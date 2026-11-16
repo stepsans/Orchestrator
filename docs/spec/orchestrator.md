@@ -380,7 +380,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S3-R4-Q1 | Maxione aplikasi utama internal Maxipro; Maxichat berdiri sendiri, multi-tenant, terhubung | "Maxione itu apps utama, Maxichat itu apps berdiri sendiri tetapi saling berhubungan. Setiap user di maxione pasti punya maxichat. Setiap tenant di maxichat belum tentu punya maxione. Maxichat banyak tenant. Maxione dipakai hanya perusahaan maxipro." | disepakati |
 | S3-R4-Q2 | Software internal baru jadi menu di repo Maxione | "Jadi menu baru di repo Maxione" | disepakati |
 | S3-R4-Q3 | Kartu agen netral ("the Company") | "Ya, bisa menduplikasi tanpa kata kata maxipro. Lebih baik menyebut the company" | disepakati |
-| S3-R4-Q4 | Draf kartu agen 01, 03, 04, 06, 09, 11 dari Pemilik, didiskusikan dulu | "Saya ada, tetapi takut lebih kacau. Tidak sesuai dengan pemikiranmu. Saya kirim tapi diskusi dulu ya." | terbuka |
+| S3-R4-Q4 | Draf kartu agen 01, 03, 04, 06, 09, 11 dari Pemilik, didiskusikan dulu (dibahas di S3-R6) | "Saya ada, tetapi takut lebih kacau. Tidak sesuai dengan pemikiranmu. Saya kirim tapi diskusi dulu ya." | disepakati |
 | S3-R5-Q1 | Sesi 3 dilanjutkan 5 round lagi (round 6–10) | "A lanjut" | disepakati |
 | S3-R6-Q1 | Staging lokal di Docker untuk v1 | "ikut rekomendasimu" | disepakati |
 | S3-R6-Q2 | Triage hanya menerima Tugas dari Perintah Pemilik | "Ya disesuaikan, Hanya menerima dari delegator" | disepakati |
