@@ -84,7 +84,7 @@ Orchestrator Divisi yang direncanakan:
 
 | Tabel | Kolom utama |
 |---|---|
-| `tugas` | id, perusahaan, divisi, proyek, perintah asli, Kriteria Penerimaan, status, waktu dibuat/diubah |
+| `tugas` | id, perusahaan, divisi, proyek, perintah asli, Kriteria Penerimaan, prioritas (P0–P3), status, waktu dibuat/diubah |
 | `sub_tugas` | id, tugas_id, agen, input, hasil, status, jumlah ulang, umpan balik |
 | `permintaan_persetujuan` | id, tugas_id, tindakan, alasan, dampak, jawaban (setuju / tolak / belum), waktu diminta/dijawab |
 | `laporan` | id, tugas_id, jenis, isi, waktu kirim |
@@ -148,6 +148,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - KPI di kartu agen adalah arah kerja; pengukurannya menunggu dashboard (setelah v1).
 - Agen 07 mengirim build uji lewat Laporan; uji di perangkat sungguhan dilakukan Pemilik atau tim.
 - Draf brief Pemilik untuk agen 02, 05, 07, 08, 10, 12, 13 disimpan sebagai draf Definisi Agen di `agents/maxipro/software-factory/` dengan koreksi di atas, setelah sesi selesai.
+- Koreksi draf 6 agen (S3-R6): Triage hanya menerima Tugas yang berasal dari Perintah Pemilik lewat Delegator; Triage wajib menentukan Proyek, menulis Kriteria Penerimaan, menandai sensitif, mengusulkan Sub-tugas, dan membuat Pertanyaan Klarifikasi; klasifikasi BUG/FEATURE/REVISION/DATA ISSUE/SECURITY INCIDENT/INFRASTRUCTURE INCIDENT, severity P0–P3, dan cek duplikat dipertahankan. Triage mengumpulkan bukti dan menandai "belum direproduksi"; 09 QA yang mereproduksi di staging lokal. 03 menghasilkan rencana teknis per Tugas; dokumen arsitektur menyeluruh hanya diperbarui saat perubahan besar, disimpan di repo Proyek. 04/06 hanya bekerja di branch Tugas dan tidak pernah memegang kredensial production. 09 boleh menulis berkas test; keputusan BLOCKED → Pertanyaan Klarifikasi (`menunggu klarifikasi`). Code review v1 = QA PASS + Security (bila perlu) + persetujuan merge Pemilik; tanpa agen code review. 11 wajib backup database sebelum migrasi production. Semua kartu: "the Company", "Task" (bukan Ticket), "Product Owner" = Pemilik, komunikasi ke manusia lewat Orchestrator.
 - Nama "Maxione" / "Maxipro Super Apps" khusus Maxipro; tidak dipakai saat sistem diduplikasi ke Perusahaan lain.
 - Hubungan Proyek: Maxione adalah aplikasi utama internal, hanya dipakai Maxipro. Maxichat adalah aplikasi berdiri sendiri dengan banyak tenant, terhubung dengan Maxione. Setiap user Maxione pasti punya Maxichat; setiap tenant Maxichat belum tentu punya Maxione.
 - Software internal Maxipro yang baru menjadi menu baru di repo Maxione, bukan repo terpisah.
@@ -182,7 +183,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 ### Branch, PR, dan pembatalan
 
 - Setiap Tugas dikerjakan di branch sendiri di repo Proyek (`tugas/<id>-<ringkas>`); hasilnya Pull Request. Merge butuh persetujuan Pemilik.
-- Deploy ke staging boleh otomatis; deploy ke production butuh persetujuan.
+- Staging = staging lokal: aplikasi Proyek dijalankan di Docker pada mesin yang sama dengan orchestrator, memakai database test. Deploy ke staging lokal otomatis; deploy ke production butuh persetujuan.
 - Pemilik bisa membatalkan Tugas kapan saja lewat Delegator: status `dibatalkan`, pekerjaan berjalan dihentikan, branch dibiarkan (tidak dihapus, tidak di-merge), Pemilik menerima Laporan.
 
 ### Brief Agen Spesialis v1 (Software Factory Maxipro)
@@ -222,6 +223,9 @@ Tindakan berikut wajib menunggu Permintaan Persetujuan ke Pemilik lewat Delegato
 3. Menulis ke Odoo production (Agen 08 Odoo Integration).
 4. Merge ke branch utama (kecuali perubahan yang hanya menyentuh `agents/`).
 5. Melanjutkan Tugas yang melewati batas keras biaya.
+6. Keputusan arsitektur besar: layanan baru, ganti teknologi database, atau mengubah kontrak API yang dipakai bersama (usulan 03 Architecture).
+
+Pengecualian: rollback darurat oleh 11 (lihat Aturan tambahan sesi 3). Perubahan konfigurasi server production (Nginx, environment variable, service) dianggap deploy production (titik 1).
 
 Tindakan lain boleh berjalan otomatis.
 
@@ -317,7 +321,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | R8-Q1 | Isi tiga jenis pesan (tanya ulang R7-Q6) | "Setuju" | disepakati |
 | R8-Q2 | Kode orchestrator di repo ini, folder `src/` | "Ya" | disepakati |
 | R8-Q3 | Pengganti Delegator v1: bot Telegram sederhana; ke depan juga WhatsApp | "Ya, ke depan mau dihubungkan dengan whatsapp juga" | disepakati |
-| R8-Q4 | Branch per Tugas, PR, staging otomatis, production butuh persetujuan | "Ya" | disepakati |
+| R8-Q4 | Branch per Tugas, PR, staging otomatis (staging = lokal, S3-R6-Q1), production butuh persetujuan | "Ya" | disepakati |
 | R8-Q5 | Pembatalan Tugas: branch dibiarkan, Laporan dikirim | "Ya" | disepakati |
 | R8-Q6 | Model lebih kuat untuk orchestrator, lebih hemat untuk Agen Spesialis kecuali 03 | "Ya" | disepakati |
 | R8-Q7 | Tulis ADR 0002 v1 satu proses dengan subagent | "Ya" | disepakati |
@@ -376,6 +380,18 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S3-R4-Q3 | Kartu agen netral ("the Company") | "Ya, bisa menduplikasi tanpa kata kata maxipro. Lebih baik menyebut the company" | disepakati |
 | S3-R4-Q4 | Draf kartu agen 01, 03, 04, 06, 09, 11 dari Pemilik, didiskusikan dulu | "Saya ada, tetapi takut lebih kacau. Tidak sesuai dengan pemikiranmu. Saya kirim tapi diskusi dulu ya." | terbuka |
 | S3-R5-Q1 | Sesi 3 dilanjutkan 5 round lagi (round 6–10) | "A lanjut" | disepakati |
+| S3-R6-Q1 | Staging lokal di Docker untuk v1 | "ikut rekomendasimu" | disepakati |
+| S3-R6-Q2 | Triage hanya menerima Tugas dari Perintah Pemilik | "Ya disesuaikan, Hanya menerima dari delegator" | disepakati |
+| S3-R6-Q3 | Lima tugas inti Triage ditambahkan ke draf 01 | "Iya setuju dengan rekomendasimu" | disepakati |
+| S3-R6-Q4 | Triage kumpulkan bukti; 09 QA mereproduksi | "Ya, saya percaya usulmu dibanding draft yang aku kirim karena belum sempurna. Tolong sempurnakan" | disepakati |
+| S3-R6-Q5 | Kolom prioritas P0–P3 di `tugas`; P0/P1 di depan antrean + Laporan | "Ya" | disepakati |
+| S3-R6-Q6 | Titik persetujuan ke-6: keputusan arsitektur besar (tiga contoh) | "(a), khusus untuk tiga contoh di atas. Kejadiannya jarang, tapi dampaknya besar." | disepakati |
+| S3-R6-Q7 | 03: rencana teknis per Tugas; dokumen menyeluruh hanya saat perubahan besar | "Ya" | disepakati |
+| S3-R6-Q8 | 04/06: hanya branch Tugas, tanpa kredensial production | "Ya" | disepakati |
+| S3-R6-Q9 | 09: BLOCKED → Pertanyaan Klarifikasi; boleh menulis test | "Ya" | disepakati |
+| S3-R6-Q10 | Code review v1 = QA + Security + persetujuan merge Pemilik | "Ya (a) untuk v1" | disepakati |
+| S3-R6-Q11 | Konfigurasi server production = deploy production; backup sebelum migrasi | "Ya" | disepakati |
+| S3-R6-Q12 | Istilah di kartu: the Company, Task, Pemilik, lewat Orchestrator | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
