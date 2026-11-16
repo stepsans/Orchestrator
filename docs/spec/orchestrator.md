@@ -149,6 +149,10 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Agen 07 mengirim build uji lewat Laporan; uji di perangkat sungguhan dilakukan Pemilik atau tim.
 - Draf brief Pemilik untuk agen 02, 05, 07, 08, 10, 12, 13 disimpan sebagai draf Definisi Agen di `agents/maxipro/software-factory/` dengan koreksi di atas, setelah sesi selesai.
 - Nama "Maxione" / "Maxipro Super Apps" khusus Maxipro; tidak dipakai saat sistem diduplikasi ke Perusahaan lain.
+- Hubungan Proyek: Maxione adalah aplikasi utama internal, hanya dipakai Maxipro. Maxichat adalah aplikasi berdiri sendiri dengan banyak tenant, terhubung dengan Maxione. Setiap user Maxione pasti punya Maxichat; setiap tenant Maxichat belum tentu punya Maxione.
+- Software internal Maxipro yang baru menjadi menu baru di repo Maxione, bukan repo terpisah.
+- Kartu agen ditulis netral ("the Company", "the Company's applications"); hal khusus Maxipro ditaruh di `PROYEK.md` dan Catatan Divisi Maxipro, supaya kartu bisa diduplikasi ke Perusahaan lain tanpa diedit.
+- `terbuka`: Pemilik punya draf kartu untuk agen 01, 03, 04, 06, 09, 11 dan akan mengirimnya untuk didiskusikan dulu.
 
 ### Fakta Proyek Maxichat (dicek 2026-11-16 dari repo `stepsans/MaxiChat.App`, branch `main`)
 
@@ -366,6 +370,10 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S3-R3-Q8 | KPI sebagai arah kerja, pengukuran menunggu dashboard | "Ya" | disepakati |
 | S3-R3-Q9 | Uji perangkat oleh Pemilik/tim | "Ya" | disepakati |
 | S3-R3-Q10 | Simpan draf brief sebagai draf Definisi Agen setelah sesi | "Ya" | disepakati |
+| S3-R4-Q1 | Maxione aplikasi utama internal Maxipro; Maxichat berdiri sendiri, multi-tenant, terhubung | "Maxione itu apps utama, Maxichat itu apps berdiri sendiri tetapi saling berhubungan. Setiap user di maxione pasti punya maxichat. Setiap tenant di maxichat belum tentu punya maxione. Maxichat banyak tenant. Maxione dipakai hanya perusahaan maxipro." | disepakati |
+| S3-R4-Q2 | Software internal baru jadi menu di repo Maxione | "Jadi menu baru di repo Maxione" | disepakati |
+| S3-R4-Q3 | Kartu agen netral ("the Company") | "Ya, bisa menduplikasi tanpa kata kata maxipro. Lebih baik menyebut the company" | disepakati |
+| S3-R4-Q4 | Draf kartu agen 01, 03, 04, 06, 09, 11 dari Pemilik, didiskusikan dulu | "Saya ada, tetapi takut lebih kacau. Tidak sesuai dengan pemikiranmu. Saya kirim tapi diskusi dulu ya." | terbuka |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
