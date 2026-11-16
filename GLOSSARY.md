@@ -43,7 +43,7 @@ _Avoid_: Memory, Log, Jurnal
 ### Satuan kerja
 
 **Maxione**:
-Aplikasi utama internal Perusahaan Maxipro (Super Apps) yang memuat software internal Maxipro sebagai menu di dalamnya; khusus untuk Maxipro.
+Super Apps milik Perusahaan Maxipro: ekosistem berisi aplikasi utama internal Maxipro beserta aplikasi yang terhubung dengannya, seperti Maxichat; khusus untuk Maxipro.
 _Avoid_: Maxipro Super Apps (di luar Maxipro), Super Apps (tanpa kualifikasi)
 
 **Proyek**:

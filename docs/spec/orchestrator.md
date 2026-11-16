@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): semua 13 agen Software Factory masuk v1; menunggu konfirmasi akhir.
+Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): selesai; semua 13 agen Software Factory masuk v1. Berikutnya: menulis 13 draf kartu agen ke `agents/maxipro/software-factory/`, lalu divisi Digital Growth.
 
 ## Tempat catatan
 
@@ -150,7 +150,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Draf brief Pemilik untuk agen 02, 05, 07, 08, 10, 12, 13 disimpan sebagai draf Definisi Agen di `agents/maxipro/software-factory/` dengan koreksi di atas, setelah sesi selesai.
 - Koreksi draf 6 agen (S3-R6): Triage hanya menerima Tugas yang berasal dari Perintah Pemilik lewat Delegator; Triage wajib menentukan Proyek, menulis Kriteria Penerimaan, menandai sensitif, mengusulkan Sub-tugas, dan membuat Pertanyaan Klarifikasi; klasifikasi BUG/FEATURE/REVISION/DATA ISSUE/SECURITY INCIDENT/INFRASTRUCTURE INCIDENT, severity P0–P3, dan cek duplikat dipertahankan. Triage mengumpulkan bukti dan menandai "belum direproduksi"; 09 QA yang mereproduksi di staging lokal. 03 menghasilkan rencana teknis per Tugas; dokumen arsitektur menyeluruh hanya diperbarui saat perubahan besar, disimpan di repo Proyek. 04/06 hanya bekerja di branch Tugas dan tidak pernah memegang kredensial production. 09 boleh menulis berkas test; keputusan BLOCKED → Pertanyaan Klarifikasi (`menunggu klarifikasi`). Code review v1 = QA PASS + Security (bila perlu) + persetujuan merge Pemilik; tanpa agen code review. 11 wajib backup database sebelum migrasi production. Semua kartu: "the Company", "Task" (bukan Ticket), "Product Owner" = Pemilik, komunikasi ke manusia lewat Orchestrator.
 - Nama "Maxione" / "Maxipro Super Apps" khusus Maxipro; tidak dipakai saat sistem diduplikasi ke Perusahaan lain.
-- Hubungan Proyek: Maxione adalah aplikasi utama internal, hanya dipakai Maxipro. Maxichat adalah aplikasi berdiri sendiri dengan banyak tenant, terhubung dengan Maxione. Setiap user Maxione pasti punya Maxichat; setiap tenant Maxichat belum tentu punya Maxione.
+- Hubungan Proyek: Orchestrator dan Software Factory adalah yang dibangun Pemilik; Maxione adalah salah satu produk hasilnya. Maxione adalah ekosistem Super Apps Maxipro: aplikasi utama internal (repo `stepsans/maxione`) beserta aplikasi yang terhubung, termasuk Maxichat. Maxichat tetap aplikasi sendiri (repo `stepsans/MaxiChat.App`) dengan banyak tenant. Setiap user Maxione pasti punya Maxichat; setiap tenant Maxichat belum tentu punya Maxione.
 - Software internal Maxipro yang baru menjadi menu baru di repo Maxione, bukan repo terpisah.
 - Kartu agen ditulis netral ("the Company", "the Company's applications"); hal khusus Maxipro ditaruh di `PROYEK.md` dan Catatan Divisi Maxipro, supaya kartu bisa diduplikasi ke Perusahaan lain tanpa diedit.
 - Draf kartu Pemilik untuk agen 01, 03, 04, 06, 09, 11 diterima (2026-11-16); selisihnya dengan brief yang disepakati sedang dibahas (S3-R6).
@@ -396,6 +396,8 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S3-R6-Q12 | Istilah di kartu: the Company, Task, Pemilik, lewat Orchestrator | "Ya" | disepakati |
 | S3-R7-Q1 | Staging lokal tanpa kredensial production pihak ketiga, Odoo hanya dibaca, DB test | "Ya" | disepakati |
 | S3-R7-Q2 | P0 menjeda Tugas berjalan; P1 antrean pertama | "B" | disepakati |
+| S3-R9-Q1 | Maxichat bagian dari ekosistem Maxione, tetap aplikasi sendiri multi-tenant | "A" | disepakati |
+| S3-R9-Q2 | Rangkuman sesi 3 benar; sesi ditutup | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
