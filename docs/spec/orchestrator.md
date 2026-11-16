@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: sesi lanjutan berjalan (sesi 2 dimulai 2026-11-16; sesi 1 selesai 2026-11-13). Nomor pertanyaan sesi 2 memakai awalan S2-.
+Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Berikutnya: brief agen 02, 05, 07, 08, 10, 12, 13 dan divisi Digital Growth.
 
 ## Tempat catatan
 
@@ -172,7 +172,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 
 - Laporan memakai Bahasa Indonesia.
 - Hanya Pemilik yang boleh memberi Perintah.
-- Agen bekerja 24 jam.
+- Agen bekerja 24 jam. Selama sistem di lokal: agen bekerja selama komputer menyala; Tugas yang terputus dilanjutkan otomatis saat komputer menyala lagi; pengingat Permintaan Persetujuan tetap dihitung dari waktu permintaan dibuat. Aturan 24 jam berlaku lagi setelah pindah ke perangkat 24/7 atau VPS.
 
 ### Antrean
 
@@ -312,6 +312,8 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S2-R4-Q2 | Hosting v1 lokal di komputer ini; bisa dipindah ke perangkat lokal lain atau VPS | "Bagaimana untuk sementara di lokal saja. Komputer ini. [...] Saat ini saya putuskan dibangun di lokal. Dan akan ada opsi memindahkan ke Device lokal lain atau VPS" | disepakati |
 | S2-R4-Q3 | Satu berkas `docker-compose.yml` | "Ya satu berkas docker-compose.yml. [...]" | disepakati |
 | S2-R4-Q4 | Brief 01, 03, 04, 06, 09 | "ya untuk semuanya" | disepakati |
+| S2-R5-Q1 | Selama lokal: agen bekerja selama komputer menyala, Tugas dilanjutkan otomatis | "Ya taruh di lokal sini" | disepakati |
+| S2-R5-Q2 | Rangkuman sesi 2 benar; 7 agen menyusul dan Digital Growth di sesi berikutnya | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
@@ -325,7 +327,6 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 
 ## Catatan inferensi
 
-- S2-R4-Q2: hosting lokal bertentangan dengan R9-Q4 "agen bekerja 24 jam" bila komputer lokal tidak menyala terus (inferensi agen). Status: `terbuka`, ditanyakan di S2-R5-Q1.
 - Pindah dari Mac (Apple Silicon/ARM) ke VPS (umumnya x86) kemungkinan lancar karena image Docker umumnya multi-arsitektur, tetapi perlu dicek saat pindah (inferensi agen; `belum terverifikasi`).
 
 - Lingkup R1-Q2 (siap implementasi) kemungkinan butuh lebih dari 5 round (inferensi agen).
