@@ -128,6 +128,12 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Semua 13 Agen Spesialis Software Factory dibangun bersama di v1 (S3-R1-Q1; menggantikan R7-Q5).
 - Brief agen 02, 05, 07, 08, 10, 12, 13: disetujui Pemilik beserta draf Definisi Agen lengkap yang ia lampirkan (berbahasa Inggris); koreksi disepakati di S3-R3 (lihat Aturan tambahan sesi 3).
 
+### Fakta Proyek Maxione (dicek 2026-11-16 dari repo `stepsans/maxione`, branch `main`)
+
+- README: aplikasi internal kantor Maxipro; setelah login user masuk ke beranda berisi menu fitur, salah satunya Katalog Produk (login OTP email, data dari Google Sheets, harga per tier sesuai role).
+- Production di Hostinger VPS (maxione.click), bukan Replit (`deploy/DEPLOY.md`).
+- Stack: monorepo pnpm, Node.js 24, TypeScript 5.9, Express 5, PostgreSQL + Drizzle, Zod, Orval.
+
 ### Aturan tambahan sesi 3
 
 - Sebelum bekerja di sebuah Proyek, setiap agen wajib membaca dan mematuhi `CLAUDE.md` dan `AGENTS.md` Proyek itu. Untuk urusan teknis kode, aturan Proyek menang; aturan persetujuan sistem ini tetap berlaku.
@@ -149,6 +155,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Monorepo pnpm. Bagian di `artifacts/`: `admin`, `api-server` (Express + drizzle-orm + PostgreSQL), `desktop`, `maxichat-video`, `mobile`, `mockup-sandbox`, `whatsapp-ai`.
 - Mobile: Expo `~54.0.27`, React Native `0.81.5` (`artifacts/mobile/package.json`).
 - Repo punya `AGENTS.md` dan `CLAUDE.md` sendiri; `AGENTS.md` merujuk pekerjaan berjalan integrasi Odoo di `docs/odoo-integration-brief.md`.
+- Maxichat punya halaman Synchronize (platform ↔ MAXIONE, khusus operator), menurut `docs/odoo-integration-brief.md`.
 - Odoo: Odoo 18 Community milik Maxipro, di-host di AWS (menurut `docs/odoo-integration-brief.md`). Dokumen itu tidak menyebut Odoo staging.
 
 ### Laporan
