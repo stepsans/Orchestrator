@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: selesai (sesi kukatanya 2026-11-13, round 1–10).
+Status sesi: sesi lanjutan berjalan (sesi 2 dimulai 2026-11-16; sesi 1 selesai 2026-11-13). Nomor pertanyaan sesi 2 memakai awalan S2-.
 
 ## Tempat catatan
 
@@ -75,9 +75,9 @@ Orchestrator Divisi yang direncanakan:
 
 ### Proyek
 
-- Daftar Proyek disimpan di repo ini, dikelompokkan per Orchestrator Divisi, satu folder per Proyek. Contoh: `proyek/software-factory/maxichat/`, `proyek/software-factory/maxione/`. Setiap Proyek aplikasi baru mendapat folder sendiri. Nama folder divisi sama dengan di `agents/`.
+- Daftar Proyek disimpan di repo ini, dikelompokkan per Orchestrator Divisi, satu folder per Proyek. Contoh: `proyek/maxipro/software-factory/maxichat/`, `proyek/maxipro/software-factory/maxione/`. Setiap Proyek aplikasi baru mendapat folder sendiri. Nama folder divisi sama dengan di `agents/`.
 - Tiap folder Proyek berisi `PROYEK.md`: URL repo dan branch utama, lingkungan (staging/production) dan URL-nya, stack, perintah menjalankan test, cara deploy.
-- Nilai-nilai `PROYEK.md` untuk Maxichat dan Maxione: ditunda sampai implementasi — link repo belum dibuat Pemilik.
+- Repo Proyek: Maxichat = `stepsans/MaxiChat.App`; Maxione = `stepsans/maxione` (keduanya terverifikasi ada di akun GitHub Pemilik, 2026-11-16). Repo `stepsans/MaxiChat` tidak dipakai.
 - 01 Triage menentukan Proyek yang dimaksud sebuah Perintah; bila tidak jelas, Orchestrator Utama mengirim Pertanyaan Klarifikasi lewat Delegator.
 
 ### Data di PostgreSQL
@@ -88,6 +88,7 @@ Orchestrator Divisi yang direncanakan:
 | `sub_tugas` | id, tugas_id, agen, input, hasil, status, jumlah ulang, umpan balik |
 | `permintaan_persetujuan` | id, tugas_id, tindakan, alasan, dampak, jawaban (setuju / tolak / belum), waktu diminta/dijawab |
 | `laporan` | id, tugas_id, jenis, isi, waktu kirim |
+| `pertanyaan_klarifikasi` | id, tugas_id, pertanyaan, jawaban, waktu ditanya/dijawab |
 
 Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gagal`. Detail kolom disempurnakan saat implementasi.
 
@@ -99,15 +100,17 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 
 ### Definisi Agen
 
-- Satu berkas markdown per agen: `agents/<divisi>/<nomor-nama>.md`, contoh `agents/software-factory/01-triage.md`.
+- Satu berkas markdown per agen: `agents/<perusahaan>/<divisi>/<nomor-nama>.md`, contoh `agents/maxipro/software-factory/01-triage.md`.
 - Bagian atas: nama, divisi, jobdesk singkat, tool yang boleh dipakai, model. Bagian bawah: instruksi lengkap.
-- Orchestrator Divisi: `agents/<divisi>/_orchestrator.md`.
-- Kecocokan dengan format subagent Claude Agent SDK: `belum terverifikasi`.
+- Orchestrator Divisi: `agents/<perusahaan>/<divisi>/_orchestrator.md`.
+- Fakta (dicek 2026-11-16, dokumentasi Claude Agent SDK): subagent bisa didefinisikan secara programatis lewat parameter `agents` di opsi `query()`, atau sebagai berkas markdown ber-YAML frontmatter di `.claude/agents/`.
+- `terbuka`: memakai folder `agents/` sendiri yang dibaca program, atau `.claude/agents/` (lihat S2-R2).
+- Perubahan yang hanya menyentuh `agents/` tidak lewat 09 QA; diperiksa dengan pengecekan format otomatis (frontmatter valid, kolom wajib lengkap) dan dibaca ulang Orchestrator Utama. Laporan menyertakan ringkasan perubahan.
 
 ### Ingatan antar-Tugas
 
 - Setiap Tugas mulai dengan konteks bersih; orchestrator boleh membaca ringkasan beberapa Tugas terakhir dari PostgreSQL bila relevan.
-- Tiap Orchestrator Divisi punya Catatan Divisi di `agents/<divisi>/_catatan.md` (ikut merge otomatis `agents/`). Pelajaran khusus satu Proyek ditulis di berkas yang sama di bawah judul nama Proyek.
+- Tiap Orchestrator Divisi punya Catatan Divisi di `agents/<perusahaan>/<divisi>/_catatan.md` (ikut merge otomatis `agents/`). Pelajaran khusus satu Proyek ditulis di berkas yang sama di bawah judul nama Proyek.
 
 ### Rahasia dan kredensial
 
@@ -129,6 +132,12 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 ### Laporan
 
 - Laporan dikirim hanya saat status Tugas berubah, saat ada agen baru, atau saat Tugas gagal. Perubahan per Sub-tugas tidak dilaporkan; detailnya bisa ditanyakan ke Delegator.
+
+### Struktur per Perusahaan
+
+- Folder `agents/` dan `proyek/` punya level Perusahaan: `agents/<perusahaan>/<divisi>/`, `proyek/<perusahaan>/<divisi>/<proyek>/`. Mulai dari `maxipro`.
+- Setiap Perusahaan punya Orchestrator Divisi sendiri (misalnya Software Factory sendiri), terpisah dari Perusahaan lain.
+- `terbuka`: cara membuat Perusahaan baru (lihat S2-R2).
 
 ### Delegator dan banyak Perusahaan
 
@@ -235,7 +244,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak
 | R3-Q5 | v1 satu proses, subagent Claude Agent SDK | "A Satu proses: Orchestrator Utama memanggil Orchestrator Divisi dan agen sebagai subagent di Claude Agent SDK." | disepakati |
 | R3-Q6 | Kontrak tiga jenis pesan | "Ya pakai tiga jenis pesan ini" | disepakati |
 | R3-Q7 | Tulis ADR 0001 orchestrator hanya koordinasi | "Ya" | disepakati |
-| R3-Q8 | Hosting | "ya ditunda" | ditunda |
+| R3-Q8 | Hosting (dibuka lagi di S2-R1-Q5) | "ya ditunda" | ditunda |
 | R4-Q1 | Cara mengatasi bentrokan agen baru vs aturan merge diserahkan ke agen | "Saya kurang mengerti, saya ikut rekomendasimu" | disepakati |
 | R4-Q2 | Orchestrator Utama dan Orchestrator Divisi memutuskan pemecahan sendiri; Laporan berisi hasil diskusi matang dan alasan | "Iya Orchestrator Utama dan Orchestrator Divisi berdiskusi sendiri, hasil diskusi yang sudah matang beserta alasan pemecahan report ke saya." | disepakati |
 | R4-Q3 | Alur evaluasi hasil dengan Kriteria Penerimaan dan maksimal 2 kali ulang | "Ya pakai alur itu" | disepakati |
@@ -245,15 +254,15 @@ Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak
 | R5-Q1 | Divisi baru dibuat lewat Perintah ke Delegator → Orchestrator Utama merancang di `agents/` → Laporan → Tugas `diterima` dilanjutkan. Pemilik brainstorming dengan Delegator, Delegator yang menginstruksikan Orchestrator Utama | "Ok saya salah jawaban di sebelumnya. Maksudnya bicara ke delegator untuk brainstorming, delegator yang menginstruksikan ke Orchestrator Utama. Iya saya setuju [...]" | disepakati |
 | R5-Q2 | Satu Delegator untuk semua Perusahaan, merutekan per Perusahaan; cara membuat Perusahaan baru ditunda | "Iya Delegator" | disepakati |
 | R5-Q2 | Cara membuat Orchestrator Utama untuk Perusahaan baru | "Iya Delegator" | ditunda |
-| R6-Q1 | Daftar Proyek per divisi, satu folder per Proyek (`proyek/software-factory/<proyek>/`) | "Nanti saya buat link nya, saat ini belum ada. Tapi bayangan saya proyek/softwarefactory nanti maxichat dan maxione masuk ke dalam folder tersebut. Jadi nanti setiap proyek apps yang baru masuk ke dalam folder masing2. Harus rapi." | disepakati |
-| R6-Q1 | Link repo tiap Proyek (lihat R10-Q2) | "Nanti saya buat link nya, saat ini belum ada." | ditunda |
+| R6-Q1 | Daftar Proyek per divisi, satu folder per Proyek (`proyek/maxipro/software-factory/<proyek>/`) | "Nanti saya buat link nya, saat ini belum ada. Tapi bayangan saya proyek/softwarefactory nanti maxichat dan maxione masuk ke dalam folder tersebut. Jadi nanti setiap proyek apps yang baru masuk ke dalam folder masing2. Harus rapi." | disepakati |
+| R6-Q1 | Link repo tiap Proyek (ditutup di S2-R1-Q1/Q2) | "Nanti saya buat link nya, saat ini belum ada." | ditunda |
 | R6-Q2 | 4 tabel PostgreSQL dan status Sub-tugas | "Ya" | disepakati |
 | R6-Q3 | Persetujuan tidak dijawab: tidak ada auto-setuju, pengingat 24/72 jam, antrean dilepas | "Ya" | disepakati |
 | R6-Q4 | Format Definisi Agen | "Ya" | disepakati |
 | R6-Q5 | Konteks bersih per Tugas + Catatan Divisi | "Keduanya [...]" | disepakati |
 | R6-Q6 | Laporan hanya saat status Tugas berubah, agen baru, atau gagal | "Ya" | disepakati |
-| R7-Q1 | Folder `proyek/software-factory/` dan `PROYEK.md` dengan isi yang diusulkan | "iya saya setuju menggunakan pakai nama `software-factory` dan berkas `PROYEK.md` dengan isi di atas." | disepakati |
-| R7-Q2 | Catatan Divisi di `agents/<divisi>/_catatan.md` | "Ya" | disepakati |
+| R7-Q1 | Folder `proyek/maxipro/software-factory/` dan `PROYEK.md` dengan isi yang diusulkan | "iya saya setuju menggunakan pakai nama `software-factory` dan berkas `PROYEK.md` dengan isi di atas." | disepakati |
+| R7-Q2 | Catatan Divisi di `agents/<perusahaan>/<divisi>/_catatan.md` | "Ya" | disepakati |
 | R7-Q3 | Rahasia sebagai environment variable di server; agen tidak menulis rahasia | "Ya" | disepakati |
 | R7-Q4 | Batas biaya lunak/keras per Tugas; batas keras jadi titik persetujuan ke-5 | "Ya" | disepakati |
 | R7-Q5 | v1 Software Factory: 6 agen inti (01, 03, 04, 06, 09, 11) | "Ya" | disepakati |
@@ -270,8 +279,18 @@ Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak
 | R9-Q4 | Laporan berbahasa Indonesia, hanya Pemilik memberi Perintah, agen bekerja 24 jam | "Ya" | disepakati |
 | R10-Q1 | Rangkuman akhir benar | "Ya" | disepakati |
 | R10-Q2 | Link repo Proyek | "Ya" | ditunda |
-| R10-Q2 | Tempat menyimpan Pertanyaan Klarifikasi di PostgreSQL | "Ya" | ditunda |
-| R10-Q2 | Apakah 09 QA juga berlaku untuk perubahan `agents/` yang di-merge otomatis | "Ya" | ditunda |
+| R10-Q2 | Tempat menyimpan Pertanyaan Klarifikasi di PostgreSQL (ditutup di S2-R1-Q6) | "Ya" | ditunda |
+| R10-Q2 | Apakah 09 QA juga berlaku untuk perubahan `agents/` (ditutup di S2-R1-Q7) | "Ya" | ditunda |
+| S2-R1-Q1 | Repo Maxichat: `stepsans/MaxiChat.App` | "Ya pakai MaxiChat.App" | disepakati |
+| S2-R1-Q2 | Repo Maxione: `stepsans/maxione` | "Ya pakai itu" | disepakati |
+| S2-R1-Q3 | Level Perusahaan di `agents/` dan `proyek/` | "Iya betul" | disepakati |
+| S2-R1-Q4 | Setiap Perusahaan punya Orchestrator Divisi sendiri | "A Setiap perusahaan mempunyai softaware factory sendiri jadi terpisah" | disepakati |
+| S2-R1-Q4 | Cara membuat Perusahaan baru (Software Factory Maxipro menyalin template) | (tidak dijawab) | terbuka |
+| S2-R1-Q5 | Hosting | "Saya sudah pernah menggunakan VPS, tapi saya ingin mencoba menggunakan vercel. Bila mentok nanti saya pindah ke VPS lagi. Gimana kalau begitu?" | terbuka |
+| S2-R1-Q6 | Tabel `pertanyaan_klarifikasi` | "Ya" | disepakati |
+| S2-R1-Q7 | Perubahan `agents/`: tanpa 09 QA, cek format + dibaca Orchestrator Utama | "Ya" | disepakati |
+| S2-R1-Q8 | Lokasi Definisi Agen (`agents/` sendiri vs `.claude/agents/`) | "Saya kurang mengerti coba jelaskan dengan bahasa bayi newbie beserta kelebihan dan kekurangannya" | terbuka |
+| S2-R1-Q9 | Sesi ini juga merinci brief 6 agen v1 | "Ya boleh supaya contextnya tepat. Apakah benar seperti itu?" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
@@ -287,5 +306,3 @@ Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak
 - Lingkup R1-Q2 (siap implementasi) kemungkinan butuh lebih dari 5 round (inferensi agen).
 - R3-Q4: pilihan agen adalah PostgreSQL — sesuai stack Pemilik dan aman untuk penulisan bersamaan oleh beberapa agen (inferensi agen). Pemilik menyebut pilihan ini bisa ditanyakan ke Bos Arga; belum ditinjau.
 - R4-Q1: pilihan agen adalah pengecualian merge otomatis untuk perubahan yang hanya menyentuh `agents/` (inferensi agen).
-- Tempat menyimpan Pertanyaan Klarifikasi di PostgreSQL belum dirancang; kemungkinan tabel kelima atau digabung dengan `permintaan_persetujuan` (inferensi agen).
-- Belum jelas apakah aturan "09 QA selalu sebelum merge" juga berlaku untuk perubahan `agents/` yang di-merge otomatis (inferensi agen).
