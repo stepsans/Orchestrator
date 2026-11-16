@@ -222,7 +222,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak
 - Kode orchestrator disimpan di repo ini, folder `src/`, berdampingan dengan `agents/`, `proyek/`, dan `docs/`.
 - Model AI ditulis di Definisi Agen: orchestrator memakai model Claude yang lebih kuat; Agen Spesialis memakai model yang lebih hemat, kecuali 03 Architecture. Model persis dipilih saat implementasi.
 - Penyimpanan status Tugas: PostgreSQL (pilihan agen atas penyerahan Pemilik; lihat R3-Q4).
-- Hosting: ditunda; kandidat VPS, Vercel, atau lokal. Bukan Replit.
+- Hosting: hybrid — proses orchestrator di VPS; bagian ringan di Vercel (pembagian persisnya `terbuka`, lihat S2-R3). Bukan Replit.
 
 ## Daftar keputusan
 
@@ -286,11 +286,15 @@ Pengganti Delegator di v1: bot Telegram sederhana yang hanya menjalankan kontrak
 | S2-R1-Q3 | Level Perusahaan di `agents/` dan `proyek/` | "Iya betul" | disepakati |
 | S2-R1-Q4 | Setiap Perusahaan punya Orchestrator Divisi sendiri | "A Setiap perusahaan mempunyai softaware factory sendiri jadi terpisah" | disepakati |
 | S2-R1-Q4 | Cara membuat Perusahaan baru (Software Factory Maxipro menyalin template) | (tidak dijawab) | terbuka |
-| S2-R1-Q5 | Hosting | "Saya sudah pernah menggunakan VPS, tapi saya ingin mencoba menggunakan vercel. Bila mentok nanti saya pindah ke VPS lagi. Gimana kalau begitu?" | terbuka |
+| S2-R1-Q5 | Hosting (diputuskan di S2-R2-Q1) | "Saya sudah pernah menggunakan VPS, tapi saya ingin mencoba menggunakan vercel. Bila mentok nanti saya pindah ke VPS lagi. Gimana kalau begitu?" | terbuka |
 | S2-R1-Q6 | Tabel `pertanyaan_klarifikasi` | "Ya" | disepakati |
 | S2-R1-Q7 | Perubahan `agents/`: tanpa 09 QA, cek format + dibaca Orchestrator Utama | "Ya" | disepakati |
 | S2-R1-Q8 | Lokasi Definisi Agen (`agents/` sendiri vs `.claude/agents/`) | "Saya kurang mengerti coba jelaskan dengan bahasa bayi newbie beserta kelebihan dan kekurangannya" | terbuka |
 | S2-R1-Q9 | Sesi ini juga merinci brief 6 agen v1 | "Ya boleh supaya contextnya tepat. Apakah benar seperti itu?" | disepakati |
+| S2-R2-Q1 | Hosting hybrid: Vercel untuk bagian ringan, orchestrator di VPS | "Ya saya pilih B. Coba cek apa plus minus bila dashboard di vercel, tetapi orchestrator di VPS?" | disepakati |
+| S2-R2-Q2 | Lokasi Definisi Agen (penjelasan sederhana) | (belum dijawab) | terbuka |
+| S2-R2-Q3 | Cara membuat Perusahaan baru | (belum dijawab) | terbuka |
+| S2-R2-Q4–Q8 | Brief 01, 03, 04, 06, 09 | (belum dijawab) | terbuka |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
