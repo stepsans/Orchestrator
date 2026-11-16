@@ -126,7 +126,14 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 ### Isi v1 Software Factory
 
 - Semua 13 Agen Spesialis Software Factory dibangun bersama di v1 (S3-R1-Q1; menggantikan R7-Q5).
-- Brief agen 02, 05, 07, 08, 10, 12, 13: `terbuka` (sesi 3).
+- Brief agen 02, 05, 07, 08, 10, 12, 13: disetujui Pemilik beserta draf Definisi Agen lengkap yang ia lampirkan (berbahasa Inggris); koreksi terhadap aturan yang sudah disepakati masih `terbuka` (S3-R3).
+
+### Aturan tambahan sesi 3
+
+- Sebelum bekerja di sebuah Proyek, setiap agen wajib membaca dan mematuhi `CLAUDE.md` dan `AGENTS.md` Proyek itu. Untuk urusan teknis kode, aturan Proyek menang; aturan persetujuan sistem ini tetap berlaku.
+- `docker-compose.yml` menyertakan satu database test sekali-pakai yang dikosongkan setiap kali test dijalankan (untuk `*.dbtest.ts` dan uji migrasi).
+- Rollback darurat: bila 12 Observability mendeteksi error parah setelah deploy, 11 Release/DevOps boleh langsung rollback ke versi sebelumnya tanpa menunggu persetujuan, lalu segera mengirim Laporan. Pengecualian dari titik persetujuan ke-1.
+- Agen 08 hanya membaca dari Odoo production; semua penulisan ke Odoo lewat Permintaan Persetujuan (titik ke-3).
 
 ### Fakta Proyek Maxichat (dicek 2026-11-16 dari repo `stepsans/MaxiChat.App`, branch `main`)
 
@@ -321,6 +328,18 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S2-R5-Q1 | Selama lokal: agen bekerja selama komputer menyala, Tugas dilanjutkan otomatis | "Ya taruh di lokal sini" | disepakati |
 | S2-R5-Q2 | Rangkuman sesi 2 benar; 7 agen menyusul dan Digital Growth di sesi berikutnya | "Ya" | disepakati |
 | S3-R1-Q1 | Semua 13 agen Software Factory dibangun bersama di v1 | "Saya mau Orchestrator Divisi: Software Factory dibangun bersama di V1. Kenapa harus menyusul?" | disepakati |
+| S3-R2-Q1 | Agen 08 hanya membaca Odoo production; penulisan lewat persetujuan | "Apa itu odoo staging jelaskan. saya setuju agen 08 hanya boleh membaca dari Odoo production, dan semua penulisan tetap lewat persetujuan." | disepakati |
+| S3-R2-Q1 | Apakah Odoo staging ada | "Apa itu odoo staging jelaskan." | menunggu fakta |
+| S3-R2-Q2 | Agen wajib membaca CLAUDE.md/AGENTS.md Proyek | "Ya" | disepakati |
+| S3-R2-Q3 | Database test sekali-pakai di docker-compose | "Ya" | disepakati |
+| S3-R2-Q4 | Rollback darurat tanpa persetujuan | "Ya" | disepakati |
+| S3-R2-Q5 | Brief 02 Product/Business Analyst (draf terlampir) | "Ya, Terlampir (Benerin bila aku salah)" | disepakati |
+| S3-R2-Q6 | Brief 05 Database (draf terlampir) | "Ya, Terlampir (benerin bila aku salah)" | disepakati |
+| S3-R2-Q7 | Brief 07 Mobile (draf terlampir) | "Ya" | disepakati |
+| S3-R2-Q8 | Brief 08 Odoo Integration (draf terlampir) | "Ya" | disepakati |
+| S3-R2-Q9 | Brief 10 Security (draf terlampir) | "Ya" | disepakati |
+| S3-R2-Q10 | Brief 12 Observability/SRE (draf terlampir) | "Ya" | disepakati |
+| S3-R2-Q11 | Brief 13 Documentation (draf terlampir) | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
