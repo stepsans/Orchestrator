@@ -1,6 +1,6 @@
 # Spesifikasi Implementasi v1: Orchestrator + Software Factory
 
-Status: **draf untuk direview Pemilik** (2026-11-16). Dokumen ini menerjemahkan keputusan di `docs/spec/orchestrator.md` menjadi rancangan teknis yang bisa langsung dibangun. Bila ada yang bertentangan, `orchestrator.md` yang berlaku sampai Pemilik menyetujui perubahan di bagian 0.3.
+Status: **K1–K4, K7–K9 diputuskan di sesi 4** (2026-11-17); lihat tabel 0.3. Fokus v1: membangun Orchestrator; Maxichat dan Maxione hanya konteks (S4-R0). Dokumen ini menerjemahkan keputusan di `docs/spec/orchestrator.md` menjadi rancangan teknis yang bisa langsung dibangun. Bila ada yang bertentangan, `orchestrator.md` yang berlaku sampai Pemilik menyetujui perubahan di bagian 0.3.
 
 Istilah mengikuti `GLOSSARY.md`. Angka yang ditandai *(usulan)* belum diuji dan disetel setelah ada data.
 
@@ -31,6 +31,7 @@ Istilah mengikuti `GLOSSARY.md`. Angka yang ditandai *(usulan)* belum diuji dan 
 
 | Kode | Usulan | Alasan singkat |
 |---|---|---|
+| **Status** | K1, K2, K3, K4, K8, K9 **disepakati**; K5, K6, K7 **ditunda** sebagai syarat sebelum Orchestrator mengerjakan Proyek nyata (S4-R1-Q3). | |
 | **K1** | Orkestrasi dijalankan oleh **mesin alur kerja di kode TypeScript**. Setiap agen dipanggil sebagai `query()` tersendiri, bukan sebagai subagent bersarang. Orchestrator Utama dan Divisi tetap agen LLM, tapi tugasnya *memutuskan langkah berikutnya* dalam bentuk JSON, lalu kode yang menjalankannya. ADR 0002 diperbarui lewat ADR 0003: tetap satu proses, mekanismenya yang berubah. | F1. Selain itu, aturan (persetujuan, batas biaya, antrean) jadi ditegakkan kode, bukan bergantung pada kepatuhan model. |
 | **K2** | Tambah status Tugas **`dijeda`**, untuk Tugas yang disela P0. | Aturan P0 (S3-R7-Q2) butuh status ini, dan daftar status sekarang belum punya. |
 | **K3** | Perubahan di `agents/` baru boleh merge otomatis setelah **lolos uji golden Tugas** (bagian 11.3), tidak cukup lolos cek format. | Satu kalimat yang diubah di kartu agen bisa menurunkan mutu semua Tugas berikutnya tanpa terdeteksi. |
@@ -498,8 +499,9 @@ Perintah: *"Tambahkan filter tanggal di Laporan Penjualan Maxichat."*
 | **F0 Fondasi** | compose, skema DB, bot Telegram (Perintah, Laporan, persetujuan dengan PIN), event_log, loader kartu, uji unit state machine | semua uji unit dan kontrak hijau; bot hanya merespons Pemilik |
 | **F1 Read-only** | engine + Orchestrator Divisi + 01 Triage + 02 + 03, dry-run, golden Tugas | ≥ 90% golden Tugas lolos; biaya rata-rata per Triage tercatat |
 | **F2 Coding loop** | 04, 05, 06, 09, 13 + worktree + staging-runner + PR. **Tanpa deploy** | 10 Tugas nyata sampai PR, ≥ 70% QA PASS di percobaan pertama; 0 pelanggaran guard di uji red-team |
-| **F3 Rilis** | 11, 12, ops-gateway, K6, backup, rollback. **Maxione dulu** (internal, risikonya lebih kecil), baru Maxichat (punya tenant) | 5 rilis Maxione sukses, 1 latihan rollback berhasil |
-| **F4 Lengkap** | 07, 08, 10 + K7 `SAFE_MODE` Maxichat + rilis Maxichat | 5 rilis Maxichat sukses tanpa insiden P0/P1 |
+| **F3 Rilis** | 11, 12, ops-gateway, backup, rollback — semuanya di repo latihan `orchestrator-sandbox`, "production" = container lokal | 5 rilis latihan sukses, 1 latihan rollback berhasil |
+| **F4 Lengkap** | 02, 07, 08, 10 di repo latihan (08 memakai Odoo tiruan) | ke-13 agen lolos golden Tugas dan 3 Tugas latihan ujung ke ujung |
+| **F6 Proyek nyata** *(ditunda, S4-R1-Q3)* | penuhi K5, K6, K7, lalu Maxione dulu, baru Maxichat | Pemilik diingatkan saat F4 lulus |
 | **F5 24/7** | pindah ke Mac 24/7 atau VPS, pemantauan terus-menerus agen 12 | 2 minggu tanpa Tugas tertahan karena mesin mati |
 
 ---
@@ -521,7 +523,7 @@ Perintah: *"Tambahkan filter tanggal di Laporan Penjualan Maxichat."*
 
 ## 15. Definisi "v1 selesai"
 
-- Seluruh fase F0–F4 lulus syaratnya.
+- Seluruh fase F0–F4 lulus syaratnya di repo latihan. Saat itu Pemilik diingatkan soal K5, K6, K7 (syarat F6).
 - Ke-13 kartu agen sudah direview Pemilik dan lolos golden Tugas.
 - Ke-6 titik persetujuan sudah teruji lewat uji unit dan percobaan nyata.
 - Runbook pindah mesin (lokal → Mac → VPS) sudah dicoba minimal sekali di mesin lain.

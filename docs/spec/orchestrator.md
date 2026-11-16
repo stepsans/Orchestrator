@@ -245,8 +245,10 @@ Satu Perintah menjadi satu Tugas; Tugas dipecah menjadi Sub-tugas.
 Status Tugas:
 
 ```
-diterima → diurai → (menunggu klarifikasi) → dikerjakan → menunggu persetujuan → selesai / gagal / dibatalkan
+diterima → diurai → (menunggu klarifikasi) → dikerjakan ⇄ dijeda → menunggu persetujuan → selesai / gagal / dibatalkan
 ```
+
+- `dijeda`: Tugas yang disela Tugas P0 di divisi yang sama (S4-R1-Q4).
 
 - `menunggu klarifikasi` hanya dipakai bila ada Pertanyaan Klarifikasi; selama status ini antrean divisi dilepas.
 - Kriteria Penerimaan ikut dikirim dalam Laporan saat Tugas selesai diurai, sebagai informasi (bukan persetujuan); Pemilik bisa mengoreksi kapan saja lewat Delegator.
@@ -408,7 +410,15 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S4-R0 | K1: orkestrasi diatur kode, tiap agen dipanggil `query()` sendiri (temuan 1) | "1. OK" | disepakati |
 | S4-R0 | Output agen memakai structured outputs / skema JSON (temuan 3) | "3. Ok" | disepakati |
 | S4-R0 | Fokus sekarang membangun Orchestrator; pekerjaan Maxichat dan Maxione bukan pekerjaan sekarang, hanya konteks | "Pekerjaan Maxichat dan Maxione bukan pekerjaan yang akan dikerjakan sekarang. Baca aja hanya tau konsepnya" | disepakati |
-| S4-R0 | Arti "biaya" pada temuan 2 | "Biaya apa maksudnya? Biaya yang timbul di tenant maxichat?" | terbuka |
+| S4-R0 | Arti "biaya" pada temuan 2 (dijelaskan di S4-R1-Q1: tagihan API Claude untuk agen) | "Biaya apa maksudnya? Biaya yang timbul di tenant maxichat?" | disepakati |
+| S4-R1-Q1 | K8: API key khusus + batas belanja bulanan di Console; Pemilik bisa mengatur model | "Ya, dan saya bisa atur modelnya juga" | disepakati |
+| S4-R1-Q1 | Angka batas belanja bulanan | (belum disebut) | terbuka |
+| S4-R1-Q2 | Repo latihan `orchestrator-sandbox` untuk menguji Orchestrator | "Ya" | disepakati |
+| S4-R1-Q3 | K5, K6, K7 jadi syarat sebelum Orchestrator mengerjakan Proyek nyata; Pemilik minta diingatkan saat Orchestrator jadi | "Ya, ingatkan saya nanti ketika orchestrator uda jadi" | ditunda |
+| S4-R1-Q4 | K2: status Tugas `dijeda` | "Ya" | disepakati |
+| S4-R1-Q5 | K3: perubahan `agents/` wajib lolos golden Tugas | "Ya" | disepakati |
+| S4-R1-Q6 | K4: tindakan berisiko hanya lewat `ops-gateway` yang mengecek persetujuan | "Ya" | disepakati |
+| S4-R1-Q7 | K9: PIN 6 digit untuk persetujuan deploy dan migrasi production | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
