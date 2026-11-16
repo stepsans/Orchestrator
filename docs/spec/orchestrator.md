@@ -152,7 +152,8 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Hubungan Proyek: Maxione adalah aplikasi utama internal, hanya dipakai Maxipro. Maxichat adalah aplikasi berdiri sendiri dengan banyak tenant, terhubung dengan Maxione. Setiap user Maxione pasti punya Maxichat; setiap tenant Maxichat belum tentu punya Maxione.
 - Software internal Maxipro yang baru menjadi menu baru di repo Maxione, bukan repo terpisah.
 - Kartu agen ditulis netral ("the Company", "the Company's applications"); hal khusus Maxipro ditaruh di `PROYEK.md` dan Catatan Divisi Maxipro, supaya kartu bisa diduplikasi ke Perusahaan lain tanpa diedit.
-- `terbuka`: Pemilik punya draf kartu untuk agen 01, 03, 04, 06, 09, 11 dan akan mengirimnya untuk didiskusikan dulu.
+- Draf kartu Pemilik untuk agen 01, 03, 04, 06, 09, 11 diterima (2026-11-16); selisihnya dengan brief yang disepakati sedang dibahas (S3-R6).
+- Fakta (dicek 2026-11-16): repo Maxichat dan Maxione tidak menyebut lingkungan staging. Maxione: production di VPS Hostinger lewat `deploy/deploy.sh` (git pull, build, restart API), dengan backup harian dari `setup-server.sh`. Maxichat: `./deploy.sh` di VPS.
 
 ### Fakta Proyek Maxichat (dicek 2026-11-16 dari repo `stepsans/MaxiChat.App`, branch `main`)
 
@@ -374,6 +375,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long pol
 | S3-R4-Q2 | Software internal baru jadi menu di repo Maxione | "Jadi menu baru di repo Maxione" | disepakati |
 | S3-R4-Q3 | Kartu agen netral ("the Company") | "Ya, bisa menduplikasi tanpa kata kata maxipro. Lebih baik menyebut the company" | disepakati |
 | S3-R4-Q4 | Draf kartu agen 01, 03, 04, 06, 09, 11 dari Pemilik, didiskusikan dulu | "Saya ada, tetapi takut lebih kacau. Tidak sesuai dengan pemikiranmu. Saya kirim tapi diskusi dulu ya." | terbuka |
+| S3-R5-Q1 | Sesi 3 dilanjutkan 5 round lagi (round 6–10) | "A lanjut" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
