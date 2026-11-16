@@ -13,9 +13,9 @@ Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan 
 
 ## Lingkup
 
-- Target sesi: spesifikasi siap implementasi.
-- Yang dirinci: Orchestrator Utama dan Orchestrator Divisi "Software Factory" — perutean, serah tugas, status, dan penerimaan hasil.
-- Di luar lingkup sesi ini: detail internal tiap Agen Spesialis (01–13), Orchestrator Divisi "Digital Growth", Delegator, My Second Brain.
+- Target: spesifikasi siap implementasi. Rancangan teknis rinci ada di `docs/spec/implementasi-v1.md`.
+- Yang dirinci: Orchestrator Utama, Orchestrator Divisi "Software Factory", dan ke-13 Agen Spesialisnya (sesi 3).
+- Di luar lingkup: Orchestrator Divisi "Digital Growth", Delegator yang sesungguhnya (v1 memakai bot Telegram), My Second Brain.
 - Satu Perusahaan dulu: Maxipro.
 
 ## Hierarki
@@ -153,7 +153,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Hubungan Proyek: Orchestrator dan Software Factory adalah yang dibangun Pemilik; Maxione adalah salah satu produk hasilnya. Maxione adalah ekosistem Super Apps Maxipro: aplikasi utama internal (repo `stepsans/maxione`) beserta aplikasi yang terhubung, termasuk Maxichat. Maxichat tetap aplikasi sendiri (repo `stepsans/MaxiChat.App`) dengan banyak tenant. Setiap user Maxione pasti punya Maxichat; setiap tenant Maxichat belum tentu punya Maxione.
 - Software internal Maxipro yang baru menjadi menu baru di repo Maxione, bukan repo terpisah.
 - Kartu agen ditulis netral ("the Company", "the Company's applications"); hal khusus Maxipro ditaruh di `PROYEK.md` dan Catatan Divisi Maxipro, supaya kartu bisa diduplikasi ke Perusahaan lain tanpa diedit.
-- Draf kartu Pemilik untuk agen 01, 03, 04, 06, 09, 11 diterima (2026-11-16); selisihnya dengan brief yang disepakati sedang dibahas (S3-R6).
+- Draf kartu Pemilik untuk agen 01, 03, 04, 06, 09, 11 diterima (2026-11-16); selisihnya dengan brief sudah diputuskan di S3-R6.
 - Fakta (dicek 2026-11-16): repo Maxichat dan Maxione tidak menyebut lingkungan staging. Maxione: production di VPS Hostinger lewat `deploy/deploy.sh` (git pull, build, restart API), dengan backup harian dari `setup-server.sh`. Maxichat: `./deploy.sh` di VPS.
 
 ### Fakta Proyek Maxichat (dicek 2026-11-16 dari repo `stepsans/MaxiChat.App`, branch `main`)
@@ -178,7 +178,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 
 - Pemilik bisa brainstorming dengan Delegator; Delegator yang mengubahnya menjadi Perintah ke Orchestrator Utama.
 - Satu Delegator untuk semua Perusahaan. Delegator meneruskan Perintah ke Orchestrator Utama milik Perusahaan yang dimaksud; bila Perusahaan tidak jelas, Delegator bertanya ke Pemilik.
-- Cara membuat Orchestrator Utama untuk Perusahaan baru (contoh: VJ Labs, Telson Indonesia): ditunda.
+- Cara membuat Orchestrator Utama untuk Perusahaan baru (contoh: VJ Labs, Telson Indonesia): lihat Struktur per Perusahaan (S2-R3-Q4).
 
 ### Branch, PR, dan pembatalan
 
@@ -187,16 +187,23 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Staging lokal tidak pernah memakai kredensial production pihak ketiga (WhatsApp, Telegram, Xendit dimatikan atau mode test/sandbox); Odoo hanya dibaca; database staging selalu database test, tidak pernah salinan data pelanggan asli.
 - Pemilik bisa membatalkan Tugas kapan saja lewat Delegator: status `dibatalkan`, pekerjaan berjalan dihentikan, branch dibiarkan (tidak dihapus, tidak di-merge), Pemilik menerima Laporan.
 
-### Brief Agen Spesialis v1 (Software Factory Maxipro)
+### Brief Agen Spesialis v1 (Software Factory Maxipro, 13 agen)
 
 | Agen | Dipanggil | Jobdesk | Tool | Batasan | Status |
 |---|---|---|---|---|---|
-| 01 Triage | Selalu, langkah pertama | Pahami Perintah, tentukan Proyek, tulis Kriteria Penerimaan, tandai sensitif, usulkan Sub-tugas; bila tidak jelas → Pertanyaan Klarifikasi | Baca repo (read-only) | Tidak menulis kode atau mengubah repo | disepakati |
-| 03 Architecture | Fitur baru, lintas bagian, perubahan DB, integrasi baru | Rencana teknis: berkas yang diubah, pendekatan, risiko | Baca repo (read-only) | Tidak menulis kode aplikasi | disepakati |
-| 04 Backend/API | Pekerjaan backend | Kode Node.js/Express + unit test di branch Tugas; v1 boleh menulis berkas migrasi | Baca/tulis repo di branch Tugas, jalankan install/test | Tidak push ke branch utama, tidak menyentuh DB production, tanpa rahasia di kode; migrasi ke production = titik persetujuan 2 | disepakati |
-| 06 Web/UI | Pekerjaan frontend | Kode React + test komponen di branch Tugas; mobile tetap 07 | Sama dengan 04 | Sama dengan 04 | disepakati |
-| 09 QA | Selalu sebelum merge | Jalankan test, cocokkan dengan Kriteria Penerimaan, tambah test yang kurang | Baca repo, jalankan test, tulis berkas test | Tidak memperbaiki kode aplikasi; temuan kembali ke 04/06 | disepakati |
-| 11 Release/DevOps | Setelah 09 lolos | Deploy staging, siapkan Permintaan Persetujuan merge/production, deploy production setelah disetujui | Akses deploy sesuai `PROYEK.md` | Tidak deploy production tanpa persetujuan; selalu siapkan rollback; catat versi di Laporan | disepakati |
+| 01 Triage | Selalu, langkah pertama | Tentukan Proyek, klasifikasi, prioritas P0–P3, Kriteria Penerimaan, tanda sensitif, usulan Sub-tugas, kumpulkan bukti; bila tidak jelas → Pertanyaan Klarifikasi | Baca repo (read-only) | Tidak menulis kode; tidak mereproduksi bug (tugas 09) | disepakati |
+| 02 Product/BA | Fitur besar atau aturan bisnis belum jelas (dipanggil atas usulan Triage) | Alur pengguna, aturan bisnis, user story, Kriteria Penerimaan rinci | Baca repo (read-only) | Tidak menulis kode, tidak mengarang aturan bisnis | disepakati |
+| 03 Architecture | Fitur baru, lintas bagian, perubahan DB, integrasi baru | Rencana teknis per Tugas; dokumen arsitektur menyeluruh hanya saat perubahan besar (di repo Proyek) | Baca repo (read-only) | Keputusan arsitektur besar = titik persetujuan 6 | disepakati |
+| 04 Backend/API | Pekerjaan backend | Kode server, kontrak API, unit test di branch Tugas | Baca/tulis repo di branch Tugas, jalankan install/test | Hanya branch Tugas, tanpa kredensial production; perubahan skema lewat 05 | disepakati |
+| 05 Database | Perubahan skema, index, query lambat | Migrasi SQL idempoten dengan langkah pembalik, diuji di database test | Tulis repo di branch Tugas, database test | Production = titik persetujuan 2; tanpa `drizzle-kit push`; tidak hapus data | disepakati |
+| 06 Web/UI | Pekerjaan frontend web | Kode React, test komponen, bukti sebelum/sesudah | Sama dengan 04 | Sama dengan 04; mobile milik 07 | disepakati |
+| 07 Mobile | Pekerjaan aplikasi mobile | Kode Expo/React Native, build uji | Sama dengan 04 | Rilis store = titik persetujuan 1; uji perangkat oleh Pemilik/tim | disepakati |
+| 08 Odoo Integration | Integrasi dengan Odoo | Pemetaan data, sinkronisasi, kontrak integrasi | Baca Odoo production | Menulis ke Odoo = titik persetujuan 3 | disepakati |
+| 09 QA | Selalu sebelum merge | Reproduksi bug di staging lokal, rencana test, jalankan test, keputusan PASS/FAIL/BLOCKED | Baca repo, jalankan test, tulis berkas test | Tidak memperbaiki fitur; temuan kembali ke agen penanggung; BLOCKED → Pertanyaan Klarifikasi | disepakati |
+| 10 Security | Perubahan bertanda sensitif dan dependensi baru | Review autentikasi, izin, data, rahasia, celah library | Baca repo, alat pemindai | Temuan tinggi memblokir merge; tidak memperbaiki sendiri | disepakati |
+| 11 Release/DevOps | Setelah 09 (dan 10 bila perlu) lolos | Deploy staging lokal, siapkan persetujuan, backup DB, deploy production, rollback | Tool deploy sesuai `PROYEK.md` | Tidak deploy tanpa persetujuan; rollback darurat boleh; konfigurasi server = titik 1 | disepakati |
+| 12 Observability/SRE | Setelah deploy production | Pantau error ±30 menit, Laporan insiden, rekomendasi rollback | Baca log dan metrik | Tidak mengubah kode, tidak membuat Tugas sendiri | disepakati |
+| 13 Documentation | Akhir Tugas yang mengubah perilaku | README, changelog, dokumentasi API, `PROYEK.md` | Tulis berkas dokumentasi | Hanya berkas dokumentasi | disepakati |
 
 ### Perutean Orchestrator Utama (v1)
 
@@ -264,12 +271,12 @@ Isi pesan:
 - **Permintaan Persetujuan**: id, tugas_id, tindakan, alasan, dampak, cara membatalkan. Jawaban: setuju / tolak, plus catatan opsional.
 - **Pertanyaan Klarifikasi**: id, tugas_id, pertanyaan. Jawaban: teks bebas. (Isi rinci disempurnakan saat implementasi.)
 
-Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di VPS (long polling), yang hanya menjalankan kontrak empat jenis pesan (tanpa brainstorming). Ke depan kanal juga dihubungkan ke WhatsApp.
+Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sama dengan orchestrator (long polling; S2-R3-Q2, S2-R4-Q2), yang hanya menjalankan kontrak empat jenis pesan (tanpa brainstorming). Ke depan kanal juga dihubungkan ke WhatsApp.
 
 ### Runtime dan penyimpanan
 
 - Agen dijalankan dengan Claude Agent SDK di Node.js.
-- v1: satu proses — Orchestrator Utama memanggil Orchestrator Divisi dan Agen Spesialis sebagai subagent. Lihat ADR 0002.
+- v1: satu proses — Orchestrator Utama memanggil Orchestrator Divisi dan Agen Spesialis sebagai subagent. Lihat ADR 0002. Catatan 2026-11-16: dokumentasi Agent SDK menyatakan subagent tidak bisa memanggil subagent lain; usulan perubahan mekanisme ada di `implementasi-v1.md` keputusan K1 (menunggu Pemilik).
 - Kode orchestrator disimpan di repo ini, folder `src/`, berdampingan dengan `agents/`, `proyek/`, dan `docs/`.
 - Model AI ditulis di Definisi Agen: orchestrator memakai model Claude yang lebih kuat; Agen Spesialis memakai model yang lebih hemat, kecuali 03 Architecture. Model persis dipilih saat implementasi.
 - Penyimpanan status Tugas: PostgreSQL (pilihan agen atas penyerahan Pemilik; lihat R3-Q4).
