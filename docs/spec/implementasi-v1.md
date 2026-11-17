@@ -130,6 +130,14 @@ tests/
   unit/  contract/  golden/  redteam/  chaos/
 ```
 
+### 2.3a Colokan agen (`AgentRunner`) — S4-R5-Q1
+
+- Semua pemanggilan agen lewat satu antarmuka: `run(kartu, instruksi, workspace, skema) → { output, biaya, bukti }`.
+- v1 punya dua implementasi: `ClaudeSdkRunner` (Claude Agent SDK) dan `GatewayRunner` (Magpie atau penyedia lain).
+- Penyedia, model, dan cara login dipilih per agen di `config/model.yaml` (bisa diubah lewat `/model` di Telegram, lewat uji golden Tugas).
+- Penegakan aturan (persetujuan, biaya, branch, `ops-gateway`, validasi skema) ada di engine, di luar colokan, jadi berlaku sama untuk semua penyedia. Colokan yang tidak mendukung output berskema divalidasi ulang oleh engine; output tidak valid dihitung satu kali ulang.
+- Catatan: untuk Claude lewat Agent SDK, login langganan claude.ai tidak diizinkan kecuali disetujui Anthropic; jalur yang didukung adalah API key atau penyedia cloud.
+
 ### 2.4 Model orkestrasi (bila K1 disetujui)
 
 Setiap langkah dikerjakan dengan pola yang sama:
