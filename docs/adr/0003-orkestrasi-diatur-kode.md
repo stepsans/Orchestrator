@@ -1,0 +1,5 @@
+# 0003 — Orkestrasi diatur kode; setiap agen dipanggil sebagai `query()` tersendiri
+
+Status: accepted. Memperbarui mekanisme di ADR 0002 (tetap satu proses).
+
+Dokumentasi Claude Agent SDK menyatakan subagent tidak bisa memanggil subagent lain, sedangkan perilaku nesting di Claude Code CLI berubah antar versi; hierarki kita butuh dua lapis di bawah sesi utama (Orchestrator Utama → Orchestrator Divisi → Agen Spesialis). Karena itu alur kerja diatur oleh mesin di kode TypeScript: Orchestrator Utama dan Orchestrator Divisi tetap agen LLM yang memutuskan langkah berikutnya dalam JSON berskema, lalu kode memvalidasi keputusan itu, menegakkan aturan (persetujuan, biaya, antrean), dan memanggil setiap Agen Spesialis sebagai `query()` terpisah. Alternatif yang ditolak — mengandalkan subagent bersarang bawaan SDK — lebih sedikit kode, tetapi bergantung pada perilaku yang menurut dokumentasi tidak didukung dan sudah berubah antar versi, serta menyerahkan penegakan aturan pada kepatuhan model (`belum terverifikasi` dalam praktik untuk SDK versi terbaru).

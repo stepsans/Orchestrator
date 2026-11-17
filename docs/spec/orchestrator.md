@@ -278,7 +278,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 ### Runtime dan penyimpanan
 
 - Agen dijalankan dengan Claude Agent SDK di Node.js.
-- v1: satu proses — Orchestrator Utama memanggil Orchestrator Divisi dan Agen Spesialis sebagai subagent. Lihat ADR 0002. Catatan 2026-11-16: dokumentasi Agent SDK menyatakan subagent tidak bisa memanggil subagent lain; usulan perubahan mekanisme ada di `implementasi-v1.md` keputusan K1 (menunggu Pemilik).
+- v1: satu proses — Orchestrator Utama memanggil Orchestrator Divisi dan Agen Spesialis sebagai subagent. Lihat ADR 0002; mekanismenya diperbarui ADR 0003: alur kerja diatur kode, setiap agen dipanggil sebagai `query()` tersendiri (S4-R0).
 - Kode orchestrator disimpan di repo ini, folder `src/`, berdampingan dengan `agents/`, `proyek/`, dan `docs/`.
 - Model AI ditulis di Definisi Agen: orchestrator memakai model Claude yang lebih kuat; Agen Spesialis memakai model yang lebih hemat, kecuali 03 Architecture. Model persis dipilih saat implementasi.
 - Penyimpanan status Tugas: PostgreSQL (pilihan agen atas penyerahan Pemilik; lihat R3-Q4).
@@ -412,13 +412,18 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S4-R0 | Fokus sekarang membangun Orchestrator; pekerjaan Maxichat dan Maxione bukan pekerjaan sekarang, hanya konteks | "Pekerjaan Maxichat dan Maxione bukan pekerjaan yang akan dikerjakan sekarang. Baca aja hanya tau konsepnya" | disepakati |
 | S4-R0 | Arti "biaya" pada temuan 2 (dijelaskan di S4-R1-Q1: tagihan API Claude untuk agen) | "Biaya apa maksudnya? Biaya yang timbul di tenant maxichat?" | disepakati |
 | S4-R1-Q1 | K8: API key khusus + batas belanja bulanan di Console; Pemilik bisa mengatur model | "Ya, dan saya bisa atur modelnya juga" | disepakati |
-| S4-R1-Q1 | Angka batas belanja bulanan | (belum disebut) | terbuka |
+| S4-R1-Q1 | Angka batas belanja bulanan (dijawab S4-R2-Q1) | (belum disebut) | disepakati |
 | S4-R1-Q2 | Repo latihan `orchestrator-sandbox` untuk menguji Orchestrator | "Ya" | disepakati |
 | S4-R1-Q3 | K5, K6, K7 jadi syarat sebelum Orchestrator mengerjakan Proyek nyata; Pemilik minta diingatkan saat Orchestrator jadi | "Ya, ingatkan saya nanti ketika orchestrator uda jadi" | ditunda |
 | S4-R1-Q4 | K2: status Tugas `dijeda` | "Ya" | disepakati |
 | S4-R1-Q5 | K3: perubahan `agents/` wajib lolos golden Tugas | "Ya" | disepakati |
 | S4-R1-Q6 | K4: tindakan berisiko hanya lewat `ops-gateway` yang mengecek persetujuan | "Ya" | disepakati |
 | S4-R1-Q7 | K9: PIN 6 digit untuk persetujuan deploy dan migrasi production | "Ya" | disepakati |
+| S4-R2-Q1 | Batas belanja bulanan Claude API: US$50 | "50 US" | disepakati |
+| S4-R2-Q2 | Model diatur lewat Telegram (`/model`) dan berkas `config/model.yaml`; perubahan lewat golden Tugas | "C" | disepakati |
+| S4-R2-Q3 | Repo latihan mirip Maxione (pnpm, Express 5, React, PostgreSQL + Drizzle, `CLAUDE.md`), dibuat di F0 | "Ya" | disepakati |
+| S4-R2-Q4 | Penyetuju di Telegram: akun pribadi Pemilik saja | "Akun pribadi" | disepakati |
+| S4-R2-Q5 | Tulis ADR 0003 (K1) | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak

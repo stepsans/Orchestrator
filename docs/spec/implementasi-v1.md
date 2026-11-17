@@ -39,7 +39,7 @@ Istilah mengikuti `GLOSSARY.md`. Angka yang ditandai *(usulan)* belum diuji dan 
 | **K5** | Buat **akun Odoo khusus yang hanya bisa membaca** untuk agen 08. | Aturan "Odoo hanya dibaca" ditegakkan oleh Odoo sendiri, bukan oleh prompt. |
 | **K6** | Tugas pertama Software Factory: ubah `deploy.sh` di Maxichat dan Maxione supaya bisa deploy **ke tag rilis tertentu**, ditambah endpoint `/health`. | F4. Rollback darurat (S3-R2-Q4) butuh ini. |
 | **K7** | Tugas kedua: tambah **`SAFE_MODE`** di Maxichat, yang mematikan pengiriman WhatsApp/Telegram dan memaksa Xendit ke mode test. | F6. Syarat wajib staging lokal (S3-R7-Q1). |
-| **K8** | Siapkan **API key Anthropic khusus** untuk sistem ini, dengan batas belanja bulanan di Console. Angka awal ditentukan Pemilik. | F2. Lapisan pengaman kedua di atas batas biaya per Tugas. |
+| **K8** | Siapkan **API key Anthropic khusus** untuk sistem ini, dengan batas belanja bulanan di Console: **US$50** (S4-R2-Q1). Model per agen diatur Pemilik lewat `/model` di Telegram dan `config/model.yaml` (S4-R2-Q2). | F2. Lapisan pengaman kedua di atas batas biaya per Tugas. |
 | **K9** | Persetujuan **deploy production dan migrasi production** di Telegram memakai **PIN 6 digit**, tidak cukup tombol. | Kalau HP atau akun Telegram dipakai orang lain, tombol saja tidak cukup aman. |
 
 ---
@@ -310,7 +310,7 @@ REVOKE UPDATE, DELETE ON event_log FROM engine_role;
 
 ### 5.2 Keamanan bot
 
-- Hanya `chat_id` Pemilik yang diproses. Pesan dari chat lain diabaikan dan dicatat.
+- Hanya `chat_id` akun pribadi Pemilik yang diproses (S4-R2-Q4). Pesan dari chat lain diabaikan dan dicatat.
 - `callback_data` tombol berisi `id persetujuan + nonce` yang ditandatangani HMAC. Tombol hanya berlaku sekali dan hanya untuk permintaan yang masih `belum`.
 - PIN tidak disimpan dalam bentuk teks biasa, hanya hash-nya (argon2). Setelah 3 kali salah, persetujuan production dikunci 1 jam *(usulan)*.
 - Pesan yang dikirim bot tidak pernah memuat rahasia, isi `.env`, atau data pelanggan.
@@ -496,7 +496,7 @@ Perintah: *"Tambahkan filter tanggal di Laporan Penjualan Maxichat."*
 
 | Fase | Isi | Syarat lulus *(usulan)* |
 |---|---|---|
-| **F0 Fondasi** | compose, skema DB, bot Telegram (Perintah, Laporan, persetujuan dengan PIN), event_log, loader kartu, uji unit state machine | semua uji unit dan kontrak hijau; bot hanya merespons Pemilik |
+| **F0 Fondasi** | repo latihan `orchestrator-sandbox` (mirip Maxione: pnpm, Express 5, React, PostgreSQL + Drizzle, `CLAUDE.md`), compose, skema DB, bot Telegram (Perintah, Laporan, persetujuan dengan PIN), event_log, loader kartu, uji unit state machine | semua uji unit dan kontrak hijau; bot hanya merespons Pemilik |
 | **F1 Read-only** | engine + Orchestrator Divisi + 01 Triage + 02 + 03, dry-run, golden Tugas | ≥ 90% golden Tugas lolos; biaya rata-rata per Triage tercatat |
 | **F2 Coding loop** | 04, 05, 06, 09, 13 + worktree + staging-runner + PR. **Tanpa deploy** | 10 Tugas nyata sampai PR, ≥ 70% QA PASS di percobaan pertama; 0 pelanggaran guard di uji red-team |
 | **F3 Rilis** | 11, 12, ops-gateway, backup, rollback — semuanya di repo latihan `orchestrator-sandbox`, "production" = container lokal | 5 rilis latihan sukses, 1 latihan rollback berhasil |
