@@ -421,7 +421,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S4-R1-Q7 | K9: PIN 6 digit untuk persetujuan deploy dan migrasi production | "Ya" | disepakati |
 | S4-R2-Q1 | Batas belanja bulanan Claude API: US$50 | "50 US" | disepakati |
 | S4-R2-Q2 | Model diatur lewat Telegram (`/model`) dan berkas `config/model.yaml`; perubahan lewat golden Tugas | "C" | disepakati |
-| S4-R2-Q3 | Repo latihan mirip Maxione (pnpm, Express 5, React, PostgreSQL + Drizzle, `CLAUDE.md`), dibuat di F0 | "Ya" | disepakati |
+| S4-R2-Q3 | Repo latihan mirip Maxione, dibuat di F0 (dibuka ulang di S4-R6-Q2: tidak boleh meniru Maxione) | "Ya" | terbuka |
 | S4-R2-Q4 | Penyetuju di Telegram: akun pribadi Pemilik saja | "Akun pribadi" | disepakati |
 | S4-R2-Q5 | Tulis ADR 0003 (K1) | "Ya" | disepakati |
 | S4-R3-Q1 | Batas latihan (Tugas US$1/US$5, golden US$5, peringatan 80%, berhenti saat habis) sebagai nilai awal; semua batas bisa diatur Pemilik | "Ya, soal anggaran akan diset secara customize." | disepakati |
@@ -434,6 +434,8 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S4-R4-Q3 | Magpie: gateway lokal untuk AI coding agent dan catatan lintas-platform (Claude & ChatGPT) | "Magpie sebagai Gateway Lokal untuk AI Coding Agent, Magpie sebagai Catatan/Notebook Lintas-Platform (Claude & ChatGPT)" | disepakati |
 | S4-R5-Q1 | Agen dipanggil lewat colokan `AgentRunner`; penyedia dan cara login dipilih per agen di `config/model.yaml`; v1 punya colokan Claude Agent SDK dan colokan gateway (Magpie/penyedia lain); aturan keamanan tetap di kode | "Ya" | disepakati |
 | S4-R5-Q2 | Sesi 4 dilanjutkan | "A" | disepakati |
+| S4-R6-Q1 | Arti "login" untuk penyedia AI | "Login apa maksudnya? jelaskan" | terbuka |
+| S4-R6-Q2 | Fokus: Delegator → Orchestrator Software Factory; tidak menyentuh Maxichat dan Maxione; Software Factory nantinya membuat beberapa software siap produksi, sebagian terhubung ke Maxichat/Maxione, tidak semua | "Saya mau menegaskan yang ingin saya bangun adalah orchestratornya. Dari Delegator ke orchestrator software factory. Kita fokus disana ya. Jangan menyentuh Maxichat dan Maxione. Saya mau membangun Orcharstrator Software Factory yang nantinya bisa membuat beberapa software yang siap di produksi. Beberapa software hasilnya ada yang dihubungkan ke amxichat dan maxione. Tetapi tidak semua softawre yang dihasilkan itu dihubungkan dengan Maxichat dan Maxione." | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
