@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): selesai. Sesi 4 (2026-11-17, awalan S4-): keputusan implementasi K1–K9; fokus Delegator → Orchestrator Software Factory, tanpa menyentuh Maxichat dan Maxione.
+Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): selesai. Sesi 4 (2026-11-17, awalan S4-): selesai; keputusan implementasi K1–K9; fokus Delegator → Orchestrator Software Factory, tanpa menyentuh Maxichat dan Maxione. Berikutnya: fase F0 (Fondasi).
 
 ## Tempat catatan
 
@@ -440,6 +440,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S4-R7-Q2 | Repo latihan `orchestrator-sandbox` netral (tidak meniru/terhubung Maxichat/Maxione), sekaligus software pertama Software Factory | "ya" | disepakati |
 | S4-R7-Q3 | Setiap software hasil Software Factory jadi Proyek sendiri secara default; dihubungkan ke Maxichat/Maxione atau dijadikan menu Maxione diputuskan per software lewat Perintah (menggantikan S3-R4-Q2) | "iya betul seperti itu" | disepakati |
 | S4-R7-Q4 | Stack default software baru: Node.js + TypeScript, React, PostgreSQL; bisa diganti per software lewat Perintah | "Ya" | disepakati |
+| S4-R8-Q1 | Rangkuman sesi 4 benar; sesi ditutup | "ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
