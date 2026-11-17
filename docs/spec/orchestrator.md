@@ -424,6 +424,9 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S4-R2-Q3 | Repo latihan mirip Maxione (pnpm, Express 5, React, PostgreSQL + Drizzle, `CLAUDE.md`), dibuat di F0 | "Ya" | disepakati |
 | S4-R2-Q4 | Penyetuju di Telegram: akun pribadi Pemilik saja | "Akun pribadi" | disepakati |
 | S4-R2-Q5 | Tulis ADR 0003 (K1) | "Ya" | disepakati |
+| S4-R3-Q1 | Batas latihan (Tugas US$1/US$5, golden US$5, peringatan 80%, berhenti saat habis) sebagai nilai awal; semua batas bisa diatur Pemilik | "Ya, soal anggaran akan diset secara customize." | disepakati |
+| S4-R3-Q1 | Model tidak harus Claude (Codex, Magpie); Pemilik punya Claude Pro | "Bisa custom model belum tentu juga menggunakan claude. Btw claude saya sudah claude pro. Nanti bisa pake codex atau disambungkan dengan magpie" | terbuka |
+| S4-R3-Q2 | Konfirmasi tutup sesi 4 (ditahan karena S4-R3-Q1 membuka ulang R2-Q5 dan ADR 0003) | "Ya" | terbuka |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
