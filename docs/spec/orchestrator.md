@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): selesai; semua 13 agen Software Factory masuk v1. Berikutnya: menulis 13 draf kartu agen ke `agents/maxipro/software-factory/`, lalu divisi Digital Growth.
+Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): selesai. Sesi 4 (2026-11-17, awalan S4-): keputusan implementasi K1–K9; fokus Delegator → Orchestrator Software Factory, tanpa menyentuh Maxichat dan Maxione.
 
 ## Tempat catatan
 
@@ -151,7 +151,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Koreksi draf 6 agen (S3-R6): Triage hanya menerima Tugas yang berasal dari Perintah Pemilik lewat Delegator; Triage wajib menentukan Proyek, menulis Kriteria Penerimaan, menandai sensitif, mengusulkan Sub-tugas, dan membuat Pertanyaan Klarifikasi; klasifikasi BUG/FEATURE/REVISION/DATA ISSUE/SECURITY INCIDENT/INFRASTRUCTURE INCIDENT, severity P0–P3, dan cek duplikat dipertahankan. Triage mengumpulkan bukti dan menandai "belum direproduksi"; 09 QA yang mereproduksi di staging lokal. 03 menghasilkan rencana teknis per Tugas; dokumen arsitektur menyeluruh hanya diperbarui saat perubahan besar, disimpan di repo Proyek. 04/06 hanya bekerja di branch Tugas dan tidak pernah memegang kredensial production. 09 boleh menulis berkas test; keputusan BLOCKED → Pertanyaan Klarifikasi (`menunggu klarifikasi`). Code review v1 = QA PASS + Security (bila perlu) + persetujuan merge Pemilik; tanpa agen code review. 11 wajib backup database sebelum migrasi production. Semua kartu: "the Company", "Task" (bukan Ticket), "Product Owner" = Pemilik, komunikasi ke manusia lewat Orchestrator.
 - Nama "Maxione" / "Maxipro Super Apps" khusus Maxipro; tidak dipakai saat sistem diduplikasi ke Perusahaan lain.
 - Hubungan Proyek: Orchestrator dan Software Factory adalah yang dibangun Pemilik; Maxione adalah salah satu produk hasilnya. Maxione adalah ekosistem Super Apps Maxipro: aplikasi utama internal (repo `stepsans/maxione`) beserta aplikasi yang terhubung, termasuk Maxichat. Maxichat tetap aplikasi sendiri (repo `stepsans/MaxiChat.App`) dengan banyak tenant. Setiap user Maxione pasti punya Maxichat; setiap tenant Maxichat belum tentu punya Maxione.
-- Software internal Maxipro yang baru menjadi menu baru di repo Maxione, bukan repo terpisah.
+- Setiap software hasil Software Factory menjadi Proyek sendiri (repo sendiri) secara default; menghubungkannya ke Maxichat/Maxione atau menjadikannya menu Maxione diputuskan per software lewat Perintah (S4-R7-Q3). Stack default: Node.js + TypeScript, React, PostgreSQL, bisa diganti per software (S4-R7-Q4).
 - Kartu agen ditulis netral ("the Company", "the Company's applications"); hal khusus Maxipro ditaruh di `PROYEK.md` dan Catatan Divisi Maxipro, supaya kartu bisa diduplikasi ke Perusahaan lain tanpa diedit.
 - Draf kartu Pemilik untuk agen 01, 03, 04, 06, 09, 11 diterima (2026-11-16); selisihnya dengan brief sudah diputuskan di S3-R6.
 - Fakta (dicek 2026-11-16): repo Maxichat dan Maxione tidak menyebut lingkungan staging. Maxione: production di VPS Hostinger lewat `deploy/deploy.sh` (git pull, build, restart API), dengan backup harian dari `setup-server.sh`. Maxichat: `./deploy.sh` di VPS.
@@ -387,7 +387,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S3-R3-Q9 | Uji perangkat oleh Pemilik/tim | "Ya" | disepakati |
 | S3-R3-Q10 | Simpan draf brief sebagai draf Definisi Agen setelah sesi | "Ya" | disepakati |
 | S3-R4-Q1 | Maxione aplikasi utama internal Maxipro; Maxichat berdiri sendiri, multi-tenant, terhubung | "Maxione itu apps utama, Maxichat itu apps berdiri sendiri tetapi saling berhubungan. Setiap user di maxione pasti punya maxichat. Setiap tenant di maxichat belum tentu punya maxione. Maxichat banyak tenant. Maxione dipakai hanya perusahaan maxipro." | disepakati |
-| S3-R4-Q2 | Software internal baru jadi menu di repo Maxione | "Jadi menu baru di repo Maxione" | disepakati |
+| S3-R4-Q2 | Software internal baru jadi menu di repo Maxione (digantikan S4-R7-Q3) | "Jadi menu baru di repo Maxione" | disepakati |
 | S3-R4-Q3 | Kartu agen netral ("the Company") | "Ya, bisa menduplikasi tanpa kata kata maxipro. Lebih baik menyebut the company" | disepakati |
 | S3-R4-Q4 | Draf kartu agen 01, 03, 04, 06, 09, 11 dari Pemilik, didiskusikan dulu (dibahas di S3-R6) | "Saya ada, tetapi takut lebih kacau. Tidak sesuai dengan pemikiranmu. Saya kirim tapi diskusi dulu ya." | disepakati |
 | S3-R5-Q1 | Sesi 3 dilanjutkan 5 round lagi (round 6–10) | "A lanjut" | disepakati |
@@ -421,7 +421,7 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S4-R1-Q7 | K9: PIN 6 digit untuk persetujuan deploy dan migrasi production | "Ya" | disepakati |
 | S4-R2-Q1 | Batas belanja bulanan Claude API: US$50 | "50 US" | disepakati |
 | S4-R2-Q2 | Model diatur lewat Telegram (`/model`) dan berkas `config/model.yaml`; perubahan lewat golden Tugas | "C" | disepakati |
-| S4-R2-Q3 | Repo latihan mirip Maxione, dibuat di F0 (dibuka ulang di S4-R6-Q2: tidak boleh meniru Maxione) | "Ya" | terbuka |
+| S4-R2-Q3 | Repo latihan mirip Maxione, dibuat di F0 (digantikan S4-R7-Q2) | "Ya" | disepakati |
 | S4-R2-Q4 | Penyetuju di Telegram: akun pribadi Pemilik saja | "Akun pribadi" | disepakati |
 | S4-R2-Q5 | Tulis ADR 0003 (K1) | "Ya" | disepakati |
 | S4-R3-Q1 | Batas latihan (Tugas US$1/US$5, golden US$5, peringatan 80%, berhenti saat habis) sebagai nilai awal; semua batas bisa diatur Pemilik | "Ya, soal anggaran akan diset secara customize." | disepakati |
@@ -429,13 +429,17 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S4-R3-Q2 | Konfirmasi tutup sesi 4 (ditahan; diganti konfirmasi akhir di round berikutnya) | "Ya" | disepakati |
 | S4-R4-Q1 | Kode Orchestrator dibangun dengan Claude Code memakai akun Pro Pemilik | "Orchestrator dibangun dengan claude code memakai akun pro" | disepakati |
 | S4-R4-Q1 | Cara autentikasi agen saat berjalan bisa diatur (OAuth, model lain, atau API key); belum ditentukan | "saya nantinya tidak menggunakan API Key. Saya belum menentukan bisa mungkin nantinya menggunakan oauth dan model lain. Atau juga bisa API key. Tapi tidak selalu API Key. Customize" | disepakati |
-| S4-R4-Q1 | Pilihan autentikasi yang dipakai pertama kali | (belum ditentukan) | terbuka |
+| S4-R4-Q1 | Pilihan autentikasi yang dipakai pertama kali (lihat S4-R7-Q1) | (belum ditentukan) | ditunda |
 | S4-R4-Q2 | Jawaban soal mesin agen (diperjelas di S4-R5-Q1) | "Untuk membangun orchestrator utama tetap menggunakan Claude Code" | disepakati |
 | S4-R4-Q3 | Magpie: gateway lokal untuk AI coding agent dan catatan lintas-platform (Claude & ChatGPT) | "Magpie sebagai Gateway Lokal untuk AI Coding Agent, Magpie sebagai Catatan/Notebook Lintas-Platform (Claude & ChatGPT)" | disepakati |
 | S4-R5-Q1 | Agen dipanggil lewat colokan `AgentRunner`; penyedia dan cara login dipilih per agen di `config/model.yaml`; v1 punya colokan Claude Agent SDK dan colokan gateway (Magpie/penyedia lain); aturan keamanan tetap di kode | "Ya" | disepakati |
 | S4-R5-Q2 | Sesi 4 dilanjutkan | "A" | disepakati |
-| S4-R6-Q1 | Arti "login" untuk penyedia AI | "Login apa maksudnya? jelaskan" | terbuka |
+| S4-R6-Q1 | Arti "login" untuk penyedia AI (dijelaskan di round 7) | "Login apa maksudnya? jelaskan" | disepakati |
 | S4-R6-Q2 | Fokus: Delegator → Orchestrator Software Factory; tidak menyentuh Maxichat dan Maxione; Software Factory nantinya membuat beberapa software siap produksi, sebagian terhubung ke Maxichat/Maxione, tidak semua | "Saya mau menegaskan yang ingin saya bangun adalah orchestratornya. Dari Delegator ke orchestrator software factory. Kita fokus disana ya. Jangan menyentuh Maxichat dan Maxione. Saya mau membangun Orcharstrator Software Factory yang nantinya bisa membuat beberapa software yang siap di produksi. Beberapa software hasilnya ada yang dihubungkan ke amxichat dan maxione. Tetapi tidak semua softawre yang dihasilkan itu dihubungkan dengan Maxichat dan Maxione." | disepakati |
+| S4-R7-Q1 | Cara login ke penyedia AI dipilih di awal F1, setelah Magpie dan aturan penyedia dicek | "Iya" | ditunda |
+| S4-R7-Q2 | Repo latihan `orchestrator-sandbox` netral (tidak meniru/terhubung Maxichat/Maxione), sekaligus software pertama Software Factory | "ya" | disepakati |
+| S4-R7-Q3 | Setiap software hasil Software Factory jadi Proyek sendiri secara default; dihubungkan ke Maxichat/Maxione atau dijadikan menu Maxione diputuskan per software lewat Perintah (menggantikan S3-R4-Q2) | "iya betul seperti itu" | disepakati |
+| S4-R7-Q4 | Stack default software baru: Node.js + TypeScript, React, PostgreSQL; bisa diganti per software lewat Perintah | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak

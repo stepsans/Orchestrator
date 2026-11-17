@@ -134,6 +134,7 @@ tests/
 
 - Semua pemanggilan agen lewat satu antarmuka: `run(kartu, instruksi, workspace, skema) → { output, biaya, bukti }`.
 - v1 punya dua implementasi: `ClaudeSdkRunner` (Claude Agent SDK) dan `GatewayRunner` (Magpie atau penyedia lain).
+- Cara login pertama dipilih di awal F1 (S4-R7-Q1).
 - Penyedia, model, dan cara login dipilih per agen di `config/model.yaml` (bisa diubah lewat `/model` di Telegram, lewat uji golden Tugas).
 - Penegakan aturan (persetujuan, biaya, branch, `ops-gateway`, validasi skema) ada di engine, di luar colokan, jadi berlaku sama untuk semua penyedia. Colokan yang tidak mendukung output berskema divalidasi ulang oleh engine; output tidak valid dihitung satu kali ulang.
 - Catatan: untuk Claude lewat Agent SDK, login langganan claude.ai tidak diizinkan kecuali disetujui Anthropic; jalur yang didukung adalah API key atau penyedia cloud.
@@ -504,7 +505,7 @@ Perintah: *"Tambahkan filter tanggal di Laporan Penjualan Maxichat."*
 
 | Fase | Isi | Syarat lulus *(usulan)* |
 |---|---|---|
-| **F0 Fondasi** | repo latihan `orchestrator-sandbox` (mirip Maxione: pnpm, Express 5, React, PostgreSQL + Drizzle, `CLAUDE.md`), compose, skema DB, bot Telegram (Perintah, Laporan, persetujuan dengan PIN), event_log, loader kartu, uji unit state machine | semua uji unit dan kontrak hijau; bot hanya merespons Pemilik |
+| **F0 Fondasi** | repo latihan `orchestrator-sandbox` (aplikasi kecil netral, stack default Node.js + TypeScript, React, PostgreSQL; tidak meniru/terhubung Maxichat atau Maxione; S4-R7-Q2), compose, skema DB, bot Telegram (Perintah, Laporan, persetujuan dengan PIN), event_log, loader kartu, uji unit state machine | semua uji unit dan kontrak hijau; bot hanya merespons Pemilik |
 | **F1 Read-only** | engine + Orchestrator Divisi + 01 Triage + 02 + 03, dry-run, golden Tugas | ≥ 90% golden Tugas lolos; biaya rata-rata per Triage tercatat |
 | **F2 Coding loop** | 04, 05, 06, 09, 13 + worktree + staging-runner + PR. **Tanpa deploy** | 10 Tugas nyata sampai PR, ≥ 70% QA PASS di percobaan pertama; 0 pelanggaran guard di uji red-team |
 | **F3 Rilis** | 11, 12, ops-gateway, backup, rollback — semuanya di repo latihan `orchestrator-sandbox`, "production" = container lokal | 5 rilis latihan sukses, 1 latihan rollback berhasil |
