@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): selesai. Sesi 4 (2026-11-17, awalan S4-): selesai; keputusan implementasi K1–K9; fokus Delegator → Orchestrator Software Factory, tanpa menyentuh Maxichat dan Maxione. Berikutnya: fase F0 (Fondasi).
+Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): selesai. Sesi 4 (2026-11-17, awalan S4-): selesai; keputusan implementasi K1–K9; fokus Delegator → Orchestrator Software Factory, tanpa menyentuh Maxichat dan Maxione. Sesi 5 (2026-11-17, awalan S5-): membuat software baru dari nol.
 
 ## Tempat catatan
 
@@ -168,6 +168,13 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 
 - Laporan dikirim hanya saat status Tugas berubah, saat ada agen baru, atau saat Tugas gagal. Perubahan per Sub-tugas tidak dilaporkan; detailnya bisa ditanyakan ke Delegator.
 
+### Software baru (sesi 5)
+
+- Software baru tidak dikerjakan sebagai satu Tugas. 02 Product/BA dan 03 Architecture menyusun Rencana Proyek (kebutuhan, arsitektur, urutan Tugas/milestone); setelah disetujui Pemilik (titik 7), Tugas-Tugasnya dikerjakan berurutan dengan alur dan batas biasa.
+- Repo baru dibuat otomatis lewat `ops-gateway` sebagai repo private di akun `stepsans`, setelah Rencana Proyek disetujui; Pemilik menerima Laporan.
+- Lampiran Telegram: screenshot dan berkas (PDF/Excel) diteruskan ke Triage; voice note diubah jadi teks lalu dikonfirmasi Pemilik sebelum menjadi Perintah.
+- Kunci rahasia pihak ketiga untuk software baru tidak pernah dikirim lewat Telegram: Software Factory menulis daftar kunci di `.env.example`, Pemilik memasukkannya sendiri ke server, Tugas menunggu dalam status `menunggu klarifikasi`.
+
 ### Struktur per Perusahaan
 
 - Folder `agents/` dan `proyek/` punya level Perusahaan: `agents/<perusahaan>/<divisi>/`, `proyek/<perusahaan>/<divisi>/<proyek>/`. Mulai dari `maxipro`.
@@ -233,6 +240,7 @@ Tindakan berikut wajib menunggu Permintaan Persetujuan ke Pemilik lewat Delegato
 4. Merge ke branch utama (kecuali perubahan yang hanya menyentuh `agents/`).
 5. Melanjutkan Tugas yang melewati batas keras biaya.
 6. Keputusan arsitektur besar: layanan baru, ganti teknologi database, atau mengubah kontrak API yang dipakai bersama (usulan 03 Architecture).
+7. Rencana Proyek untuk software baru, sebelum Tugas pertamanya dikerjakan; persetujuan ini sekaligus mengizinkan pembuatan repo baru (S5-R1-Q2, Q3).
 
 Pengecualian: rollback darurat oleh 11 (lihat Aturan tambahan sesi 3). Perubahan konfigurasi server production (Nginx, environment variable, service) dianggap deploy production (titik 1).
 
@@ -441,6 +449,13 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S4-R7-Q3 | Setiap software hasil Software Factory jadi Proyek sendiri secara default; dihubungkan ke Maxichat/Maxione atau dijadikan menu Maxione diputuskan per software lewat Perintah (menggantikan S3-R4-Q2) | "iya betul seperti itu" | disepakati |
 | S4-R7-Q4 | Stack default software baru: Node.js + TypeScript, React, PostgreSQL; bisa diganti per software lewat Perintah | "Ya" | disepakati |
 | S4-R8-Q1 | Rangkuman sesi 4 benar; sesi ditutup | "ya" | disepakati |
+| S5-R1-Q1 | Konsep Rencana Proyek: software baru dipecah jadi beberapa Tugas berurutan | "Iya boleh tambahkan" | disepakati |
+| S5-R1-Q2 | Titik persetujuan ke-7: Rencana Proyek software baru | "IYa" | disepakati |
+| S5-R1-Q3 | Repo baru dibuat otomatis setelah Rencana Proyek disetujui | "Iya saya setuju Persetujuan Rencana Proyek di Q2 sudah mencakup izin membuat repo." | disepakati |
+| S5-R1-Q4 | Hosting software baru: Vercel dulu, pindah ke VPS bila pengguna sudah banyak | "Ya saya setuju, bagaimana kalau vercel dulu? Dan bila uda sangat ok dan banyak pengguna baru saya pindahkan ke VPS" | terbuka |
+| S5-R1-Q4 | Domain untuk software baru | (belum disebut) | menunggu fakta |
+| S5-R1-Q5 | Lampiran Telegram: screenshot, berkas, voice note (dikonfirmasi jadi teks) | "Ya untuk ketiganya" | disepakati |
+| S5-R1-Q6 | Kunci rahasia software baru dimasukkan Pemilik sendiri, tidak lewat Telegram | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
