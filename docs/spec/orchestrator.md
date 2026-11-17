@@ -427,6 +427,11 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S4-R3-Q1 | Batas latihan (Tugas US$1/US$5, golden US$5, peringatan 80%, berhenti saat habis) sebagai nilai awal; semua batas bisa diatur Pemilik | "Ya, soal anggaran akan diset secara customize." | disepakati |
 | S4-R3-Q1 | Model tidak harus Claude (Codex, Magpie); Pemilik punya Claude Pro | "Bisa custom model belum tentu juga menggunakan claude. Btw claude saya sudah claude pro. Nanti bisa pake codex atau disambungkan dengan magpie" | terbuka |
 | S4-R3-Q2 | Konfirmasi tutup sesi 4 (ditahan karena S4-R3-Q1 membuka ulang R2-Q5 dan ADR 0003) | "Ya" | terbuka |
+| S4-R4-Q1 | Kode Orchestrator dibangun dengan Claude Code memakai akun Pro Pemilik | "Orchestrator dibangun dengan claude code memakai akun pro" | disepakati |
+| S4-R4-Q1 | Cara autentikasi agen saat berjalan bisa diatur (OAuth, model lain, atau API key); belum ditentukan | "saya nantinya tidak menggunakan API Key. Saya belum menentukan bisa mungkin nantinya menggunakan oauth dan model lain. Atau juga bisa API key. Tapi tidak selalu API Key. Customize" | disepakati |
+| S4-R4-Q1 | Pilihan autentikasi yang dipakai pertama kali | (belum ditentukan) | terbuka |
+| S4-R4-Q2 | Jawaban soal mesin agen (colokan Claude dulu vs multi-penyedia sejak awal) | "Untuk membangun orchestrator utama tetap menggunakan Claude Code" | terbuka |
+| S4-R4-Q3 | Magpie: gateway lokal untuk AI coding agent dan catatan lintas-platform (Claude & ChatGPT) | "Magpie sebagai Gateway Lokal untuk AI Coding Agent, Magpie sebagai Catatan/Notebook Lintas-Platform (Claude & ChatGPT)" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
