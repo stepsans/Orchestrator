@@ -445,6 +445,9 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 
 ## Catatan inferensi
 
+- Fakta (dokumentasi Agent SDK, dicek 2026-11-16): login langganan claude.ai (OAuth Pro/Max) tidak diizinkan untuk agen yang dibangun di atas Agent SDK kecuali sudah disetujui Anthropic; jalur yang didukung adalah API key atau penyedia cloud. Kebijakan OAuth penyedia lain (misalnya Codex) `belum terverifikasi`.
+- Magpie: deskripsi dari Pemilik; kemampuan teknisnya `belum terverifikasi`.
+
 - Pindah dari Mac (Apple Silicon/ARM) ke VPS (umumnya x86) kemungkinan lancar karena image Docker umumnya multi-arsitektur, tetapi perlu dicek saat pindah (inferensi agen; `belum terverifikasi`).
 
 - Lingkup R1-Q2 (siap implementasi) kemungkinan butuh lebih dari 5 round (inferensi agen).
