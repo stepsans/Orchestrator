@@ -173,6 +173,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Software baru tidak dikerjakan sebagai satu Tugas. 02 Product/BA dan 03 Architecture menyusun Rencana Proyek (kebutuhan, arsitektur, urutan Tugas/milestone); setelah disetujui Pemilik (titik 7), Tugas-Tugasnya dikerjakan berurutan dengan alur dan batas biasa.
 - Repo baru dibuat otomatis lewat `ops-gateway` sebagai repo private di akun `stepsans`, setelah Rencana Proyek disetujui; Pemilik menerima Laporan.
 - Lampiran Telegram: screenshot dan berkas (PDF/Excel) diteruskan ke Triage; voice note diubah jadi teks lalu dikonfirmasi Pemilik sebelum menjadi Perintah.
+- Hosting default software baru: Vercel dengan PostgreSQL terkelola; VPS bila aplikasi butuh proses berjalan terus (ditandai 03 di Rencana Proyek). Setiap aplikasi punya Dockerfile sejak awal agar bisa pindah ke VPS lewat satu Tugas. Preview deploy Vercel per PR menjadi staging, dengan database dan kunci test.
 - Kunci rahasia pihak ketiga untuk software baru tidak pernah dikirim lewat Telegram: Software Factory menulis daftar kunci di `.env.example`, Pemilik memasukkannya sendiri ke server, Tugas menunggu dalam status `menunggu klarifikasi`.
 
 ### Struktur per Perusahaan
@@ -452,10 +453,14 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S5-R1-Q1 | Konsep Rencana Proyek: software baru dipecah jadi beberapa Tugas berurutan | "Iya boleh tambahkan" | disepakati |
 | S5-R1-Q2 | Titik persetujuan ke-7: Rencana Proyek software baru | "IYa" | disepakati |
 | S5-R1-Q3 | Repo baru dibuat otomatis setelah Rencana Proyek disetujui | "Iya saya setuju Persetujuan Rencana Proyek di Q2 sudah mencakup izin membuat repo." | disepakati |
-| S5-R1-Q4 | Hosting software baru: Vercel dulu, pindah ke VPS bila pengguna sudah banyak | "Ya saya setuju, bagaimana kalau vercel dulu? Dan bila uda sangat ok dan banyak pengguna baru saya pindahkan ke VPS" | terbuka |
-| S5-R1-Q4 | Domain untuk software baru | (belum disebut) | menunggu fakta |
+| S5-R1-Q4 | Hosting software baru: Vercel dulu, pindah ke VPS bila pengguna sudah banyak (aturan di S5-R2-Q1) | "Ya saya setuju, bagaimana kalau vercel dulu? Dan bila uda sangat ok dan banyak pengguna baru saya pindahkan ke VPS" | disepakati |
+| S5-R1-Q4 | Domain untuk software baru (lihat S5-R2-Q4) | (belum disebut) | ditunda |
 | S5-R1-Q5 | Lampiran Telegram: screenshot, berkas, voice note (dikonfirmasi jadi teks) | "Ya untuk ketiganya" | disepakati |
 | S5-R1-Q6 | Kunci rahasia software baru dimasukkan Pemilik sendiri, tidak lewat Telegram | "Ya" | disepakati |
+| S5-R2-Q1 | Hosting default software baru: Vercel + PostgreSQL terkelola; VPS bila butuh proses berjalan terus (ditandai 03 di Rencana Proyek); Dockerfile sejak awal untuk pindah ke VPS | "Ya" | disepakati |
+| S5-R2-Q2 | Bentuk stack default yang paling kompatibel, teruji, dan tahan lama | "Coba dipikirkan yang paling compatible sehingga dasar ini harus bener bener firm. Apa plus minusnya? Coba rekomendasikan yang terbaik dari sisi compatibiltas, teruji, dan durable." | terbuka |
+| S5-R2-Q3 | Preview deploy Vercel sebagai staging (database dan kunci test) | "Ya" | disepakati |
+| S5-R2-Q4 | Akun Vercel dan domain ditunda sampai F3 | "Ditunda" | ditunda |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
