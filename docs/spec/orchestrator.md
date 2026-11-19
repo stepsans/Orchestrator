@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): selesai. Sesi 4 (2026-11-17, awalan S4-): selesai; keputusan implementasi K1–K9; fokus Delegator → Orchestrator Software Factory, tanpa menyentuh Maxichat dan Maxione. Sesi 5 (2026-11-17 s.d. 2026-11-19, awalan S5-): selesai; membuat software baru dari nol. Berikutnya: fase F0 (Fondasi).
+Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): selesai. Sesi 4 (2026-11-17, awalan S4-): selesai; keputusan implementasi K1–K9; fokus Delegator → Orchestrator Software Factory, tanpa menyentuh Maxichat dan Maxione. Sesi 5 (2026-11-17 s.d. 2026-11-19, awalan S5-): selesai; membuat software baru dari nol. Sesi 6 (2026-11-19, awalan S6-): selesai; Delegator diskusi dan rilis software baru. Berikutnya: fase F0 (Fondasi).
 
 ## Tempat catatan
 
@@ -487,6 +487,7 @@ Delegator v1: bot Telegram di mesin yang sama dengan orchestrator (long polling;
 | S6-R2-Q3 | Gaya diskusi Delegator mengikuti pola kukatanya, tanpa menulis dokumen spesifikasi | "Ya" | disepakati |
 | S6-R2-Q4 | Sesi Diskusi tersimpan dan bisa dilanjutkan (`/lanjut`) | "Ya" | disepakati |
 | S6-R2-Q5 | Delegator diskusi dibangun di fase F1 | "Ya" | disepakati |
+| S6-R3-Q1 | Rangkuman sesi 6 benar; sesi ditutup | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
