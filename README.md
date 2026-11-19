@@ -1,4 +1,4 @@
-# My Second Brain — Orchestrator Software Factory
+# Orchestrator
 
 Rancangan sistem agen AI milik Pemilik (Maxipro): **Delegator → Orchestrator Utama → Orchestrator Divisi → Agen Spesialis**. Fokus v1: **Orchestrator Software Factory** yang nantinya membuat banyak software siap produksi. Sebagian software hasilnya terhubung ke Maxichat atau Maxione, sebagian tidak. Maxichat dan Maxione sendiri **tidak disentuh** di v1.
 
