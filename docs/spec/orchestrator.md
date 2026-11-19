@@ -192,7 +192,9 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 
 ### Digital Growth: rancangan ringan (sesi 7)
 
-- Digital Growth versi mini menjadi pekerjaan nyata pertama setelah fase F1 dan berjalan bersamaan dengan pembangunan Software Factory F2 dst. Contoh pertama: artikel WordPress harian dari topik dan keyword yang ditentukan Pemilik.
+- **Ditunda (S7-R3): fokus Software Factory.** Rancangan di bawah disimpan untuk nanti.
+- Digital Growth versi mini menjadi pekerjaan nyata pertama setelah fase F1 dan berjalan bersamaan dengan pembangunan Software Factory F2 dst. (S7-R2-Q1, kini ditunda).
+- Agen Digital Growth mini: 02 SEO & AEO Content Strategist (menulis), 06 Product Knowledge & Media Intelligence (cek klaim produk terhadap data WooCommerce), 07 WordPress Operations & Content Governance (draft/terbit lewat `ops-gateway`). Fakta produk hanya dari WooCommerce atau sumber Pemilik; harga tidak ditulis, cukup tautan; klaim tak terbukti dihapus. WooCommerce hanya dibaca. Gambar artikel ditunda. Contoh pertama: artikel WordPress harian dari topik dan keyword yang ditentukan Pemilik.
 - Perintah Berulang: Pemilik membuat sekali (jadwal, daftar topik, keyword); mesin membuat Tugas baru tiap jadwal tiba (dihitung sebagai Perintah Pemilik); bisa dijeda, diubah, dihentikan lewat Telegram; setiap jalan mengikuti batas biaya.
 - Menerbitkan ke publik = titik persetujuan 8. Awalnya artikel masuk sebagai draft dan diterbitkan dengan satu tombol di Telegram; autopost dinyalakan per Perintah Berulang setelah ±10 artikel pertama terbukti bagus (angka usulan); setelah autopost, setiap artikel tetap dilaporkan dengan link.
 - Akses akun luar (WordPress, nanti Google Search Console, akun iklan) disimpan di `ops-gateway`; agen tidak memegangnya. WordPress memakai Application Password dengan hak minimal (author/editor).
@@ -500,10 +502,16 @@ Delegator v1: bot Telegram di mesin yang sama dengan orchestrator (long polling;
 | S7-R1-Q1 | Divisi berikutnya yang dirancang: Digital Growth | "A" | disepakati |
 | S7-R1-Q2 | Rancang ringan sekarang (hanya yang memengaruhi mesin); detail agen setelah Software Factory jalan | "C" | disepakati |
 | S7-R1-Q3 | Digital Growth berjalan bersamaan, contoh artikel WordPress harian dari topik dan keyword Pemilik, autopost | "Maksudnya sambil bareng berjalan apakah memungkinkan. Contoh : setiap hari bikin artikel di wordpress tentang sesuatu yang saya beri. Target keyword saya tentukan. Autpost misalnya" | disepakati |
-| S7-R2-Q1 | Digital Growth mini jadi pekerjaan nyata pertama setelah F1, berjalan bersamaan dengan F2 dst. | "A" | disepakati |
+| S7-R2-Q1 | Digital Growth mini jadi pekerjaan nyata pertama setelah F1, berjalan bersamaan dengan F2 dst. (ditunda di S7-R3) | "A" | ditunda |
 | S7-R2-Q2 | Perintah Berulang | "ya" | disepakati |
 | S7-R2-Q3 | Titik persetujuan 8: menerbitkan ke publik; draft dulu, autopost setelah ±10 artikel bagus | "Ya" | disepakati |
 | S7-R2-Q4 | Akses akun luar di `ops-gateway`; situs WordPress pertama maxipro.co.id | "https://maxipro.co.id/" | disepakati |
+| S7-R3-Q1 | Digital Growth mini: 02 SEO & AEO Content Strategist, 06 Product Knowledge & Media Intelligence, 07 WordPress Operations | "Ya" | disepakati |
+| S7-R3-Q2 | Fakta produk hanya dari WooCommerce atau sumber Pemilik; harga tidak ditulis; klaim tak terbukti dihapus 06 | "Ya" | disepakati |
+| S7-R3-Q3 | WooCommerce hanya dibaca | "Ya" | disepakati |
+| S7-R3-Q4 | Gambar artikel | "Nanti dulu" | ditunda |
+| S7-R3 | Digital Growth ditunda; fokus Software Factory | "Saya putuskan nanti dulu aja deh. Fokus ke Software Factory" | disepakati |
+| S7-R3 | Apakah tiga kebutuhan mesin (Perintah Berulang, titik 8, akses akun luar) tetap disiapkan di mesin | (perlu konfirmasi; bertentangan dengan S7-R2-Q1) | terbuka |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
