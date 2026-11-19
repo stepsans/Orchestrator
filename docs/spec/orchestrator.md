@@ -176,6 +176,12 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Hosting default software baru: Vercel dengan PostgreSQL terkelola; VPS bila aplikasi butuh proses berjalan terus (ditandai 03 di Rencana Proyek). Setiap aplikasi punya Dockerfile sejak awal agar bisa pindah ke VPS lewat satu Tugas. Preview deploy Vercel per PR menjadi staging, dengan database dan kunci test.
 - Kunci rahasia pihak ketiga untuk software baru tidak pernah dikirim lewat Telegram: Software Factory menulis daftar kunci di `.env.example`, Pemilik memasukkannya sendiri ke server, Tugas menunggu dalam status `menunggu klarifikasi`.
 
+### Software baru: rilis dan masukan (sesi 6)
+
+- Software yang belum pernah rilis production: merge otomatis setelah QA PASS (dan Security bila sensitif), dengan Laporan; setelah rilis pertama, merge kembali butuh persetujuan (titik 4). Titik 7 dan titik 1 (dengan PIN) tetap wajib.
+- Daftar "siap produksi" sebelum rilis production pertama (dicek otomatis, disimpan di template Stack Dasar): semua KP wajib terbukti; review 10 Security wajib; test hijau di CI termasuk login dan hak akses; backup otomatis aktif dan restore pernah dicoba; monitoring error dan `/health`; README, cara deploy dan rollback; tidak ada rahasia di repo (dicek pemindai).
+- Bug dari pengguna software diteruskan Pemilik ke Delegator; laporan langsung dari pengguna ditunda bersama aturan karyawan sebagai pemberi Perintah.
+
 ### Struktur per Perusahaan
 
 - Folder `agents/` dan `proyek/` punya level Perusahaan: `agents/<perusahaan>/<divisi>/`, `proyek/<perusahaan>/<divisi>/<proyek>/`. Mulai dari `maxipro`.
@@ -282,7 +288,7 @@ Isi pesan:
 - **Permintaan Persetujuan**: id, tugas_id, tindakan, alasan, dampak, cara membatalkan. Jawaban: setuju / tolak, plus catatan opsional.
 - **Pertanyaan Klarifikasi**: id, tugas_id, pertanyaan. Jawaban: teks bebas. (Isi rinci disempurnakan saat implementasi.)
 
-Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sama dengan orchestrator (long polling; S2-R3-Q2, S2-R4-Q2), yang hanya menjalankan kontrak empat jenis pesan (tanpa brainstorming). Ke depan kanal juga dihubungkan ke WhatsApp.
+Delegator v1: bot Telegram di mesin yang sama dengan orchestrator (long polling; S2-R3-Q2, S2-R4-Q2) yang bisa diajak diskusi dan bertanya kritis sebelum merumuskan Perintah, atau langsung meneruskan Perintah bila Pemilik memintanya (S6-R1-Q1; menggantikan "tanpa brainstorming" di R8-Q3). Ke depan kanal juga dihubungkan ke WhatsApp.
 
 ### Runtime dan penyimpanan
 
@@ -464,6 +470,10 @@ Pengganti Delegator di v1: bot Telegram sederhana yang berjalan di mesin yang sa
 | S5-R3-Q1 | Stack Dasar software baru = stack Maxichat/Maxione (React + Vite, Express 5, OpenAPI + Orval, Zod, Drizzle, PostgreSQL, pnpm, Node.js 24 LTS); versi dikunci; proyek tertentu boleh memakai React + Vite + Hono atau Next.js (menggantikan S4-R7-Q4 dan usulan Next.js) | "Ya, tpai tidak menutup kemungkinan nanti ada project yang harus menggunakan react vite hono next.js" | disepakati |
 | S5-R3-Q2 | Repo latihan `orchestrator-sandbox` sekaligus template resmi Stack Dasar; template bisa disesuaikan di kemudian hari | "Ya, kemungkinan template bisa adjust di kemudian hari" | disepakati |
 | S5-R4-Q1 | Rangkuman sesi 5 benar; sesi ditutup | "ya" | disepakati |
+| S6-R1-Q1 | Delegator v1 bisa diajak diskusi dan bertanya kritis seperti skill kukatanya; Pemilik juga bisa langsung memerintah tanpa ditanya | "Bisa diajak diskusi. kritis bertanya seperti menggunakan skill ini kukatanya. Tetapi bisa langsung saya perintah untuk menjalankan tanpa bertanya" | disepakati |
+| S6-R1-Q2 | Software belum rilis: merge otomatis setelah QA (dan Security); setelah rilis pertama kembali ke titik 4 | "Ya" | disepakati |
+| S6-R1-Q3 | Daftar "siap produksi" sebelum rilis production pertama | "Ya" | disepakati |
+| S6-R1-Q4 | Bug dari pengguna diteruskan Pemilik ke Delegator | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak
