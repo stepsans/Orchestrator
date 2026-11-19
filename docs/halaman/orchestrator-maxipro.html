@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orchestrator Maxipro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE work — dokumen spesifikasi untuk dibaca teman
+   IDEA bagan organisasi kantor: jalur komando dari Pemilik sampai agen
+   PICTURE bagan berjenjang lima lapis, divisi dan agennya sebagai kartu, v1 ditandai bata
+   COLOUR stone #e7e4df, hitam, bata #c8371e, panel putih; malam #171513
+   TYPE Schibsted Grotesk 700 + 400
+   LAYOUT laptop: judul + kesimpulan di atas, bagan selebar penuh; ponsel: tumpuk */
+:root{color-scheme:light dark;--bg:light-dark(#e7e4df,#171513);--panel:light-dark(#ffffff,#221f1c);--ink:light-dark(#111111,#ece8e2);--soft:light-dark(#55504a,#a9a29a);--line:light-dark(#cfcac3,#3a3631);--brick:light-dark(#c8371e,#ef6a4e);--brickbg:light-dark(#f6ddd6,#3b1f18)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Schibsted Grotesk",system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(28px,4vw,56px) max(5vw,16px)}
+.wrap{max-width:1180px;margin:0 auto}
+h1{font-size:clamp(32px,5vw,48px);line-height:1.05;letter-spacing:-.02em;margin:0 0 14px;text-wrap:balance;font-weight:700}
+h2{font-size:24px;line-height:1.15;letter-spacing:-.01em;margin:0 0 14px;font-weight:700;text-wrap:balance}
+h3{font-size:17px;margin:0 0 6px;font-weight:700}
+p{margin:0 0 12px;max-width:68ch}
+.lead{font-size:18px;max-width:62ch}
+.meta{color:var(--soft);font-size:14px;margin-bottom:22px}
+.hero{display:grid;gap:22px}
+/* bagan */
+.chart{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:clamp(16px,3vw,32px)}
+.lvl{display:flex;justify-content:center}
+.node{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px 16px;text-align:center;min-width:min(260px,100%)}
+.node b{display:block;font-size:17px}
+.node span{font-size:13px;color:var(--soft)}
+.node.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.node.dark span{color:color-mix(in srgb,var(--bg) 75%,transparent)}
+.link{width:2px;height:22px;background:var(--ink);margin:0 auto}
+.divs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:0;position:relative;padding-top:22px;border-top:2px solid var(--ink)}
+.div{border:1px solid var(--line);border-radius:4px;padding:14px;background:var(--bg)}
+.div.off{opacity:.62;border-style:dashed}
+.divhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.tag{font-size:13px;padding:2px 8px;border-radius:3px;background:var(--panel);border:1px solid var(--line);white-space:nowrap}
+.agents{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;list-style:none;margin:0;padding:0}
+.agents li{font-size:14px;padding:6px 8px;border-radius:3px;background:var(--panel);border:1px solid var(--line);line-height:1.3}
+.agents li.v1{background:var(--brickbg);border-color:var(--brick);font-weight:500}
+.agents li i{font-style:normal;color:var(--soft);font-variant-numeric:tabular-nums;margin-right:4px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--soft);margin-top:14px}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px;background:var(--brickbg);border:1px solid var(--brick)}
+.legend span.d::before{background:transparent;border:1px dashed var(--soft)}
+/* isi */
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 14px;padding:0;list-style:none}
+.flow li{font-size:14px;padding:5px 10px;border-radius:3px;background:var(--bg);border:1px solid var(--line);white-space:nowrap}
+.flow li.opt{border-style:dashed}
+.flow li.end{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.flow .arr{border:0;background:none;padding:0 2px;color:var(--soft)}
+ol,ul{margin:0 0 12px;padding-left:22px}
+li{margin-bottom:6px}
+.approve li::marker{color:var(--brick);font-weight:700}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700;font-size:14px;border-bottom:2px solid var(--ink)}
+td:first-child{font-weight:500;white-space:nowrap}
+.st{font-size:13px;padding:2px 8px;border-radius:3px;border:1px solid var(--line);white-space:nowrap}
+dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 32px;margin:0}
+dl div{border-top:1px solid var(--line);padding-top:10px}
+dt{font-weight:700}
+dd{margin:2px 0 0;color:var(--soft);font-size:15px}
+code{font-size:14px;background:var(--bg);padding:1px 5px;border-radius:3px;overflow-wrap:anywhere}
+.alt{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+footer{color:var(--soft);font-size:14px}
+@media(max-width:760px){.divs,.grid2,dl{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){table{font-size:13px}th,td{padding:7px 4px}.stack thead{display:none}.stack tr{display:grid;padding-block:8px;border-bottom:1px solid var(--line)}.stack td{display:flex;justify-content:space-between;gap:12px;border:0;padding:3px 0;white-space:normal}.stack td::before{content:attr(data-l);color:var(--soft);font-weight:400}}
+</style>
+</head>
+<body>
+
+<section class="band">
+<div class="wrap hero">
+<div>
+<h1>Orchestrator Maxipro: rancangan v1</h1>
+<p class="lead">Satu sistem agen AI yang menerima perintah lewat satu juru bicara (Delegator), lalu membaginya ke divisi dan agen spesialis. v1 dimulai untuk satu perusahaan, Maxipro, dengan divisi Software Factory dan ke-13 agennya. Produk yang dikerjakan: ekosistem Maxione (aplikasi utama internal Maxipro dan aplikasi yang terhubung, termasuk Maxichat).</p>
+<p class="meta">Hasil tiga sesi tanya jawab, 13 dan 16 November 2026 · status: selesai, siap masuk implementasi</p>
+</div>
+
+<div class="chart" aria-label="Bagan hierarki agen">
+<div class="lvl"><div class="node dark"><b>Pemilik</b><span>memberi perintah dan persetujuan</span></div></div>
+<div class="link"></div>
+<div class="lvl"><div class="node"><b>Delegator</b><span>juru bicara, satu untuk semua perusahaan · Telegram dulu, WhatsApp menyusul</span></div></div>
+<div class="link"></div>
+<div class="lvl"><div class="node"><b>Orchestrator Utama</b><span>satu per perusahaan · mulai dari Maxipro · tiap perusahaan punya divisi sendiri</span></div></div>
+<div class="link"></div>
+<div class="divs">
+<div class="div">
+<div class="divhead"><h3>Orchestrator Divisi: Software Factory</h3><span class="tag">v1 · 13 agen</span></div>
+<ul class="agents" id="sf"></ul>
+</div>
+<div class="div off">
+<div class="divhead"><h3>Orchestrator Divisi: Digital Growth</h3><span class="tag">ditunda</span></div>
+<ul class="agents" id="dg"></ul>
+</div>
+</div>
+<div class="legend"><span>dibangun di v1</span><span class="d">ditunda (sesi berikutnya)</span></div>
+</div>
+</div>
+</section>
+
+<section class="band alt">
+<div class="wrap grid2">
+<div>
+<h2>Orchestrator hanya mengoordinasi, tidak mengerjakan</h2>
+<p>Orchestrator Utama dan Orchestrator Divisi memecah pekerjaan, memilih agen, melacak status, dan menggabungkan hasil. Pekerjaan teknis selalu dikerjakan Agen Spesialis.</p>
+<p>Orchestrator juga jadi teman diskusi saat sebuah lapisan terlalu berat (<em>bloated</em>). Orchestrator Utama bisa memecah divisi, dan Orchestrator Divisi bisa memecah agen. Keputusan diambil antar-orchestrator sendiri, lalu Pemilik menerima laporan berisi hasil dan alasannya.</p>
+<h3>Tanda bloated (pemicu diskusi, bukan otomatis)</h3>
+<ul>
+<li>Instruksi agen lebih dari ±2.000 kata</li>
+<li>Satu agen menangani lebih dari ±5 jenis tugas</li>
+<li>Tingkat gagal atau revisi terus naik</li>
+</ul>
+</div>
+<div class="card">
+<h2>Enam hal yang wajib menunggu persetujuan Pemilik</h2>
+<ol class="approve">
+<li>Deploy ke production</li>
+<li>Perubahan skema database production</li>
+<li>Menulis ke Odoo production</li>
+<li>Merge kode ke branch utama (kecuali perubahan yang hanya menyentuh folder <code>agents/</code>)</li>
+<li>Melanjutkan Tugas yang melewati batas biaya ±US$10</li>
+<li>Keputusan arsitektur besar: layanan baru, ganti teknologi database, atau mengubah kontrak API bersama</li>
+</ol>
+<p>Perubahan konfigurasi server production dianggap deploy production. Pengecualian: kalau ada error parah setelah deploy, agen 11 boleh langsung rollback ke versi sebelumnya, lalu segera melapor.</p>
+<p>Selain itu, semua berjalan otomatis. Sistem tidak pernah menyetujui sendiri. Kalau belum dijawab, Delegator mengingatkan setelah 24 jam dan 72 jam.</p>
+</div>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap">
+<h2>Satu perintah menjadi satu Tugas, dan statusnya dilacak sampai tuntas</h2>
+<ul class="flow" aria-label="Alur status Tugas">
+<li>diterima</li><li class="arr">→</li><li>diurai</li><li class="arr">→</li><li class="opt">menunggu klarifikasi</li><li class="arr">→</li><li>dikerjakan</li><li class="arr">→</li><li>menunggu persetujuan</li><li class="arr">→</li><li class="end">selesai · gagal · dibatalkan</li>
+</ul>
+<div class="grid2">
+<div>
+<h3>Di dalam Software Factory</h3>
+<ul>
+<li>Setiap Tugas dimulai dari <b>01 Triage</b>: menentukan Proyek, mengklasifikasi (bug, fitur, revisi, data, insiden), memberi prioritas P0–P3, menulis Kriteria Penerimaan (ukuran "hasil sudah sesuai"), menandai perubahan sensitif, dan mengusulkan Sub-tugas.</li>
+<li>Orchestrator Divisi memilih agen yang dibutuhkan secara dinamis, tidak lewat pipeline tetap.</li>
+<li><b>09 QA</b> selalu dijalankan sebelum merge. <b>10 Security</b> wajib untuk perubahan yang menyentuh autentikasi, data pelanggan, atau kredensial.</li>
+<li>Hasil yang tidak cocok dikembalikan dengan umpan balik, maksimal 2 kali ulang. Kalau masih gagal, Tugas berstatus gagal dan dilaporkan.</li>
+<li>Code review di v1 = QA PASS + Security (bila perlu) + persetujuan merge Pemilik.</li>
+<li>Sebelum bekerja, setiap agen wajib membaca aturan Proyek (<code>CLAUDE.md</code>, <code>AGENTS.md</code>).</li>
+</ul>
+</div>
+<div>
+<h3>Antrean dan pekerjaan</h3>
+<ul>
+<li>Dalam satu divisi, Tugas dikerjakan satu per satu. Antar-divisi berjalan paralel. Tugas <b>P0</b> menjeda Tugas yang sedang berjalan, sedangkan P1 jadi antrean pertama.</li>
+<li>Setiap Tugas punya branch sendiri di repo proyek (<code>tugas/&lt;id&gt;-&lt;ringkas&gt;</code>), dan hasilnya berupa Pull Request.</li>
+<li>Staging = <b>staging lokal</b> di Docker dengan database test, tanpa kredensial production WhatsApp, Telegram, atau Xendit. Odoo hanya dibaca. Deploy ke staging otomatis, deploy ke production butuh persetujuan.</li>
+<li>Hanya Pemilik yang memberi Perintah, lewat Delegator. Agen tidak pernah menghubungi Pemilik langsung. Monitoring mengirim laporan insiden, tidak membuat Tugas sendiri.</li>
+<li>Perintah untuk bidang yang belum punya divisi disimpan dulu sebagai Tugas berstatus diterima. Divisi baru dirancang Orchestrator Utama atas perintah Pemilik.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section class="band alt">
+<div class="wrap">
+<h2>Delegator dan Orchestrator Utama hanya bertukar empat jenis pesan</h2>
+<div class="scroll">
+<table class="stack">
+<thead><tr><th>Pesan</th><th>Arah</th><th>Isi</th></tr></thead>
+<tbody id="msgs"></tbody>
+</table>
+</div>
+<p style="margin-top:14px">Laporan dikirim dalam Bahasa Indonesia, hanya saat status Tugas berubah, saat ada agen baru, atau saat Tugas gagal. Detail tiap langkah bisa ditanyakan ke Delegator.</p>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap grid2">
+<div>
+<h2>Teknis v1</h2>
+<ul>
+<li>Claude Agent SDK di Node.js, satu proses. Orchestrator memanggil divisi dan agen sebagai subagent.</li>
+<li>Status Tugas (termasuk prioritas P0–P3) disimpan di PostgreSQL, dengan tabel <code>tugas</code>, <code>sub_tugas</code>, <code>permintaan_persetujuan</code>, <code>laporan</code>, dan <code>pertanyaan_klarifikasi</code>.</li>
+<li>v1 berjalan di komputer lokal Pemilik, dikemas dalam satu <code>docker-compose.yml</code> (orchestrator, PostgreSQL, database test sekali-pakai, bot Telegram). Bisa dipindah ke Mac lain yang menyala 24/7 atau ke VPS dengan langkah yang sama: clone repo, salin <code>.env</code>, restore database, <code>docker compose up</code>.</li>
+<li>Selama di lokal, agen bekerja selama komputer menyala. Tugas yang terputus dilanjutkan otomatis.</li>
+<li>Kartu agen disimpan di folder <code>agents/</code> sendiri, lalu dibaca program dan diteruskan ke Claude Agent SDK.</li>
+<li>Orchestrator memakai model yang lebih kuat. Agen Spesialis memakai model yang lebih hemat, kecuali 03 Architecture.</li>
+<li>Rahasia disimpan di environment variable server, tidak pernah di repo, laporan, atau catatan.</li>
+<li>Batas biaya per Tugas: lunak ±US$2 (dilaporkan), keras ±US$10 (berhenti, minta persetujuan).</li>
+<li>Setiap Tugas mulai dengan konteks bersih, ditambah Catatan Divisi yang menyimpan pelajaran jangka panjang.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Isi repo <code>mysecondbrain</code></h3>
+<div class="scroll"><pre style="margin:8px 0 0;font-size:14px;line-height:1.6">docker-compose.yml
+src/                        kode orchestrator
+agents/maxipro/software-factory/
+  _orchestrator.md
+  _catatan.md               Catatan Divisi
+  01-triage.md …
+proyek/maxipro/software-factory/
+  maxichat/PROYEK.md        stepsans/MaxiChat.App
+  maxione/PROYEK.md         stepsans/maxione
+docs/spec/orchestrator.md
+docs/adr/
+GLOSSARY.md</pre></div>
+</div>
+</div>
+</section>
+
+<section class="band alt">
+<div class="wrap">
+<h2>Tiga belas agen v1 dan batas kerjanya</h2>
+<div class="scroll">
+<table class="stack">
+<thead><tr><th>Agen</th><th>Dipanggil</th><th>Tugas</th><th>Batasan</th></tr></thead>
+<tbody id="briefs"></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap">
+<h2>Istilah yang dipakai</h2>
+<dl id="terms"></dl>
+</div>
+</section>
+
+<section class="band alt">
+<div class="wrap">
+<h2>Langkah berikutnya</h2>
+<div class="scroll">
+<table class="stack">
+<thead><tr><th>Hal</th><th>Status</th></tr></thead>
+<tbody id="later"></tbody>
+</table>
+</div>
+<p style="margin-top:14px">Membuat sistem untuk perusahaan lain (VJ Labs, Telson Indonesia) sudah disepakati caranya: Perintah lewat Delegator, lalu Software Factory Maxipro menyalin template ke folder perusahaan baru.</p>
+</div>
+</section>
+
+<footer class="band"><div class="wrap">Rincian lengkap beserta kutipan setiap keputusan ada di <code>docs/spec/orchestrator.md</code>, branch <code>kukatanya/orchestrator</code>, repo stepsans/mysecondbrain.</div></footer>
+
+<script>
+{
+const sf=[["01","Triage / Intake",1],["02","Product / Business Analyst",1],["03","Architecture",1],["04","Backend / API",1],["05","Database",1],["06","Web / UI",1],["07","Mobile",1],["08","Odoo Integration",1],["09","QA / Testing",1],["10","Security",1],["11","Release / DevOps",1],["12","Observability / SRE",1],["13","Documentation",1]];
+const dg=[["01","Technical SEO & Website"],["02","SEO & AEO Content"],["03","GEO & AI Visibility"],["04","Digital PR & Authority"],["05","Search Intelligence"],["06","Product Knowledge & Media"],["07","WordPress Operations"],["08","Paid Ads & Performance"]];
+const chip=a=>`<li class="${a[2]?'v1':''}"><i>${a[0]}</i>${a[1]}</li>`;
+document.getElementById('sf').innerHTML=sf.map(chip).join('');
+document.getElementById('dg').innerHTML=dg.map(chip).join('');
+const msgs=[["Perintah","Delegator → Orchestrator Utama","perusahaan, teks perintah, lampiran (opsional), id percakapan"],["Laporan","Orchestrator Utama → Delegator","id Tugas, jenis (progres / hasil / gagal / agen baru), ringkasan, tautan hasil"],["Permintaan Persetujuan","Orchestrator Utama → Delegator","tindakan, alasan, dampak, cara membatalkan · jawaban setuju atau tolak"],["Pertanyaan Klarifikasi","Orchestrator Utama → Delegator","pertanyaan · jawaban teks bebas"]];
+document.getElementById('msgs').innerHTML=msgs.map(m=>`<tr><td data-l="Pesan">${m[0]}</td><td data-l="Arah">${m[1]}</td><td data-l="Isi">${m[2]}</td></tr>`).join('');
+const terms=[["Pemilik","Orang yang memberi perintah kepada sistem dan memegang hak persetujuan atas tindakan berisiko."],["Perusahaan","Satu entitas bisnis milik Pemilik yang dilayani tepat satu Orchestrator Utama."],["Delegator","Agen juru bicara Pemilik; satu-satunya titik kontak Pemilik dengan sistem."],["Orchestrator Utama","Agen koordinasi tingkat Perusahaan yang membagi pekerjaan ke Orchestrator Divisi."],["Orchestrator Divisi","Agen koordinasi untuk satu bidang kerja, yang membagi pekerjaan ke Agen Spesialis."],["Agen Spesialis","Agen yang mengerjakan satu jenis pekerjaan di bawah satu Orchestrator Divisi."],["Definisi Agen","Berkas yang memuat jobdesk dan instruksi satu agen."],["Catatan Divisi","Berkas berisi pelajaran jangka panjang satu Orchestrator Divisi."],["Proyek","Satu aplikasi atau sistem yang menjadi sasaran kerja sebuah Orchestrator Divisi."],["Tugas","Satuan kerja yang dibentuk dari satu Perintah dan dilacak statusnya sampai tuntas."],["Sub-tugas","Bagian dari satu Tugas yang diserahkan ke satu Orchestrator Divisi atau satu Agen Spesialis."],["Kriteria Penerimaan","Ukuran tertulis yang menentukan apakah hasil Sub-tugas sudah sesuai keinginan Pemilik."],["Pertanyaan Klarifikasi","Pesan yang meminta jawaban bebas dari Pemilik agar sebuah Tugas bisa dilanjutkan."],["Maxione","Super Apps milik Maxipro: ekosistem berisi aplikasi utama internal Maxipro beserta aplikasi yang terhubung, seperti Maxichat."]];
+document.getElementById('terms').innerHTML=terms.map(t=>`<div><dt>${t[0]}</dt><dd>${t[1]}</dd></div>`).join('');
+const later=[["Menulis 13 kartu agen ke agents/maxipro/software-factory/ lalu direview Pemilik","berikutnya"],["Divisi Digital Growth beserta 8 agennya","sesi berikutnya"],["Odoo staging","disiapkan bila diperlukan"],["Dashboard (daftar Tugas, Laporan, persetujuan)","setelah v1"]];
+const briefs=[["01 Triage","Selalu, langkah pertama","Tentukan Proyek, klasifikasi, prioritas P0–P3, Kriteria Penerimaan, tanda sensitif, usulan Sub-tugas, kumpulkan bukti","Hanya membaca, tidak menulis kode"],["02 Product/BA","Fitur besar atau aturan bisnis belum jelas","Alur pengguna, aturan bisnis, user story, Kriteria Penerimaan rinci","Tidak menulis kode, tidak mengarang aturan bisnis"],["03 Architecture","Fitur baru, lintas bagian, perubahan DB, integrasi","Rencana teknis per Tugas; dokumen arsitektur saat perubahan besar","Hanya membaca; keputusan besar butuh persetujuan"],["04 Backend/API","Pekerjaan backend","Kode server, kontrak API, unit test di branch Tugas","Hanya branch Tugas, tanpa kredensial production"],["05 Database","Perubahan skema, index, query lambat","Berkas migrasi SQL idempoten dengan langkah pembalik, diuji di DB test","Production butuh persetujuan; tidak hapus data"],["06 Web/UI","Pekerjaan frontend web","Kode React, test komponen, bukti sebelum/sesudah","Hanya branch Tugas, tanpa kredensial production"],["07 Mobile","Pekerjaan aplikasi mobile","Kode Expo/React Native, build uji untuk dicoba di HP","Rilis ke App Store/Play Store butuh persetujuan"],["08 Odoo Integration","Integrasi dengan Odoo","Pemetaan data, sinkronisasi, kontrak integrasi","Hanya membaca Odoo; menulis butuh persetujuan"],["09 QA","Selalu sebelum merge","Reproduksi bug, rencana test, jalankan test, keputusan PASS/FAIL/BLOCKED","Boleh menulis test, tidak memperbaiki fitur"],["10 Security","Perubahan sensitif dan dependensi baru","Review autentikasi, izin, data, rahasia, celah library","Temuan tinggi memblokir merge; tidak memperbaiki sendiri"],["11 Release/DevOps","Setelah QA (dan Security) lolos","Deploy staging, siapkan persetujuan, backup DB, deploy production, rollback","Tidak deploy tanpa persetujuan; rollback darurat boleh"],["12 Observability/SRE","Setelah deploy production","Pantau error ±30 menit, laporan insiden, rekomendasi rollback","Tidak mengubah kode, tidak membuat Tugas sendiri"],["13 Documentation","Akhir Tugas yang mengubah perilaku","README, changelog, dokumentasi API, PROYEK.md","Hanya berkas dokumentasi"]];
+document.getElementById('briefs').innerHTML=briefs.map(b=>`<tr><td data-l="Agen">${b[0]}</td><td data-l="Dipanggil" style="white-space:normal">${b[1]}</td><td data-l="Tugas" style="white-space:normal">${b[2]}</td><td data-l="Batasan" style="white-space:normal">${b[3]}</td></tr>`).join('');
+document.getElementById('later').innerHTML=later.map(r=>`<tr><td data-l="Hal" style="white-space:normal">${r[0]}</td><td data-l="Status"><span class="st">${r[1]}</span></td></tr>`).join('');
+}
+</script>
+</body>
+</html>
