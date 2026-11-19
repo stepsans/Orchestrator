@@ -54,6 +54,10 @@ _Avoid_: Repo, App, Aplikasi (tanpa kualifikasi)
 Satuan kerja yang dibentuk dari satu Perintah dan dilacak statusnya sampai tuntas.
 _Avoid_: Tiket, Job, Task
 
+**Stack Dasar**:
+Kumpulan teknologi dan template bawaan yang dipakai software baru hasil Software Factory, kecuali Rencana Proyek menetapkan lain.
+_Avoid_: Boilerplate, Starter, Stack default
+
 **Rencana Proyek**:
 Dokumen yang disetujui Pemilik sebelum sebuah software baru dibangun, berisi kebutuhan, rancangan arsitektur, dan urutan Tugas untuk mewujudkannya.
 _Avoid_: Epic, Roadmap, PRD (tanpa kualifikasi)
