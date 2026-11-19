@@ -1,6 +1,6 @@
 # Spesifikasi: Orchestrator
 
-Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): selesai. Sesi 4 (2026-11-17, awalan S4-): selesai; keputusan implementasi K1–K9; fokus Delegator → Orchestrator Software Factory, tanpa menyentuh Maxichat dan Maxione. Sesi 5 (2026-11-17 s.d. 2026-11-19, awalan S5-): selesai; membuat software baru dari nol. Sesi 6 (2026-11-19, awalan S6-): selesai; Delegator diskusi dan rilis software baru. Sesi 7 (2026-11-19, awalan S7-): rancangan ringan Digital Growth.
+Status sesi: selesai (sesi 1: 2026-11-13; sesi 2: 2026-11-16). Nomor pertanyaan sesi 2 memakai awalan S2-. Sesi 3 (2026-11-16, awalan S3-): selesai. Sesi 4 (2026-11-17, awalan S4-): selesai; keputusan implementasi K1–K9; fokus Delegator → Orchestrator Software Factory, tanpa menyentuh Maxichat dan Maxione. Sesi 5 (2026-11-17 s.d. 2026-11-19, awalan S5-): selesai; membuat software baru dari nol. Sesi 6 (2026-11-19, awalan S6-): selesai; Delegator diskusi dan rilis software baru. Sesi 7 (2026-11-19, awalan S7-): selesai; rancangan ringan Digital Growth (ditunda), kebutuhan mesin tetap disiapkan. Berikutnya: 13 kartu agen, contoh Perintah golden Tugas, fase F0.
 
 ## Tempat catatan
 
@@ -193,6 +193,7 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 ### Digital Growth: rancangan ringan (sesi 7)
 
 - **Ditunda (S7-R3): fokus Software Factory.** Rancangan di bawah disimpan untuk nanti.
+- Tetap disiapkan di mesin sejak F0–F1 (S7-R4-Q1): Perintah Berulang, titik persetujuan 8, akses akun luar lewat `ops-gateway`. Software Factory juga boleh memakai Perintah Berulang (misalnya cek keamanan library mingguan).
 - Digital Growth versi mini menjadi pekerjaan nyata pertama setelah fase F1 dan berjalan bersamaan dengan pembangunan Software Factory F2 dst. (S7-R2-Q1, kini ditunda).
 - Agen Digital Growth mini: 02 SEO & AEO Content Strategist (menulis), 06 Product Knowledge & Media Intelligence (cek klaim produk terhadap data WooCommerce), 07 WordPress Operations & Content Governance (draft/terbit lewat `ops-gateway`). Fakta produk hanya dari WooCommerce atau sumber Pemilik; harga tidak ditulis, cukup tautan; klaim tak terbukti dihapus. WooCommerce hanya dibaca. Gambar artikel ditunda. Contoh pertama: artikel WordPress harian dari topik dan keyword yang ditentukan Pemilik.
 - Perintah Berulang: Pemilik membuat sekali (jadwal, daftar topik, keyword); mesin membuat Tugas baru tiap jadwal tiba (dihitung sebagai Perintah Pemilik); bisa dijeda, diubah, dihentikan lewat Telegram; setiap jalan mengikuti batas biaya.
@@ -511,7 +512,9 @@ Delegator v1: bot Telegram di mesin yang sama dengan orchestrator (long polling;
 | S7-R3-Q3 | WooCommerce hanya dibaca | "Ya" | disepakati |
 | S7-R3-Q4 | Gambar artikel | "Nanti dulu" | ditunda |
 | S7-R3 | Digital Growth ditunda; fokus Software Factory | "Saya putuskan nanti dulu aja deh. Fokus ke Software Factory" | disepakati |
-| S7-R3 | Apakah tiga kebutuhan mesin (Perintah Berulang, titik 8, akses akun luar) tetap disiapkan di mesin | (perlu konfirmasi; bertentangan dengan S7-R2-Q1) | terbuka |
+| S7-R3 | Apakah tiga kebutuhan mesin tetap disiapkan (dijawab S7-R4-Q1) | (perlu konfirmasi) | disepakati |
+| S7-R4-Q1 | Perintah Berulang, titik persetujuan 8, dan akses akun luar lewat `ops-gateway` tetap dirancang ke dalam mesin sejak F0–F1, walau Digital Growth ditunda | "Ya" | disepakati |
+| S7-R4-Q2 | Sesi 7 ditutup; kembali ke Software Factory | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak

@@ -212,7 +212,15 @@ CREATE TYPE status_tugas AS ENUM ('diterima','diurai','menunggu_klarifikasi','di
 CREATE TYPE status_sub AS ENUM ('antre','dikerjakan','dievaluasi','lolos','diulang','gagal');
 CREATE TYPE prioritas AS ENUM ('P0','P1','P2','P3');
 CREATE TYPE titik_persetujuan AS ENUM ('deploy_production','skema_db_production',
-  'tulis_odoo','merge_main','lewat_batas_biaya','arsitektur_besar');
+  'tulis_odoo','merge_main','lewat_batas_biaya','arsitektur_besar',
+  'rencana_proyek','terbit_publik');
+
+CREATE TABLE perintah_berulang (                 -- S7-R4-Q1
+  id text PRIMARY KEY, perusahaan text NOT NULL, divisi text NOT NULL,
+  jadwal_cron text NOT NULL, isi text NOT NULL, parameter jsonb,
+  autopost boolean NOT NULL DEFAULT false, aktif boolean NOT NULL DEFAULT true,
+  dibuat timestamptz NOT NULL DEFAULT now()
+);
 
 CREATE TABLE tugas (
   id            text PRIMARY KEY,               -- mis. T-20261116-0007
@@ -505,7 +513,7 @@ Perintah: *"Tambahkan filter tanggal di Laporan Penjualan Maxichat."*
 
 | Fase | Isi | Syarat lulus *(usulan)* |
 |---|---|---|
-| **F0 Fondasi** | repo latihan `orchestrator-sandbox` sekaligus template Stack Dasar (React + Vite, Express 5, OpenAPI + Orval, Zod, Drizzle, PostgreSQL, pnpm, Node.js 24 LTS; login, contoh CRUD, test, Dockerfile, konfigurasi Vercel, `CLAUDE.md`; tidak terhubung Maxichat/Maxione; S5-R3), compose, skema DB, bot Telegram (Perintah, Laporan, persetujuan dengan PIN), event_log, loader kartu, uji unit state machine | semua uji unit dan kontrak hijau; bot hanya merespons Pemilik |
+| **F0 Fondasi** | tabel jadwal Perintah Berulang + jenis persetujuan `terbit_publik` + slot akses akun luar di `ops-gateway` (S7-R4-Q1);  repo latihan `orchestrator-sandbox` sekaligus template Stack Dasar (React + Vite, Express 5, OpenAPI + Orval, Zod, Drizzle, PostgreSQL, pnpm, Node.js 24 LTS; login, contoh CRUD, test, Dockerfile, konfigurasi Vercel, `CLAUDE.md`; tidak terhubung Maxichat/Maxione; S5-R3), compose, skema DB, bot Telegram (Perintah, Laporan, persetujuan dengan PIN), event_log, loader kartu, uji unit state machine | semua uji unit dan kontrak hijau; bot hanya merespons Pemilik |
 | **F1 Read-only** | engine + Delegator diskusi (pola kukatanya, `/jalan`, Sesi Diskusi) + Orchestrator Divisi + 01 Triage + 02 + 03, dry-run, golden Tugas | ≥ 90% golden Tugas lolos; biaya rata-rata per Triage tercatat |
 | **F2 Coding loop** | 04, 05, 06, 09, 13 + worktree + staging-runner + PR. **Tanpa deploy** | 10 Tugas nyata sampai PR, ≥ 70% QA PASS di percobaan pertama; 0 pelanggaran guard di uji red-team |
 | **F3 Rilis** | 11, 12, ops-gateway, backup, rollback — semuanya di repo latihan `orchestrator-sandbox`, "production" = container lokal | 5 rilis latihan sukses, 1 latihan rollback berhasil |
