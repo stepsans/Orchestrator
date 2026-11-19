@@ -182,6 +182,14 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Daftar "siap produksi" sebelum rilis production pertama (dicek otomatis, disimpan di template Stack Dasar): semua KP wajib terbukti; review 10 Security wajib; test hijau di CI termasuk login dan hak akses; backup otomatis aktif dan restore pernah dicoba; monitoring error dan `/health`; README, cara deploy dan rollback; tidak ada rahasia di repo (dicek pemindai).
 - Bug dari pengguna software diteruskan Pemilik ke Delegator; laporan langsung dari pengguna ditunda bersama aturan karyawan sebagai pemberi Perintah.
 
+### Delegator v1: diskusi dan mode langsung (sesi 6)
+
+- Default: diskusi. Delegator bertanya kritis dengan pola skill kukatanya: pertanyaan bernomor dengan rekomendasi, jawaban "ya" yang mencakup beberapa nomor dipecah, maksimal 5 round lalu ditanya lanjut, dan rangkuman Perintah untuk dikonfirmasi Pemilik. Delegator tidak menulis dokumen spesifikasi; untuk software baru, hasil diskusi menjadi bahan Rencana Proyek bagi 02.
+- Mode langsung: pesan diawali `/jalan` atau kata "langsung"; `/jalan` juga bisa diketik di tengah diskusi untuk merangkum hasil sejauh itu menjadi Perintah.
+- Dalam mode langsung: diskusi Delegator dilewati; Pertanyaan Klarifikasi diganti asumsi yang dicatat dan ditampilkan di Laporan, kecuali asumsi menyangkut data production, uang, atau keamanan (tetap bertanya); ketujuh titik persetujuan tetap wajib.
+- Setiap diskusi disimpan sebagai Sesi Diskusi (id, topik) di database; bisa dilanjutkan dengan `/lanjut <topik>`; sesi yang sudah menjadi Perintah tersimpan sebagai riwayat dan bisa dirujuk Triage.
+- Delegator diskusi dibangun di fase F1 bersama Triage.
+
 ### Struktur per Perusahaan
 
 - Folder `agents/` dan `proyek/` punya level Perusahaan: `agents/<perusahaan>/<divisi>/`, `proyek/<perusahaan>/<divisi>/<proyek>/`. Mulai dari `maxipro`.
@@ -474,6 +482,11 @@ Delegator v1: bot Telegram di mesin yang sama dengan orchestrator (long polling;
 | S6-R1-Q2 | Software belum rilis: merge otomatis setelah QA (dan Security); setelah rilis pertama kembali ke titik 4 | "Ya" | disepakati |
 | S6-R1-Q3 | Daftar "siap produksi" sebelum rilis production pertama | "Ya" | disepakati |
 | S6-R1-Q4 | Bug dari pengguna diteruskan Pemilik ke Delegator | "Ya" | disepakati |
+| S6-R2-Q1 | Default diskusi; mode langsung dengan `/jalan` atau "langsung" | "Ya" | disepakati |
+| S6-R2-Q2 | Mode langsung: lewati diskusi, Pertanyaan Klarifikasi diganti asumsi tercatat (kecuali hal berisiko), persetujuan tetap wajib | "Ya" | disepakati |
+| S6-R2-Q3 | Gaya diskusi Delegator mengikuti pola kukatanya, tanpa menulis dokumen spesifikasi | "Ya" | disepakati |
+| S6-R2-Q4 | Sesi Diskusi tersimpan dan bisa dilanjutkan (`/lanjut`) | "Ya" | disepakati |
+| S6-R2-Q5 | Delegator diskusi dibangun di fase F1 | "Ya" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak

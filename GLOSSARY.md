@@ -70,6 +70,10 @@ _Avoid_: Subtask, Langkah
 Ukuran tertulis yang menentukan apakah hasil sebuah Sub-tugas sudah sesuai keinginan Pemilik.
 _Avoid_: Acceptance criteria, DoD, Target
 
+**Sesi Diskusi**:
+Percakapan tersimpan antara Pemilik dan Delegator tentang satu topik, yang bisa dilanjutkan di lain waktu dan menjadi bahan sebuah Perintah.
+_Avoid_: Chat, Thread, Brainstorm (tanpa kualifikasi)
+
 ### Pesan antara Delegator dan Orchestrator Utama
 
 **Perintah**:

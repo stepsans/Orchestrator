@@ -506,7 +506,7 @@ Perintah: *"Tambahkan filter tanggal di Laporan Penjualan Maxichat."*
 | Fase | Isi | Syarat lulus *(usulan)* |
 |---|---|---|
 | **F0 Fondasi** | repo latihan `orchestrator-sandbox` sekaligus template Stack Dasar (React + Vite, Express 5, OpenAPI + Orval, Zod, Drizzle, PostgreSQL, pnpm, Node.js 24 LTS; login, contoh CRUD, test, Dockerfile, konfigurasi Vercel, `CLAUDE.md`; tidak terhubung Maxichat/Maxione; S5-R3), compose, skema DB, bot Telegram (Perintah, Laporan, persetujuan dengan PIN), event_log, loader kartu, uji unit state machine | semua uji unit dan kontrak hijau; bot hanya merespons Pemilik |
-| **F1 Read-only** | engine + Orchestrator Divisi + 01 Triage + 02 + 03, dry-run, golden Tugas | ≥ 90% golden Tugas lolos; biaya rata-rata per Triage tercatat |
+| **F1 Read-only** | engine + Delegator diskusi (pola kukatanya, `/jalan`, Sesi Diskusi) + Orchestrator Divisi + 01 Triage + 02 + 03, dry-run, golden Tugas | ≥ 90% golden Tugas lolos; biaya rata-rata per Triage tercatat |
 | **F2 Coding loop** | 04, 05, 06, 09, 13 + worktree + staging-runner + PR. **Tanpa deploy** | 10 Tugas nyata sampai PR, ≥ 70% QA PASS di percobaan pertama; 0 pelanggaran guard di uji red-team |
 | **F3 Rilis** | 11, 12, ops-gateway, backup, rollback — semuanya di repo latihan `orchestrator-sandbox`, "production" = container lokal | 5 rilis latihan sukses, 1 latihan rollback berhasil |
 | **F4 Lengkap** | 02, 07, 08, 10 di repo latihan (08 memakai Odoo tiruan) | ke-13 agen lolos golden Tugas dan 3 Tugas latihan ujung ke ujung |
