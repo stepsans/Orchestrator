@@ -190,6 +190,14 @@ Status Sub-tugas: `antre → dikerjakan → dievaluasi → lolos / diulang / gag
 - Setiap diskusi disimpan sebagai Sesi Diskusi (id, topik) di database; bisa dilanjutkan dengan `/lanjut <topik>`; sesi yang sudah menjadi Perintah tersimpan sebagai riwayat dan bisa dirujuk Triage.
 - Delegator diskusi dibangun di fase F1 bersama Triage.
 
+### Digital Growth: rancangan ringan (sesi 7)
+
+- Digital Growth versi mini menjadi pekerjaan nyata pertama setelah fase F1 dan berjalan bersamaan dengan pembangunan Software Factory F2 dst. Contoh pertama: artikel WordPress harian dari topik dan keyword yang ditentukan Pemilik.
+- Perintah Berulang: Pemilik membuat sekali (jadwal, daftar topik, keyword); mesin membuat Tugas baru tiap jadwal tiba (dihitung sebagai Perintah Pemilik); bisa dijeda, diubah, dihentikan lewat Telegram; setiap jalan mengikuti batas biaya.
+- Menerbitkan ke publik = titik persetujuan 8. Awalnya artikel masuk sebagai draft dan diterbitkan dengan satu tombol di Telegram; autopost dinyalakan per Perintah Berulang setelah ±10 artikel pertama terbukti bagus (angka usulan); setelah autopost, setiap artikel tetap dilaporkan dengan link.
+- Akses akun luar (WordPress, nanti Google Search Console, akun iklan) disimpan di `ops-gateway`; agen tidak memegangnya. WordPress memakai Application Password dengan hak minimal (author/editor).
+- Situs: https://maxipro.co.id/ — fakta (dicek 2026-11-19): WordPress (aset `wp-content/uploads`, plugin cache WP Rocket), WooCommerce dengan YITH Woo Compare, berbahasa Indonesia, menjual mesin printing dan finishing, sparepart, dan bahan baku.
+
 ### Struktur per Perusahaan
 
 - Folder `agents/` dan `proyek/` punya level Perusahaan: `agents/<perusahaan>/<divisi>/`, `proyek/<perusahaan>/<divisi>/<proyek>/`. Mulai dari `maxipro`.
@@ -256,6 +264,7 @@ Tindakan berikut wajib menunggu Permintaan Persetujuan ke Pemilik lewat Delegato
 5. Melanjutkan Tugas yang melewati batas keras biaya.
 6. Keputusan arsitektur besar: layanan baru, ganti teknologi database, atau mengubah kontrak API yang dipakai bersama (usulan 03 Architecture).
 7. Rencana Proyek untuk software baru, sebelum Tugas pertamanya dikerjakan; persetujuan ini sekaligus mengizinkan pembuatan repo baru (S5-R1-Q2, Q3).
+8. Menerbitkan konten ke publik (misalnya artikel WordPress); per Perintah Berulang Pemilik bisa menyalakan mode autopost (S7-R2-Q3).
 
 Pengecualian: rollback darurat oleh 11 (lihat Aturan tambahan sesi 3). Perubahan konfigurasi server production (Nginx, environment variable, service) dianggap deploy production (titik 1).
 
@@ -490,7 +499,11 @@ Delegator v1: bot Telegram di mesin yang sama dengan orchestrator (long polling;
 | S6-R3-Q1 | Rangkuman sesi 6 benar; sesi ditutup | "Ya" | disepakati |
 | S7-R1-Q1 | Divisi berikutnya yang dirancang: Digital Growth | "A" | disepakati |
 | S7-R1-Q2 | Rancang ringan sekarang (hanya yang memengaruhi mesin); detail agen setelah Software Factory jalan | "C" | disepakati |
-| S7-R1-Q3 | Digital Growth berjalan bersamaan, contoh artikel WordPress harian dari topik dan keyword Pemilik, autopost | "Maksudnya sambil bareng berjalan apakah memungkinkan. Contoh : setiap hari bikin artikel di wordpress tentang sesuatu yang saya beri. Target keyword saya tentukan. Autpost misalnya" | terbuka |
+| S7-R1-Q3 | Digital Growth berjalan bersamaan, contoh artikel WordPress harian dari topik dan keyword Pemilik, autopost | "Maksudnya sambil bareng berjalan apakah memungkinkan. Contoh : setiap hari bikin artikel di wordpress tentang sesuatu yang saya beri. Target keyword saya tentukan. Autpost misalnya" | disepakati |
+| S7-R2-Q1 | Digital Growth mini jadi pekerjaan nyata pertama setelah F1, berjalan bersamaan dengan F2 dst. | "A" | disepakati |
+| S7-R2-Q2 | Perintah Berulang | "ya" | disepakati |
+| S7-R2-Q3 | Titik persetujuan 8: menerbitkan ke publik; draft dulu, autopost setelah ±10 artikel bagus | "Ya" | disepakati |
+| S7-R2-Q4 | Akses akun luar di `ops-gateway`; situs WordPress pertama maxipro.co.id | "https://maxipro.co.id/" | disepakati |
 | R5-Q3 | Sesi dilanjutkan 5 round lagi (round 6–10) | "Lanjut dong mau 10 round juga boleh" | disepakati |
 
 ## Alternatif yang ditolak

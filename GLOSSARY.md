@@ -50,6 +50,10 @@ _Avoid_: Maxipro Super Apps (di luar Maxipro), Super Apps (tanpa kualifikasi)
 Satu aplikasi atau sistem yang menjadi sasaran kerja sebuah Orchestrator Divisi.
 _Avoid_: Repo, App, Aplikasi (tanpa kualifikasi)
 
+**Perintah Berulang**:
+Perintah Pemilik yang dijalankan otomatis sesuai jadwal dan setiap kali jalan menghasilkan satu Tugas baru.
+_Avoid_: Cron, Jadwal (tanpa kualifikasi), Recurring task
+
 **Tugas**:
 Satuan kerja yang dibentuk dari satu Perintah dan dilacak statusnya sampai tuntas.
 _Avoid_: Tiket, Job, Task
